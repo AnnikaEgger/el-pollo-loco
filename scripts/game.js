@@ -1,4 +1,9 @@
 let canvas;
-let character = new Image();
+let world;
 
-function init() {}
+function init() {
+  canvas = document.getElementById("canvas");
+  world = new World(canvas);
+
+  console.log("my character is", world.character);
+}
