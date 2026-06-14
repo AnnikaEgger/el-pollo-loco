@@ -1,18 +1,17 @@
-class MovableObject {
-  x = 120;
-  y = 280;
-
-  height = 250;
-  width = 100;
+class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
-
-  img;
-  imageCache = {};
-  currentImgSrc = 0;
-
+  energy = 100;
+  lastHit = 0;
   speedY = 0;
   acceleration = 2.5;
+
+  offset = {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  };
 
   applyGravity() {
     setInterval(() => {
@@ -24,20 +23,11 @@ class MovableObject {
   }
 
   isAboveGround() {
-    return this.y < 150;
-  }
-
-  createImg(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
-
-  createImgs(srcsArr) {
-    srcsArr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
+    if (this instanceof ThrowableObject) {
+      return true;
+    } else {
+      return this.y < 150;
+    }
   }
 
   playAnimation(images) {
@@ -53,5 +43,37 @@ class MovableObject {
 
   moveRight() {
     this.x += this.speed;
+  }
+
+  isColiding(mo) {
+    return (
+      this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+      this.x + this.offset.left < mo.x + mo.width - this.offset.right &&
+      this.y + mo.offset.top < mo.y + mo.height - this.offset.bottom
+    );
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
+  isDead() {
+    return this.energy == 0;
+  }
+
+  isHurt() {
+    let timePassed = new Date().getTime() - this.lastHit;
+    timePassed = timePassed / 1000;
+    if (timePassed > 1) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

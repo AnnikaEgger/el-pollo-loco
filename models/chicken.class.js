@@ -3,6 +3,13 @@ class Chicken extends MovableObject {
   height = 60;
   width = 80;
 
+  offset = {
+    left: 5,
+    right: 5,
+    top: 5,
+    bottom: 5,
+  };
+
   IMAGES_WALKING = [
     "../img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
     "../img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
@@ -10,8 +17,8 @@ class Chicken extends MovableObject {
   ];
 
   constructor() {
-    super().createImg(this.IMAGES_WALKING[0]);
-    this.createImgs(this.IMAGES_WALKING);
+    super().loadImage(this.IMAGES_WALKING[0]);
+    this.loadImages(this.IMAGES_WALKING);
 
     this.x = 200 + Math.random() * 500;
     this.speed = 0.15 + Math.random() * 0.5;
@@ -28,6 +35,3 @@ class Chicken extends MovableObject {
     }, 100);
   }
 }
-
-// chickens arent moving left anymore
-// Pepe jump still weird

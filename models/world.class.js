@@ -5,6 +5,10 @@ class World {
   ctx;
   keyboard;
   cameraX = 0;
+  statusbarHealth = new StatusbarHealth("blue");
+  statusbarBottle = new StatusbarBottle("blue");
+  statusbarCoins = new StatusbarCoins("blue");
+  throwableObjects = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -12,10 +16,39 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
+    this.run();
   }
 
   setWorld() {
     this.character.world = this;
+  }
+
+  run() {
+    setInterval(() => {
+      this.checkCollisions();
+      this.checkThrowObjects();
+    }, 200);
+  }
+
+  checkCollisions() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColiding(enemy)) {
+        this.character.hit();
+        this.statusbarHealth.setPercentage(this.character.energy);
+      }
+    });
+  }
+
+  checkThrowObjects() {
+    if (this.keyboard.D) {
+      console.log("D pressed");
+
+      let bottle = new ThrowableObject(
+        this.character.x + 100,
+        this.character.y + 100,
+      );
+      this.throwableObjects.push(bottle);
+    }
   }
 
   draw() {
@@ -24,8 +57,18 @@ class World {
 
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
+
+    this.ctx.translate(-this.cameraX, 0);
+    // space for fixed objects
+    this.addToMap(this.statusbarHealth);
+    this.addToMap(this.statusbarBottle);
+    this.addToMap(this.statusbarCoins);
+
+    this.ctx.translate(this.cameraX, 0);
+
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.cameraX, 0);
 
@@ -43,25 +86,27 @@ class World {
 
   addToMap(movableObj) {
     if (movableObj.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(movableObj.width, 0);
-      this.ctx.scale(-1, 1);
-      movableObj.x = movableObj.x * -1;
+      this.flipImage(movableObj);
     }
 
-    this.ctx.drawImage(
-      movableObj.img,
-      movableObj.x,
-      movableObj.y,
-      movableObj.width,
-      movableObj.height,
-    );
+    movableObj.draw(this.ctx);
+    movableObj.drawFrame(this.ctx);
+    movableObj.drawOffsetFrame(this.ctx);
 
     if (movableObj.otherDirection) {
-      movableObj.x = movableObj.x * -1;
-      this.ctx.restore();
+      this.flipImageBack(movableObj);
     }
   }
 
-  flipImage(movableObject) {}
+  flipImage(movableObj) {
+    this.ctx.save();
+    this.ctx.translate(movableObj.width, 0);
+    this.ctx.scale(-1, 1);
+    movableObj.x = movableObj.x * -1;
+  }
+
+  flipImageBack(movableObj) {
+    movableObj.x = movableObj.x * -1;
+    this.ctx.restore();
+  }
 }
