@@ -6,14 +6,25 @@ class DrawableObject {
 
   img;
   imageCache = {};
-  currentImgSrc = 0;
+  currentImg = 0;
+
+  offset = {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  };
 
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof ThrowableObject
+    ) {
       ctx.beginPath();
       ctx.lineWidth = "3";
       ctx.strokeStyle = "blue";
@@ -23,9 +34,13 @@ class DrawableObject {
   }
 
   drawOffsetFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof ThrowableObject
+    ) {
       ctx.beginPath();
-      ctx.lineWidth = "3";
+      ctx.lineWidth = "2";
       ctx.strokeStyle = "red";
       ctx.rect(
         this.x + this.offset.left,

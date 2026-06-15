@@ -5,13 +5,8 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   speedY = 0;
   acceleration = 2.5;
-
-  offset = {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-  };
+  animationTicks = 0;
+  lastImages;
 
   applyGravity() {
     setInterval(() => {
@@ -30,11 +25,24 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  playAnimation(images) {
-    let index = this.currentImgSrc % images.length;
-    let path = images[index];
-    this.img = this.imageCache[path];
-    this.currentImgSrc++;
+  playAnimation(images, speed = 1) {
+    speed = speed * (100 / 50);
+
+    if (this.lastImages !== images) {
+      this.currentImg = 0;
+      this.lastImages = images;
+    }
+
+    if (this.animationTicks % speed === 0) {
+      let path = images[this.currentImg];
+      this.img = this.imageCache[path];
+
+      if (this.currentImg >= images.length - 1) {
+        this.currentImg = 0;
+      } else {
+        this.currentImg++;
+      }
+    }
   }
 
   moveLeft() {
@@ -59,7 +67,7 @@ class MovableObject extends DrawableObject {
     if (this.energy < 0) {
       this.energy = 0;
     } else {
-      this.lastHit = new Date().getTime();
+      this.lastHit = Date.now();
     }
   }
 
@@ -68,9 +76,9 @@ class MovableObject extends DrawableObject {
   }
 
   isHurt() {
-    let timePassed = new Date().getTime() - this.lastHit;
+    let timePassed = Date.now() - this.lastHit;
     timePassed = timePassed / 1000;
-    if (timePassed > 1) {
+    if (timePassed > 0.75) {
       return false;
     } else {
       return true;
