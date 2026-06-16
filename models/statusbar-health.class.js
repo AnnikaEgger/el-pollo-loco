@@ -14,6 +14,6 @@ class StatusbarHealth extends Statusbar {
 
   constructor(color) {
     let chosenImages = StatusbarHealth.IMAGE_SETS[color];
-    super(chosenImages);
+    super(chosenImages, "health");
   }
 }

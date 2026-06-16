@@ -6,9 +6,30 @@ class World {
   keyboard;
   cameraX = 0;
   statusbarHealth = new StatusbarHealth("blue");
-  statusbarBottle = new StatusbarBottle("blue");
+  statusbarBottles = new StatusbarBottles("blue");
   statusbarCoins = new StatusbarCoins("blue");
-  throwableObjects = [];
+  maxY = 65;
+
+  throwableObjects = [
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+    new ThrowableObject(this.getRandomX(), this.getRandomY()),
+  ];
+  availableBottles = 0;
+
+  getRandomX() {
+    return Math.random() * (720 * 3);
+  }
+
+  getRandomY() {
+    return this.maxY + Math.random() * (380 - this.maxY);
+  }
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -27,28 +48,55 @@ class World {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
+      this.checkIfBottleCollected();
     }, 200);
   }
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColiding(enemy)) {
+      if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusbarHealth.setPercentage(this.character.energy);
       }
     });
   }
 
-  checkThrowObjects() {
-    if (this.keyboard.D) {
-      console.log("D pressed");
+  checkIfBottleCollected() {
+    this.throwableObjects.forEach((to) => {
+      if (this.character.isColliding(to)) {
+        this.collectBottle(to);
+      }
+    });
+  }
 
+  collectBottle(to) {
+    to.collectingSound.play();
+    this.availableBottles++;
+    this.updateBottlesStatusbar();
+
+    const index = this.throwableObjects.indexOf(to);
+    if (index !== -1) {
+      this.throwableObjects.splice(index, 1);
+    }
+  }
+
+  checkThrowObjects() {
+    if (this.keyboard.D && this.availableBottles > 0) {
       let bottle = new ThrowableObject(
         this.character.x + 100,
         this.character.y + 100,
       );
       this.throwableObjects.push(bottle);
+      bottle.throw();
+      if (this.availableBottles > 0) {
+        this.availableBottles--;
+        this.updateBottlesStatusbar();
+      }
     }
+  }
+
+  updateBottlesStatusbar() {
+    this.statusbarBottles.setPercentage(this.availableBottles * 10);
   }
 
   draw() {
@@ -61,7 +109,7 @@ class World {
     this.ctx.translate(-this.cameraX, 0);
     // space for fixed objects
     this.addToMap(this.statusbarHealth);
-    this.addToMap(this.statusbarBottle);
+    this.addToMap(this.statusbarBottles);
     this.addToMap(this.statusbarCoins);
 
     this.ctx.translate(this.cameraX, 0);

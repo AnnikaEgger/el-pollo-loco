@@ -53,12 +53,12 @@ class MovableObject extends DrawableObject {
     this.x += this.speed;
   }
 
-  isColiding(mo) {
+  isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
       this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-      this.x + this.offset.left < mo.x + mo.width - this.offset.right &&
-      this.y + mo.offset.top < mo.y + mo.height - this.offset.bottom
+      this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+      this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     );
   }
 
@@ -69,6 +69,10 @@ class MovableObject extends DrawableObject {
     } else {
       this.lastHit = Date.now();
     }
+  }
+
+  isWalking() {
+    return this.world.keyboard.LEFT || this.world.keyboard.RIGHT;
   }
 
   isDead() {

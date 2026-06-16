@@ -1,4 +1,4 @@
-class StatusbarBottle extends Statusbar {
+class StatusbarBottles extends Statusbar {
   y = 65;
 
   static IMAGE_SETS = {
@@ -13,7 +13,7 @@ class StatusbarBottle extends Statusbar {
   };
 
   constructor(color) {
-    let chosenImages = StatusbarBottle.IMAGE_SETS[color];
-    super(chosenImages);
+    let chosenImages = StatusbarBottles.IMAGE_SETS[color];
+    super(chosenImages, "bottles");
   }
 }

@@ -14,6 +14,6 @@ class StatusbarCoins extends Statusbar {
 
   constructor(color) {
     let chosenImages = StatusbarCoins.IMAGE_SETS[color];
-    super(chosenImages);
+    super(chosenImages, "coins");
   }
 }
