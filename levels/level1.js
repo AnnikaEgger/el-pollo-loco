@@ -1,3 +1,13 @@
+const MAX_Y = 65;
+
+function getRandomX() {
+  return Math.random() * (720 * 3);
+}
+
+function getRandomY() {
+  return MAX_Y + Math.random() * (380 - MAX_Y);
+}
+
 const level1 = new Level(
   [new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken()],
   [new Cloud()],
@@ -44,5 +54,28 @@ const level1 = new Level(
       "img/5_background/layers/1_first_layer/2.png",
       720 * 3,
     ),
+  ],
+  [
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX(), getRandomY()),
+  ],
+  [
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX(), getRandomY()),
   ],
 );

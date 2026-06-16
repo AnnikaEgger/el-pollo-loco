@@ -4,6 +4,7 @@ class Statusbar extends DrawableObject {
   x = 20;
   y = 0;
 
+  offset = { top: 0, bottom: 0, left: 0, right: 0 };
   IMAGES;
 
   percentage = 100;
