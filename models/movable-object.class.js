@@ -25,8 +25,8 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  playAnimation(images, speed = 1) {
-    speed = speed * (100 / 50);
+  playAnimation(images, speed = 1, interval = 50) {
+    speed = speed * (100 / interval);
 
     if (this.lastImages !== images) {
       this.currentImg = 0;

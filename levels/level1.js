@@ -1,11 +1,20 @@
 const MAX_Y = 65;
+const BOTTLE_Y = 370;
 
-function getRandomX() {
-  return Math.random() * (720 * 3);
+function getRandomX(type) {
+  if (type == "coin") {
+    return Math.random() * (720 * 3 - 250) + 250;
+  } else {
+    return Math.random() * (720 * 3 - 400) + 400;
+  }
 }
 
-function getRandomY() {
-  return MAX_Y + Math.random() * (380 - MAX_Y);
+function getRandomY(type) {
+  if (type == "coin") {
+    return MAX_Y + Math.random() * (320 - MAX_Y);
+  } else {
+    return MAX_Y + Math.random() * (380 - MAX_Y);
+  }
 }
 
 const level1 = new Level(
@@ -56,26 +65,26 @@ const level1 = new Level(
     ),
   ],
   [
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
-    new ThrowableObject(getRandomX(), getRandomY()),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
+    new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
   ],
   [
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
-    new Coin(getRandomX(), getRandomY()),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
+    new Coin(getRandomX("coin"), getRandomY("coin")),
   ],
 );

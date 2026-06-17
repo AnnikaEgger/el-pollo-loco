@@ -8,7 +8,7 @@ class World {
   statusbarHealth = new StatusbarHealth("blue");
   statusbarBottles = new StatusbarBottles("blue");
   statusbarCoins = new StatusbarCoins("blue");
-  availableBottles = 0;
+  availableBottles = 10;
   availableCoins = 0;
 
   constructor(canvas, keyboard) {
@@ -45,7 +45,7 @@ class World {
   checkIfBottleCollected() {
     this.level.throwableObjects.forEach((to) => {
       if (this.character.isColliding(to)) {
-        if (this.availableCoins > 0) {
+        if (this.availableCoins >= 2) {
           this.collectBottle(to);
         } else {
           to.errorSound.play();
@@ -59,7 +59,7 @@ class World {
     if (this.availableBottles < 10) this.availableBottles++;
     this.updateBottlesStatusbar();
 
-    this.availableCoins--;
+    this.availableCoins -= 2;
     this.updateCoinsStatusbar();
 
     const index = this.level.throwableObjects.indexOf(to);
@@ -77,8 +77,10 @@ class World {
 
   collectCoin(coin) {
     coin.collectingSound.play();
-    if (this.availableCoins < 20) this.availableCoins++;
+    this.availableCoins += coin.coinValue;
+    if (this.availableCoins > 20) this.availableCoins = 20;
     this.updateCoinsStatusbar();
+    console.log(this.availableCoins);
 
     const index = this.level.coins.indexOf(coin);
     if (index !== -1) {
@@ -89,9 +91,21 @@ class World {
   checkThrowObjects() {
     if (this.keyboard.D) {
       if (this.availableBottles > 0) {
+        let x;
+        let y;
+        if (this.character.otherDirection) {
+          x = this.character.x;
+          y = this.character.y + 100;
+        } else {
+          x = this.character.x + 100;
+          y = this.character.y + 100;
+        }
+
         let bottle = new ThrowableObject(
-          this.character.x + 100,
-          this.character.y + 100,
+          x,
+          y,
+          this.character.otherDirection,
+          "throw",
         );
         this.level.throwableObjects.push(bottle);
         bottle.throw();
@@ -106,11 +120,11 @@ class World {
   }
 
   updateBottlesStatusbar() {
-    this.statusbarBottles.setPercentage(this.availableBottles * 10);
+    this.statusbarBottles.setPercentage(this.availableBottles * (100 / 10));
   }
 
   updateCoinsStatusbar() {
-    this.statusbarCoins.setPercentage(this.availableCoins * 10);
+    this.statusbarCoins.setPercentage(this.availableCoins * (100 / 20));
   }
 
   draw() {

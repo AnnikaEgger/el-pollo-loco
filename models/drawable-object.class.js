@@ -57,4 +57,8 @@ class DrawableObject {
       this.imageCache[path] = img;
     });
   }
+
+  getRandomIndex(array) {
+    return Math.floor(Math.random() * array.length);
+  }
 }
