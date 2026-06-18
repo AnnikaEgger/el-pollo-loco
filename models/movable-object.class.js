@@ -8,6 +8,22 @@ class MovableObject extends DrawableObject {
   animationTicks = 0;
   lastImages;
 
+  intervalIds = [];
+
+  //   setStoppableInterval(fn, time) {
+  //     let id = setInterval(fn, time);
+  //     this.intervalIds.push(id);
+  //   }
+
+  //   stopGame() {
+  //     this.intervalIds.forEach(clearInterval);
+  //   }
+
+  //   /* Alternative (quick and dirty), um alle Intervalle zu beenden. */
+  // clearAllIntervals() {
+  //     for (let i = 1; i < 9999; i++) window.clearInterval(i);
+  //   }
+
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {

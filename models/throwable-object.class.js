@@ -58,10 +58,10 @@ class ThrowableObject extends MovableObject {
       this.loadImage(this.IMAGES_ON_GROUND[index]);
     } else if (state == "throw") {
       this.offset = {
-        left: 25,
-        right: 15,
-        top: 8,
-        bottom: 8,
+        left: 18,
+        right: 18,
+        top: 15,
+        bottom: 15,
       };
 
       this.loadImage(this.DEFAULT_IMG);

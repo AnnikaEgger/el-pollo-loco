@@ -11,6 +11,8 @@ class World {
   availableBottles = 10;
   availableCoins = 0;
 
+  cluckingSound = new Audio("../audio/chicken/clucking.mp3");
+
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -30,14 +32,27 @@ class World {
       this.checkThrowObjects();
       this.checkIfBottleCollected();
       this.checkIfCoinCollected();
-    }, 200);
+      if (this.checkIfChickensExist()) this.cluckingSound.play();
+      else this.cluckingSound.pause();
+    }, 100);
+  }
+
+  checkIfChickensExist() {
+    return (
+      this.level.enemies?.some((enemy) => enemy instanceof Chicken) ?? false
+    );
   }
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.statusbarHealth.setPercentage(this.character.energy);
+        if (this.character.isAboveGround() && !(enemy instanceof Endboss)) {
+          console.log("chicken is dead");
+          enemy.killChicken();
+        } else if (!this.character.isAboveGround() && enemy.killed == false) {
+          this.character.hit();
+          this.statusbarHealth.setPercentage(this.character.energy);
+        }
       }
     });
   }
@@ -80,7 +95,6 @@ class World {
     this.availableCoins += coin.coinValue;
     if (this.availableCoins > 20) this.availableCoins = 20;
     this.updateCoinsStatusbar();
-    console.log(this.availableCoins);
 
     const index = this.level.coins.indexOf(coin);
     if (index !== -1) {
@@ -109,10 +123,9 @@ class World {
         );
         this.level.throwableObjects.push(bottle);
         bottle.throw();
-        if (this.availableBottles > 0) {
-          this.availableBottles--;
-          this.updateBottlesStatusbar();
-        }
+
+        this.availableBottles--;
+        this.updateBottlesStatusbar();
       } else {
         this.character.errorSound.play();
       }
@@ -156,9 +169,7 @@ class World {
   }
 
   addObjectsToMap(objects) {
-    objects.forEach((obj) => {
-      this.addToMap(obj);
-    });
+    objects.forEach((obj) => this.addToMap(obj));
   }
 
   addToMap(movableObj) {
@@ -167,7 +178,7 @@ class World {
     }
 
     movableObj.draw(this.ctx);
-    movableObj.drawFrame(this.ctx);
+    // movableObj.drawFrame(this.ctx);
     movableObj.drawOffsetFrame(this.ctx);
 
     if (movableObj.otherDirection) {

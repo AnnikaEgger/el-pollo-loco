@@ -18,7 +18,18 @@ function getRandomY(type) {
 }
 
 const level1 = new Level(
-  [new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken()],
+  [
+    new ChickenNormal(),
+    new ChickenNormal(),
+    new ChickenNormal(),
+    new ChickenNormal(),
+    new ChickenNormal(),
+    new ChickenSmall(),
+    new ChickenSmall(),
+    new ChickenSmall(),
+    new ChickenSmall(),
+    new ChickenSmall(),
+  ],
   [new Cloud()],
   [
     new BackgroundObject("img/5_background/layers/air.png", -720),
