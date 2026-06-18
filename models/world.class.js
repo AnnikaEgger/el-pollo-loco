@@ -13,6 +13,7 @@ class World {
   availableCoins = 0;
 
   bgMusic = new Audio("../audio/background-music.mp3");
+  bgMusicEndboss = new Audio("../audio/endboss/background-music.mp3");
   cluckingSound = new Audio("../audio/chicken/clucking.mp3");
 
   constructor(canvas, keyboard) {

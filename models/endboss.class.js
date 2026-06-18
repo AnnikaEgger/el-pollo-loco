@@ -3,8 +3,8 @@ class Endboss extends MovableObject {
   width = 250;
   y = 60;
 
-  hurtingSound = new Audio("../audio/character/hurting.mp3");
-  dyingSound = new Audio("../audio/character/dying.mp3");
+  hurtingSound = new Audio("../audio/endboss/hurting.wav");
+  dyingSound = new Audio("../audio/endboss/dying.mp3");
 
   IMAGES_WALKING = [
     "../img/4_enemie_boss_chicken/1_walk/G1.png",
