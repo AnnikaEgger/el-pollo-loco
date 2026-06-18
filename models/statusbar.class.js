@@ -14,7 +14,7 @@ class Statusbar extends DrawableObject {
     this.IMAGES = images;
     this.loadImages(this.IMAGES);
 
-    if (type == "health") {
+    if (type == "health" || type == "endboss") {
       this.setPercentage(100);
     } else {
       this.setPercentage(0);

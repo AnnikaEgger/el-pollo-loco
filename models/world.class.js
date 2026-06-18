@@ -5,12 +5,14 @@ class World {
   ctx;
   keyboard;
   cameraX = 0;
-  statusbarHealth = new StatusbarHealth("blue");
-  statusbarBottles = new StatusbarBottles("blue");
-  statusbarCoins = new StatusbarCoins("blue");
+  statusbarHealth = new StatusbarHealth();
+  statusbarBottles = new StatusbarBottles();
+  statusbarCoins = new StatusbarCoins();
+  statusbarEndboss = new StatusbarEndboss();
   availableBottles = 10;
   availableCoins = 0;
 
+  bgMusic = new Audio("../audio/background-music.mp3");
   cluckingSound = new Audio("../audio/chicken/clucking.mp3");
 
   constructor(canvas, keyboard) {
@@ -28,12 +30,15 @@ class World {
 
   run() {
     setInterval(() => {
+      this.bgMusic.volume = 0.1;
+      this.bgMusic.play();
       this.checkCollisions();
       this.checkThrowObjects();
       this.checkIfBottleCollected();
       this.checkIfCoinCollected();
       if (this.checkIfChickensExist()) this.cluckingSound.play();
       else this.cluckingSound.pause();
+      this.checkIfHitByBottle();
     }, 100);
   }
 
@@ -46,25 +51,79 @@ class World {
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        if (this.character.isAboveGround() && !(enemy instanceof Endboss)) {
-          console.log("chicken is dead");
+        if (
+          this.character.isAboveGround() &&
+          !(enemy instanceof Endboss) &&
+          !enemy.killed
+        ) {
           enemy.killChicken();
-        } else if (!this.character.isAboveGround() && enemy.killed == false) {
-          this.character.hit();
+        } else if (
+          !this.character.isAboveGround() &&
+          !enemy.killed &&
+          !this.character.isInvincible
+        ) {
+          this.character.hit(enemy.damage);
+          console.log(this.character.energy);
+          this.character.isInvincible = true;
+          setTimeout(() => {
+            this.character.isInvincible = false;
+          }, 1500);
+
           this.statusbarHealth.setPercentage(this.character.energy);
         }
       }
     });
   }
 
+  checkIfHitByBottle() {
+    this.level.throwableObjects.forEach((bottle) => {
+      if (bottle.state == "throw") {
+        this.level.enemies.forEach((enemy) => {
+          if (bottle.isColliding(enemy) && !enemy.killed) {
+            this.letBottleSplash(bottle);
+            if (enemy instanceof Endboss) {
+              enemy.hit(bottle.damage);
+              this.statusbarEndboss.setPercentage(enemy.energy);
+              console.log(enemy.energy);
+              enemy.isInvincible = true;
+              setTimeout(() => {
+                enemy.isInvincible = false;
+              }, 1000);
+            } else {
+              enemy.killChicken();
+            }
+            return;
+          }
+        });
+        if (!bottle.isAboveGround()) {
+          this.letBottleSplash(bottle);
+        }
+      }
+    });
+  }
+
+  letBottleSplash(bottle) {
+    bottle.shatteringSound.play();
+    bottle.playSplashAnimation();
+    let animationIsFinished = bottle.splashFinished;
+    if (animationIsFinished) {
+      const index = this.level.throwableObjects.indexOf(bottle);
+
+      if (index > -1) {
+        this.level.throwableObjects.splice(index, 1);
+      }
+    }
+  }
+
   checkIfBottleCollected() {
     this.level.throwableObjects.forEach((to) => {
-      if (this.character.isColliding(to)) {
+      if (this.character.isColliding(to) && to.state == "on ground") {
         if (this.availableCoins >= 2) {
           this.collectBottle(to);
-        } else {
-          to.errorSound.play();
         }
+        // else {
+        //   to.errorSound.play();
+        // }
       }
     });
   }
@@ -152,6 +211,7 @@ class World {
     this.addToMap(this.statusbarHealth);
     this.addToMap(this.statusbarBottles);
     this.addToMap(this.statusbarCoins);
+    this.addToMap(this.statusbarEndboss);
 
     this.ctx.translate(this.cameraX, 0);
 
@@ -179,7 +239,7 @@ class World {
 
     movableObj.draw(this.ctx);
     // movableObj.drawFrame(this.ctx);
-    movableObj.drawOffsetFrame(this.ctx);
+    // movableObj.drawOffsetFrame(this.ctx);
 
     if (movableObj.otherDirection) {
       this.flipImageBack(movableObj);

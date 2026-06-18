@@ -4,6 +4,11 @@ class ThrowableObject extends MovableObject {
 
   width = 60;
   height = 50;
+  state;
+  throwInt;
+  splashInt;
+  splashFinished = false;
+  damage = 10;
 
   otherDirection;
 
@@ -32,12 +37,14 @@ class ThrowableObject extends MovableObject {
 
   throwingSound = new Audio("../audio/bottle/throwing.mp3");
   collectingSound = new Audio("../audio/bottle/collecting.mp3");
+  shatteringSound = new Audio("../audio/bottle/shattering.mp3");
   hittingSound;
 
   constructor(x, y, otherDirection, state) {
     super();
+    this.state = state;
 
-    if (state == "on ground") {
+    if (this.state == "on ground") {
       let index = this.getRandomIndex(this.IMAGES_ON_GROUND);
 
       if (index == 0) {
@@ -56,7 +63,7 @@ class ThrowableObject extends MovableObject {
         };
       }
       this.loadImage(this.IMAGES_ON_GROUND[index]);
-    } else if (state == "throw") {
+    } else if (this.state == "throw") {
       this.offset = {
         left: 18,
         right: 18,
@@ -75,9 +82,9 @@ class ThrowableObject extends MovableObject {
   }
 
   throw() {
-    this.speedY = 30;
+    this.speedY = 25;
     this.applyGravity();
-    setInterval(() => {
+    this.throwInt = setInterval(() => {
       if (this.otherDirection) {
         this.x -= this.speedX;
       } else {
@@ -90,4 +97,18 @@ class ThrowableObject extends MovableObject {
 
     this.throwingSound.play();
   }
+
+  playSplashAnimation() {
+    clearInterval(this.throwInt);
+    this.splashInt = setInterval(() => {
+      this.animationTicks++;
+      let animationIsFinished = this.playAnimation(this.IMAGES_SPLASH, 0.5, 25);
+      if (animationIsFinished) {
+        this.splashFinished = true;
+        clearInterval(this.splashInt);
+      }
+    }, 25);
+  }
+
+  bottleHitsGround() {}
 }

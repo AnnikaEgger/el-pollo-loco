@@ -3,6 +3,9 @@ class Endboss extends MovableObject {
   width = 250;
   y = 60;
 
+  hurtingSound = new Audio("../audio/character/hurting.mp3");
+  dyingSound = new Audio("../audio/character/dying.mp3");
+
   IMAGES_WALKING = [
     "../img/4_enemie_boss_chicken/1_walk/G1.png",
     "../img/4_enemie_boss_chicken/1_walk/G2.png",
@@ -21,17 +24,51 @@ class Endboss extends MovableObject {
     "../img/4_enemie_boss_chicken/2_alert/G12.png",
   ];
 
+  IMAGES_ATTACK = [
+    "../img/4_enemie_boss_chicken/3_attack/G13.png",
+    "../img/4_enemie_boss_chicken/3_attack/G14.png",
+    "../img/4_enemie_boss_chicken/3_attack/G15.png",
+    "../img/4_enemie_boss_chicken/3_attack/G16.png",
+    "../img/4_enemie_boss_chicken/3_attack/G17.png",
+    "../img/4_enemie_boss_chicken/3_attack/G18.png",
+    "../img/4_enemie_boss_chicken/3_attack/G19.png",
+    "../img/4_enemie_boss_chicken/3_attack/G20.png",
+  ];
+
+  IMAGES_HURT = [
+    "../img/4_enemie_boss_chicken/4_hurt/G21.png",
+    "../img/4_enemie_boss_chicken/4_hurt/G22.png",
+    "../img/4_enemie_boss_chicken/4_hurt/G23.png",
+  ];
+
+  IMAGES_DEAD = [
+    "../img/4_enemie_boss_chicken/5_dead/G24.png",
+    "../img/4_enemie_boss_chicken/5_dead/G25.png",
+    "../img/4_enemie_boss_chicken/5_dead/G26.png",
+  ];
+
   constructor() {
-    super().loadImage(this.IMAGES_ALERT[0]);
+    super();
+    this.loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
-    this.x = 720 * 3;
+    this.loadImages(this.IMAGES_WALKING);
+    this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_DEAD);
+
+    this.x = 720 * 4;
     this.animate();
   }
 
   animate() {
-    setInterval(() => {
+    const animationInterval = setInterval(() => {
       this.animationTicks++;
-      this.playAnimation(this.IMAGES_ALERT, 1, 300);
-    }, 300);
+
+      if (this.isDead()) {
+        this.playDeathAnimationAndSound(this.IMAGES_DEAD, animationInterval);
+      } else if (this.isHurt()) {
+        this.playHurtAnimationAndSound(this.IMAGES_HURT);
+      }
+    }, 50);
   }
 }

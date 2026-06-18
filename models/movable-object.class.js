@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
   acceleration = 2.5;
   animationTicks = 0;
   lastImages;
+  isInvincible = false;
 
   intervalIds = [];
 
@@ -35,7 +36,7 @@ class MovableObject extends DrawableObject {
 
   isAboveGround() {
     if (this instanceof ThrowableObject) {
-      return true;
+      return this.y < 370;
     } else {
       return this.y < 150;
     }
@@ -54,11 +55,14 @@ class MovableObject extends DrawableObject {
       this.img = this.imageCache[path];
 
       if (this.currentImg >= images.length - 1) {
+        if (this instanceof ThrowableObject) return true;
         this.currentImg = 0;
       } else {
         this.currentImg++;
       }
     }
+
+    if (this instanceof ThrowableObject) return false;
   }
 
   moveLeft() {
@@ -78,8 +82,9 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  hit() {
-    this.energy -= 5;
+  hit(damage) {
+    if (this.isInvincible) return;
+    this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0;
     } else {
@@ -102,6 +107,20 @@ class MovableObject extends DrawableObject {
       return false;
     } else {
       return true;
+    }
+  }
+
+  playHurtAnimationAndSound(imgs) {
+    this.playAnimation(imgs, 1);
+    this.hurtingSound.play();
+  }
+
+  playDeathAnimationAndSound(imgs, animationInterval) {
+    this.playAnimation(imgs, 2);
+    this.dyingSound.play();
+    if (this.currentImg == imgs.length - 1) {
+      this.playAnimation(imgs, 2);
+      clearInterval(animationInterval);
     }
   }
 }

@@ -2,6 +2,9 @@ class Chicken extends MovableObject {
   killed = false;
   animationInt;
   moveLeftInt;
+  damage;
+
+  dyingSound = new Audio("../audio/chicken/dying.mp3");
 
   constructor(imgs, y, height, width, offset, speed) {
     super();
@@ -30,7 +33,7 @@ class Chicken extends MovableObject {
   killChicken() {
     clearInterval(this.moveLeftInt);
     clearInterval(this.animationInt);
-
     this.killed = true;
+    this.dyingSound.play();
   }
 }

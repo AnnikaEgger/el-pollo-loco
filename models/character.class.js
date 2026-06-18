@@ -128,13 +128,13 @@ class Character extends MovableObject {
       this.animationTicks++;
 
       if (this.isDead()) {
-        this.playDeathAnimationAndSound(animationInterval);
+        this.playDeathAnimationAndSound(this.IMAGES_DEAD, animationInterval);
       } else if (this.checkIdleDuration() >= 15) {
         this.playSleepAnimationAndSound();
       } else if (this.checkIdleDuration() > 0) {
         this.playAnimation(this.IMAGES_IDLE, 2);
       } else if (this.isHurt()) {
-        this.playHurtAnimationAndSound();
+        this.playHurtAnimationAndSound(this.IMAGES_HURT);
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING, 1);
       } else {
@@ -147,23 +147,9 @@ class Character extends MovableObject {
     }, 50);
   }
 
-  playDeathAnimationAndSound(animationInterval) {
-    this.playAnimation(this.IMAGES_DEAD, 2);
-    this.dyingSound.play();
-    if (this.currentImg == this.IMAGES_DEAD.length - 1) {
-      this.playAnimation(this.IMAGES_DEAD, 2);
-      clearInterval(animationInterval);
-    }
-  }
-
   playSleepAnimationAndSound() {
     this.playAnimation(this.IMAGES_SLEEPING, 2);
     this.snoringSound.play();
-  }
-
-  playHurtAnimationAndSound() {
-    this.playAnimation(this.IMAGES_HURT, 1);
-    this.hurtingSound.play();
   }
 
   playWalkingAnimationAndSound() {
