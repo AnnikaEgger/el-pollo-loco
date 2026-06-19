@@ -215,4 +215,8 @@ class Character extends MovableObject {
       !this.world.keyboard.D
     );
   }
+
+  isNearEndboss() {
+    return this.x >= 720 * 3 + 200;
+  }
 }

@@ -38,9 +38,8 @@ class ThrowableObject extends MovableObject {
   throwingSound = new Audio("../audio/bottle/throwing.mp3");
   collectingSound = new Audio("../audio/bottle/collecting.mp3");
   shatteringSound = new Audio("../audio/bottle/shattering.mp3");
-  hittingSound;
 
-  constructor(x, y, otherDirection, state) {
+  constructor(x, y, otherDirection, state, lastThrow) {
     super();
     this.state = state;
 
@@ -109,6 +108,4 @@ class ThrowableObject extends MovableObject {
       }
     }, 25);
   }
-
-  bottleHitsGround() {}
 }

@@ -1,6 +1,7 @@
 class World {
   character = new Character();
   level = level1;
+  endboss = new Endboss(this);
   canvas;
   ctx;
   keyboard;
@@ -11,6 +12,7 @@ class World {
   statusbarEndboss = new StatusbarEndboss();
   availableBottles = 10;
   availableCoins = 0;
+  allowNewBottle = true;
 
   bgMusic = new Audio("../audio/background-music.mp3");
   bgMusicEndboss = new Audio("../audio/endboss/background-music.mp3");
@@ -20,6 +22,8 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.level.enemies.push(this.endboss);
+
     this.draw();
     this.setWorld();
     this.run();
@@ -32,13 +36,19 @@ class World {
   run() {
     setInterval(() => {
       this.bgMusic.volume = 0.1;
-      this.bgMusic.play();
+      if (!this.endboss.hadFirstContact) {
+        this.bgMusic.play();
+        if (this.checkIfChickensExist()) this.cluckingSound.play();
+        else this.cluckingSound.pause();
+      } else {
+        this.bgMusic.pause();
+        this.cluckingSound.pause();
+      }
       this.checkCollisions();
       this.checkThrowObjects();
       this.checkIfBottleCollected();
       this.checkIfCoinCollected();
-      if (this.checkIfChickensExist()) this.cluckingSound.play();
-      else this.cluckingSound.pause();
+
       this.checkIfHitByBottle();
     }, 100);
   }
@@ -142,6 +152,7 @@ class World {
       this.level.throwableObjects.splice(index, 1);
     }
   }
+
   checkIfCoinCollected() {
     this.level.coins.forEach((coin) => {
       if (this.character.isColliding(coin)) {
@@ -174,22 +185,31 @@ class World {
           x = this.character.x + 100;
           y = this.character.y + 100;
         }
-
-        let bottle = new ThrowableObject(
-          x,
-          y,
-          this.character.otherDirection,
-          "throw",
-        );
-        this.level.throwableObjects.push(bottle);
-        bottle.throw();
-
-        this.availableBottles--;
-        this.updateBottlesStatusbar();
+        this.createNewBottle(x, y);
       } else {
         this.character.errorSound.play();
       }
     }
+  }
+
+  createNewBottle(x, y) {
+    if (!this.allowNewBottle) return;
+
+    let bottle = new ThrowableObject(
+      x,
+      y,
+      this.character.otherDirection,
+      "throw",
+    );
+    this.level.throwableObjects.push(bottle);
+
+    bottle.throw();
+
+    this.availableBottles--;
+    this.updateBottlesStatusbar();
+
+    this.allowNewBottle = false;
+    setTimeout(() => (this.allowNewBottle = true), 500);
   }
 
   updateBottlesStatusbar() {
@@ -212,7 +232,7 @@ class World {
     this.addToMap(this.statusbarHealth);
     this.addToMap(this.statusbarBottles);
     this.addToMap(this.statusbarCoins);
-    this.addToMap(this.statusbarEndboss);
+    if (this.endboss.hadFirstContact) this.addToMap(this.statusbarEndboss);
 
     this.ctx.translate(this.cameraX, 0);
 
