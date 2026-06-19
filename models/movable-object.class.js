@@ -8,7 +8,6 @@ class MovableObject extends DrawableObject {
   animationTicks = 0;
   lastImages;
   isInvincible = false;
-
   intervalIds = [];
 
   //   setStoppableInterval(fn, time) {
@@ -37,32 +36,47 @@ class MovableObject extends DrawableObject {
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return this.y < 370;
-    } else {
+    } else if (this instanceof Character) {
       return this.y < 150;
+    } else if (this instanceof Endboss) {
+      return this.y < 60;
     }
   }
 
   playAnimation(images, speed = 1, interval = 50) {
-    speed = speed * (100 / interval);
+    this.resetCurrentImgWhenNewAnimation(images);
 
+    if (this.nextFrameIsReady(speed, interval)) {
+      const animationHasFinished = this.setNextAnimationFrame(images);
+      if (animationHasFinished && this instanceof ThrowableObject) {
+        return true;
+      }
+    }
+    if (this instanceof ThrowableObject) return false;
+  }
+
+  resetCurrentImgWhenNewAnimation(images) {
     if (this.lastImages !== images) {
       this.currentImg = 0;
       this.lastImages = images;
     }
+  }
 
-    if (this.animationTicks % speed === 0) {
-      let path = images[this.currentImg];
-      this.img = this.imageCache[path];
+  nextFrameIsReady(speed, interval) {
+    const calcSpeed = speed * (100 / interval);
+    return this.animationTicks % calcSpeed === 0;
+  }
 
-      if (this.currentImg >= images.length - 1) {
-        if (this instanceof ThrowableObject) return true;
-        this.currentImg = 0;
-      } else {
-        this.currentImg++;
-      }
+  setNextAnimationFrame(images) {
+    let path = images[this.currentImg];
+    this.img = this.imageCache[path];
+
+    if (this.currentImg >= images.length - 1) {
+      this.currentImg = 0;
+      return true;
+    } else {
+      this.currentImg++;
     }
-
-    if (this instanceof ThrowableObject) return false;
   }
 
   moveLeft() {

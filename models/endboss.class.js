@@ -2,8 +2,20 @@ class Endboss extends MovableObject {
   height = 400;
   width = 250;
   y = 60;
+  speedY;
   hadFirstContact = false;
   world;
+  speed = 5;
+  movementInterval;
+  animationIndex;
+  damage = 15;
+
+  offset = {
+    left: 30,
+    right: 35,
+    top: 90,
+    bottom: 30,
+  };
 
   hurtingSound = new Audio("../audio/endboss/hurting.wav");
   dyingSound = new Audio("../audio/endboss/dying.mp3");
@@ -51,50 +63,74 @@ class Endboss extends MovableObject {
     "../img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
-  constructor(world) {
+  constructor() {
     super();
-    this.world = world;
+    this.loadAllImages();
+    this.x = 720 * 4;
+    this.applyGravity();
+    this.animate();
+  }
+
+  loadAllImages() {
     this.loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-
-    this.x = 720 * 4;
-    this.animate();
   }
 
   animate() {
-    let i = 0;
+    this.animationIndex = 0;
     const animationInterval = setInterval(() => {
       this.animationTicks++;
 
-      if (i <= this.IMAGES_ALERT.length) {
+      if (this.animationIndex <= this.IMAGES_ALERT.length) {
         this.playAlertAnimationAndSound();
-      } else {
-        if (this.isDead()) {
-          this.playDeathAnimationAndSound(this.IMAGES_DEAD, animationInterval);
-          this.world.bgMusicEndboss.pause();
-          this.killed = true;
-        } else if (this.isHurt()) {
-          this.playHurtAnimationAndSound(this.IMAGES_HURT);
-        }
-      }
+      } else this.handleAwakenedEndboss();
+      if (this.characterEncountersEndboss()) this.triggerEndbossAwakening();
 
-      if (this.world.character.isNearEndboss() && !this.hadFirstContact) {
-        this.hadFirstContact = true;
-        this.risingSound.play();
-
-        this.risingSound.onended = () => {
-          i = 0;
-          this.alertSound.play();
-        };
-        this.alertSound.onended = () => this.world.bgMusicEndboss.play();
-      }
-
-      i += 1 / 2;
+      this.animationIndex += 1 / 2;
     }, 50);
+  }
+
+  handleAwakenedEndboss() {
+    if (this.isDead()) this.handleEndbossDeath();
+    else if (this.isHurt()) this.playHurtAnimationAndSound(this.IMAGES_HURT);
+  }
+
+  characterEncountersEndboss() {
+    return this.world.character.isNearEndboss() && !this.hadFirstContact;
+  }
+
+  handleEndbossDeath() {
+    this.playDeathAnimationAndSound(this.IMAGES_DEAD, this.movementInterval);
+    this.world.bgMusicEndboss.pause();
+    this.killed = true;
+  }
+
+  triggerEndbossAwakening() {
+    this.hadFirstContact = true;
+    this.risingSound.play();
+
+    this.risingSound.onended = () => {
+      this.alertSound.play();
+      this.animationIndex = 0;
+    };
+
+    this.alertSound.onended = () => {
+      this.world.bgMusicEndboss.play();
+      this.startEndbossMovement();
+    };
+  }
+
+  startEndbossMovement() {
+    if (this.movementInterval) clearInterval(this.movementInterval);
+
+    this.movementInterval = setInterval(() => {
+      this.animationTicks++;
+      this.moveEndboss();
+    }, 100);
   }
 
   playAlertAnimationAndSound() {
@@ -104,5 +140,56 @@ class Endboss extends MovableObject {
   killChicken() {
     super.killChicken();
     this.world.bgMusicEndboss.pause();
+  }
+
+  moveEndboss() {
+    if (this.characterIsNear()) this.attackCharacter();
+    else this.playAnimation(this.IMAGES_WALKING, 1, 100);
+    if (this.characterIsLeft()) this.moveLeft();
+    else if (this.characterIsRight()) this.moveRight();
+  }
+
+  moveLeft() {
+    super.moveLeft();
+    this.otherDirection = false;
+  }
+
+  moveRight() {
+    super.moveRight();
+    this.otherDirection = true;
+  }
+
+  characterIsLeft() {
+    return this.world.character.x < this.x;
+  }
+
+  characterIsRight() {
+    return this.world.character.x > this.x;
+  }
+
+  characterIsNear() {
+    return (
+      (this.characterIsLeft() &&
+        this.x -
+          (this.world.character.x +
+            (this.world.character.width - this.world.character.offset.right)) <=
+          75) ||
+      (this.characterIsRight() &&
+        this.world.character.x - (this.x + (this.width - this.offset.right)) <=
+          75)
+    );
+  }
+
+  attackCharacter() {
+    console.log("attack!");
+    this.speed = 10;
+    this.jump();
+  }
+
+  jump() {
+    if (this.isAboveGround()) return;
+    this.speedY = 50;
+    // setInterval(() => this.playAnimation(this.IMAGES_ATTACK, 1), 50);
+    this.playAnimation(this.IMAGES_ATTACK, 0.5, 100);
   }
 }

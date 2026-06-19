@@ -13,26 +13,37 @@ class Coin extends DrawableObject {
     let index = this.getRandomIndex(this.COINS);
 
     if (index == 0) {
-      this.offsetValue = 45;
-      this.width = 120;
-      this.height = 120;
-      this.coinValue = 1;
+      this.getSmallCoin();
     } else {
-      this.offsetValue = 52;
-      this.width = 150;
-      this.height = 150;
-      this.coinValue = 2;
+      this.getBigCoin();
     }
+    this.getOffset();
 
+    this.loadImage(this.COINS[index]);
+    this.x = x;
+    this.y = y;
+  }
+
+  getSmallCoin() {
+    this.offsetValue = 45;
+    this.width = 120;
+    this.height = 120;
+    this.coinValue = 1;
+  }
+
+  getBigCoin() {
+    this.offsetValue = 52;
+    this.width = 150;
+    this.height = 150;
+    this.coinValue = 2;
+  }
+
+  getOffset() {
     this.offset = {
       left: this.offsetValue,
       right: this.offsetValue,
       top: this.offsetValue,
       bottom: this.offsetValue,
     };
-
-    this.loadImage(this.COINS[index]);
-    this.x = x;
-    this.y = y;
   }
 }

@@ -1,7 +1,5 @@
 class ThrowableObject extends MovableObject {
-  //   constant x speed, no acceleration
   speedX = 10;
-
   width = 60;
   height = 50;
   state;
@@ -9,8 +7,7 @@ class ThrowableObject extends MovableObject {
   splashInt;
   splashFinished = false;
   damage = 10;
-
-  otherDirection;
+  otherDirection = false;
 
   DEFAULT_IMG = "../img/6_salsa_bottle/salsa_bottle.png";
 
@@ -39,65 +36,87 @@ class ThrowableObject extends MovableObject {
   collectingSound = new Audio("../audio/bottle/collecting.mp3");
   shatteringSound = new Audio("../audio/bottle/shattering.mp3");
 
-  constructor(x, y, otherDirection, state, lastThrow) {
+  constructor(x, y, otherDirection, state) {
     super();
     this.state = state;
-
-    if (this.state == "on ground") {
-      let index = this.getRandomIndex(this.IMAGES_ON_GROUND);
-
-      if (index == 0) {
-        this.offset = {
-          left: 25,
-          right: 15,
-          top: 8,
-          bottom: 8,
-        };
-      } else {
-        this.offset = {
-          left: 20,
-          right: 20,
-          top: 8,
-          bottom: 8,
-        };
-      }
-      this.loadImage(this.IMAGES_ON_GROUND[index]);
-    } else if (this.state == "throw") {
-      this.offset = {
-        left: 18,
-        right: 18,
-        top: 15,
-        bottom: 15,
-      };
-
-      this.loadImage(this.DEFAULT_IMG);
-      this.loadImages(this.IMAGES_ROTATING);
-      this.loadImages(this.IMAGES_SPLASH);
-    }
-
     this.x = x;
     this.y = y;
     this.otherDirection = otherDirection;
+
+    if (this.state == "on ground") {
+      this.createBottleOnGround();
+    } else if (this.state == "throw") {
+      this.createBottleThrow();
+    }
+  }
+
+  createBottleOnGround() {
+    let index = this.getRandomIndex(this.IMAGES_ON_GROUND);
+
+    if (index == 0) {
+      this.getOffsetForLeftTilt();
+    } else {
+      this.getOffsetForRightTilt();
+    }
+
+    this.loadImage(this.IMAGES_ON_GROUND[index]);
+  }
+
+  createBottleThrow() {
+    this.getOffsetForThrow();
+    this.loadImage(this.DEFAULT_IMG);
+    this.loadImages(this.IMAGES_ROTATING);
+    this.loadImages(this.IMAGES_SPLASH);
+  }
+
+  getOffsetForLeftTilt() {
+    this.offset = {
+      left: 25,
+      right: 15,
+      top: 8,
+      bottom: 8,
+    };
+  }
+
+  getOffsetForRightTilt() {
+    this.offset = {
+      left: 20,
+      right: 20,
+      top: 8,
+      bottom: 8,
+    };
+  }
+
+  getOffsetForThrow() {
+    this.offset = {
+      left: 18,
+      right: 18,
+      top: 15,
+      bottom: 15,
+    };
   }
 
   throw() {
     this.speedY = 25;
     this.applyGravity();
     this.throwInt = setInterval(() => {
-      if (this.otherDirection) {
-        this.x -= this.speedX;
-      } else {
-        this.x += this.speedX;
-      }
-
+      this.throwIntoRightDirection();
       this.animationTicks++;
       this.playAnimation(this.IMAGES_ROTATING, 0.5, 25);
     }, 25);
-
     this.throwingSound.play();
   }
 
+  throwIntoRightDirection() {
+    if (this.otherDirection) {
+      this.x -= this.speedX;
+    } else {
+      this.x += this.speedX;
+    }
+  }
+
   playSplashAnimation() {
+    this.shatteringSound.play();
     clearInterval(this.throwInt);
     this.splashInt = setInterval(() => {
       this.animationTicks++;
