@@ -24,6 +24,12 @@ class MovableObject extends DrawableObject {
   //     for (let i = 1; i < 9999; i++) window.clearInterval(i);
   //   }
 
+  constructor() {
+    super();
+    const parentAudios = super.initAudios();
+    this.AUDIOS = [...this.AUDIOS];
+  }
+
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {

@@ -19,6 +19,8 @@ class Coin extends DrawableObject {
     }
     this.getOffset();
 
+    this.AUDIOS = [...this.AUDIOS, this.collectingSound];
+
     this.loadImage(this.COINS[index]);
     this.x = x;
     this.y = y;

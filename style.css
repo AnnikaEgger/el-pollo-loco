@@ -4,6 +4,37 @@ body {
   align-items: center;
 }
 
+button {
+  appearance: none;
+  border: unset;
+  cursor: pointer;
+  background-color: unset;
+}
+
+button:hover {
+  background-color: rgb(212, 211, 211);
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 canvas {
   background-color: black;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mute-button {
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.mute-button img {
+  width: 48px;
+  height: auto;
 }

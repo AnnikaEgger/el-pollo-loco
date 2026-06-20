@@ -10,10 +10,18 @@ class DrawableObject {
 
   errorSound = new Audio("../audio/bottle/error.mp3");
 
+  AUDIOS;
+
   constructor() {
     if (!this.offset) {
       this.offset = { top: 0, bottom: 0, left: 0, right: 0 };
     }
+
+    this.AUDIOS = [this.errorSound];
+  }
+
+  initAudios() {
+    return this.AUDIOS;
   }
 
   draw(ctx) {

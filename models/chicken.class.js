@@ -17,6 +17,8 @@ class Chicken extends MovableObject {
     this.speed = speed;
     this.x = 500 + Math.random() * (720 * 3);
     this.animate(imgs);
+
+    this.AUDIOS = [...this.AUDIOS, this.dyingSound];
   }
 
   animate(arr) {

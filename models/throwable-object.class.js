@@ -43,6 +43,13 @@ class ThrowableObject extends MovableObject {
     this.y = y;
     this.otherDirection = otherDirection;
 
+    this.AUDIOS = [
+      ...this.AUDIOS,
+      this.throwingSound,
+      this.collectingSound,
+      this.shatteringSound,
+    ];
+
     if (this.state == "on ground") {
       this.createBottleOnGround();
     } else if (this.state == "throw") {

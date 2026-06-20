@@ -69,6 +69,14 @@ class Endboss extends MovableObject {
     this.x = 720 * 4;
     this.applyGravity();
     this.animate();
+
+    this.AUDIOS = [
+      ...this.AUDIOS,
+      this.hurtingSound,
+      this.dyingSound,
+      this.alertSound,
+      this.risingSound,
+    ];
   }
 
   loadAllImages() {

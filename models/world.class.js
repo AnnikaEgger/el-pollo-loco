@@ -18,6 +18,8 @@ class World {
   bgMusicEndboss = new Audio("../audio/endboss/background-music.mp3");
   cluckingSound = new Audio("../audio/chicken/clucking.mp3");
 
+  AUDIOS = [this.bgMusic, this.bgMusicEndboss, this.cluckingSound];
+
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
