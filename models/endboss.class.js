@@ -1,21 +1,12 @@
 class Endboss extends MovableObject {
-  height = 400;
-  width = 250;
-  y = 60;
   speedY;
   hadFirstContact = false;
   world;
-  speed = 5;
+  speed = (5 / 720) * canvas.width;
   movementInterval;
   animationIndex;
   damage = 15;
-
-  offset = {
-    left: 30,
-    right: 35,
-    top: 90,
-    bottom: 30,
-  };
+  bottomY = (60 / 480) * canvas.height;
 
   hurtingSound = new Audio("../audio/endboss/hurting.wav");
   dyingSound = new Audio("../audio/endboss/dying.mp3");
@@ -66,7 +57,18 @@ class Endboss extends MovableObject {
   constructor() {
     super();
     this.loadAllImages();
-    this.x = 720 * 4;
+
+    this.height = (400 / 480) * canvas.height;
+    this.width = (250 / 720) * canvas.width;
+    this.y = (60 / 480) * canvas.height;
+    this.x = canvas.width * 4;
+
+    this.offset = {
+      left: (30 / 720) * canvas.width,
+      right: (35 / 720) * canvas.width,
+      top: (90 / 480) * canvas.height,
+      bottom: (30 / 480) * canvas.height,
+    };
     this.applyGravity();
     this.animate();
 
@@ -181,10 +183,10 @@ class Endboss extends MovableObject {
         this.x -
           (this.world.character.x +
             (this.world.character.width - this.world.character.offset.right)) <=
-          75) ||
+          (75 / 720) * canvas.width) ||
       (this.characterIsRight() &&
         this.world.character.x - (this.x + (this.width - this.offset.right)) <=
-          75)
+          (75 / 720) * canvas.width)
     );
   }
 
@@ -196,7 +198,7 @@ class Endboss extends MovableObject {
 
   jump() {
     if (this.isAboveGround()) return;
-    this.speedY = 50;
+    this.speedY = (50 / 480) * canvas.height;
     // setInterval(() => this.playAnimation(this.IMAGES_ATTACK, 1), 50);
     this.playAnimation(this.IMAGES_ATTACK, 0.5, 100);
   }

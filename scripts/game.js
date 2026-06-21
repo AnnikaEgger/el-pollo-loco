@@ -1,11 +1,18 @@
-let canvas;
 let world;
 let keyboard = new Keyboard();
+let isMuted = false;
 
 function init() {
-  canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard);
+  resetAudios();
+  updateGlobalVariables();
+  level = createLevel1();
+  world = new World(canvas, keyboard, level);
   pushAudiosIntoAudiosArr();
+}
+
+function updateGlobalVariables() {
+  MAX_Y = (65 / 480) * canvas.height;
+  BOTTLE_Y = (370 / 480) * canvas.height;
 }
 
 window.addEventListener("keydown", (event) => {
@@ -57,11 +64,57 @@ function pushAudiosIntoAudiosArr(audio) {
   allAudios.push(...world.AUDIOS);
 }
 
-let isMuted = false;
-function muteGame() {
+function toggleGameSound() {
   isMuted = !isMuted;
 
   allAudios.forEach((audio) => {
     audio.muted = isMuted;
   });
 }
+
+function resetAudios() {
+  // isMuted = false;
+  // toggleGameSound();
+  // toggleGameSound();
+}
+
+function openFullscreen(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  }
+}
+
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+}
+
+function toggleFullscreen() {
+  element = document.getElementById("fullscreen");
+  openFullscreen(element);
+}
+
+function resizeCanvas() {
+  if (document.fullscreenElement) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  } else {
+    canvas.width = 720;
+    canvas.height = 480;
+  }
+
+  init();
+}
+
+document.addEventListener("fullscreenchange", resizeCanvas);
+document.addEventListener("webkitfullscreenchange", resizeCanvas);
+document.addEventListener("msfullscreenchange", resizeCanvas);

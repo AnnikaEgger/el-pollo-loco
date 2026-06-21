@@ -9,17 +9,16 @@ class ChickenSmall extends Chicken {
         "../img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
         "../img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
       ],
-      370,
-      50,
-      70,
+      (370 / 480) * canvas.height,
+      (50 / 480) * canvas.height,
+      (70 / 720) * canvas.width,
       {
-        left: 9,
-        right: 7,
-        top: 5,
-        bottom: 6,
+        left: (9 / 720) * canvas.width,
+        right: (7 / 720) * canvas.width,
+        top: (5 / 480) * canvas.height,
+        bottom: (6 / 480) * canvas.height,
       },
-
-      0.25 + Math.random() * 0.5,
+      (0.25 + Math.random() * 0.5) * (canvas.width / 720),
     );
   }
 

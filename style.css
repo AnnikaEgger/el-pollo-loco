@@ -16,25 +16,62 @@ button:hover {
 }
 
 .content-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
+}
+
+.content-wrapper:fullscreen {
+  /* width: 100vw;
+  height: 100vh; */
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-wrapper:fullscreen canvas {
+  /* width: 100% !important;
+  height: 100% !important; */
+  /* object-fit: contain; */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.content-wrapper:-webkit-full-screen {
+  /* width: 100vw;
+  height: 100vh; */
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content-wrapper:-webkit-full-screen canvas {
+  /* width: 100% !important;
+  height: 100% !important; */
+  /* object-fit: contain; */
+  /* image-rendering: pixelated;
+  image-rendering: crisp-edges; */
 }
 
 canvas {
   background-color: black;
 }
 
-.button-wrapper {
+.btns-wrapper {
+  position: absolute;
+  bottom: 0px;
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
-.mute-button {
+.btns-wrapper button {
   border-radius: 50%;
   padding: 4px;
 }
 
-.mute-button img {
+.btns-wrapper button img {
   width: 48px;
   height: auto;
 }

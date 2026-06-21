@@ -1,6 +1,6 @@
 class World {
   character = new Character();
-  level = level1;
+  level;
   endboss = new Endboss();
   canvas;
   ctx;
@@ -20,9 +20,10 @@ class World {
 
   AUDIOS = [this.bgMusic, this.bgMusicEndboss, this.cluckingSound];
 
-  constructor(canvas, keyboard) {
+  constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
+    this.level = level;
     this.keyboard = keyboard;
     this.level.enemies.push(this.endboss);
 
@@ -197,10 +198,10 @@ class World {
     let y;
     if (this.character.otherDirection) {
       x = this.character.x;
-      y = this.character.y + 100;
+      y = this.character.y + (100 / 480) * canvas.height;
     } else {
-      x = this.character.x + 100;
-      y = this.character.y + 100;
+      x = this.character.x + (100 / 720) * canvas.width;
+      y = this.character.y + (100 / 480) * canvas.height;
     }
     this.createNewBottle(x, y);
   }

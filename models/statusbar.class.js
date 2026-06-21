@@ -1,6 +1,4 @@
 class Statusbar extends DrawableObject {
-  width = 200;
-  height = 60;
   x = 20;
   y = 0;
 
@@ -13,6 +11,9 @@ class Statusbar extends DrawableObject {
     super();
     this.IMAGES = images;
     this.loadImages(this.IMAGES);
+
+    this.width = (200 / 720) * canvas.width;
+    this.height = (60 / 480) * canvas.height;
 
     if (type == "health" || type == "endboss") {
       this.setPercentage(100);

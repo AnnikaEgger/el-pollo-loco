@@ -1,6 +1,4 @@
 class Coin extends DrawableObject {
-  width;
-  height;
   offsetValue;
   coinValue;
 
@@ -25,18 +23,17 @@ class Coin extends DrawableObject {
     this.x = x;
     this.y = y;
   }
-
   getSmallCoin() {
-    this.offsetValue = 45;
-    this.width = 120;
-    this.height = 120;
+    this.offsetValue = (45 / 720) * canvas.width;
+    this.width = (120 / 720) * canvas.width;
+    this.height = this.width;
     this.coinValue = 1;
   }
 
   getBigCoin() {
-    this.offsetValue = 52;
-    this.width = 150;
-    this.height = 150;
+    this.offsetValue = (52 / 720) * canvas.width;
+    this.width = (150 / 720) * canvas.width;
+    this.height = this.width;
     this.coinValue = 2;
   }
 

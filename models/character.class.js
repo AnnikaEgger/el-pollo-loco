@@ -1,20 +1,11 @@
 class Character extends MovableObject {
-  height = 280;
-  width = 140;
-  y = 150;
   imgSrc = "../img/2_character_pepe/1_idle/idle/I-1.png";
   world;
   speed = 15;
   idleStartTime;
   deadAnimationProgress = 0;
   animationInt;
-
-  offset = {
-    left: 35,
-    right: 40,
-    top: 120,
-    bottom: 15,
-  };
+  bottomY = (150 / 480) * canvas.height;
 
   walkingSound = new Audio("../audio/character/walking.wav");
   snoringSound = new Audio("../audio/character/snoring.wav");
@@ -93,6 +84,17 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
+
+    this.height = (280 / 480) * canvas.height;
+    this.width = (140 / 720) * canvas.width;
+    this.y = (150 / 480) * canvas.height;
+
+    this.offset = {
+      left: (35 / 720) * canvas.width,
+      right: (40 / 720) * canvas.width,
+      top: (120 / 480) * canvas.height,
+      bottom: (15 / 480) * canvas.height,
+    };
 
     this.AUDIOS = [
       ...this.AUDIOS,
@@ -174,11 +176,11 @@ class Character extends MovableObject {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX)
       this.moveRight();
     if (this.world.keyboard.SPACE && !this.isAboveGround()) this.jump();
-    this.world.cameraX = -this.x + 100;
+    this.world.cameraX = -this.x + (100 / 720) * canvas.width;
   }
 
   jump() {
-    this.speedY = 30;
+    this.speedY = (30 / 480) * canvas.height;
     this.jumpingSound.play();
   }
 
@@ -217,7 +219,7 @@ class Character extends MovableObject {
   }
 
   isNearEndboss() {
-    return this.x >= 720 * 3 + 200;
+    return this.x >= canvas.width * 3 + (200 / 720) * canvas.width;
   }
 
   moveLeft() {

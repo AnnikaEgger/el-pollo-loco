@@ -9,16 +9,16 @@ class ChickenNormal extends Chicken {
         "../img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
         "../img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
       ],
-      360,
-      60,
-      80,
+      (360 / 480) * canvas.height,
+      (60 / 480) * canvas.height,
+      (80 / 720) * canvas.width,
       {
-        left: 5,
-        right: 5,
-        top: 5,
-        bottom: 5,
+        left: (5 / 720) * canvas.width,
+        right: (5 / 720) * canvas.width,
+        top: (5 / 480) * canvas.height,
+        bottom: (5 / 480) * canvas.height,
       },
-      0.15 + Math.random() * 0.5,
+      (0.25 + Math.random() * 0.5) * (canvas.width / 720),
     );
   }
 

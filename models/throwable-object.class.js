@@ -1,13 +1,12 @@
 class ThrowableObject extends MovableObject {
-  speedX = 10;
-  width = 60;
-  height = 50;
+  speedX = (10 / 720) * canvas.width;
   state;
   throwInt;
   splashInt;
   splashFinished = false;
   damage = 10;
   otherDirection = false;
+  bottomY = (370 / 480) * canvas.height;
 
   DEFAULT_IMG = "../img/6_salsa_bottle/salsa_bottle.png";
 
@@ -42,6 +41,8 @@ class ThrowableObject extends MovableObject {
     this.x = x;
     this.y = y;
     this.otherDirection = otherDirection;
+    this.width = (60 / 720) * canvas.width;
+    this.height = (50 / 480) * canvas.height;
 
     this.AUDIOS = [
       ...this.AUDIOS,
@@ -78,33 +79,33 @@ class ThrowableObject extends MovableObject {
 
   getOffsetForLeftTilt() {
     this.offset = {
-      left: 25,
-      right: 15,
-      top: 8,
-      bottom: 8,
+      left: (25 / 720) * canvas.width,
+      right: (15 / 720) * canvas.width,
+      top: (8 / 480) * canvas.height,
+      bottom: (8 / 480) * canvas.height,
     };
   }
 
   getOffsetForRightTilt() {
     this.offset = {
-      left: 20,
-      right: 20,
-      top: 8,
-      bottom: 8,
+      left: (20 / 720) * canvas.width,
+      right: (20 / 720) * canvas.width,
+      top: (8 / 480) * canvas.height,
+      bottom: (8 / 480) * canvas.height,
     };
   }
 
   getOffsetForThrow() {
     this.offset = {
-      left: 18,
-      right: 18,
-      top: 15,
-      bottom: 15,
+      left: (18 / 720) * canvas.width,
+      right: (18 / 720) * canvas.width,
+      top: (15 / 480) * canvas.height,
+      bottom: (15 / 480) * canvas.height,
     };
   }
 
   throw() {
-    this.speedY = 25;
+    this.speedY = (25 / 480) * canvas.height;
     this.applyGravity();
     this.throwInt = setInterval(() => {
       this.throwIntoRightDirection();

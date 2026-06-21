@@ -1,10 +1,10 @@
 class MovableObject extends DrawableObject {
-  speed = 0.15;
+  speed = (0.15 / 720) * canvas.width;
   otherDirection = false;
   energy = 100;
   lastHit = 0;
   speedY = 0;
-  acceleration = 2.5;
+  acceleration = (2.5 / 480) * canvas.height;
   animationTicks = 0;
   lastImages;
   isInvincible = false;
@@ -40,13 +40,7 @@ class MovableObject extends DrawableObject {
   }
 
   isAboveGround() {
-    if (this instanceof ThrowableObject) {
-      return this.y < 370;
-    } else if (this instanceof Character) {
-      return this.y < 150;
-    } else if (this instanceof Endboss) {
-      return this.y < 60;
-    }
+    return this.y < this.bottomY;
   }
 
   playAnimation(images, speed = 1, interval = 50) {

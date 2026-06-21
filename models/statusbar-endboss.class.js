@@ -1,6 +1,6 @@
 class StatusbarEndboss extends Statusbar {
   y = 0;
-  x = 500;
+  x = (500 / 720) * canvas.width;
 
   static IMAGES = [
     "../img/7_statusbars/2_statusbar_endboss/green/green0.png",

@@ -1,5 +1,5 @@
 class StatusbarCoins extends Statusbar {
-  y = 100;
+  y = (100 / 480) * canvas.height;
 
   static IMAGES = [
     "../img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
