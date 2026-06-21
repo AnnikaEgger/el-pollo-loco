@@ -48,11 +48,11 @@ class MovableObject extends DrawableObject {
 
     if (this.nextFrameIsReady(speed, interval)) {
       const animationHasFinished = this.setNextAnimationFrame(images);
-      if (animationHasFinished && this instanceof ThrowableObject) {
-        return true;
+      if (this instanceof ThrowableObject) {
+        if (animationHasFinished) return true;
+        else return false;
       }
     }
-    if (this instanceof ThrowableObject) return false;
   }
 
   resetCurrentImgWhenNewAnimation(images) {
@@ -76,6 +76,7 @@ class MovableObject extends DrawableObject {
       return true;
     } else {
       this.currentImg++;
+      return false;
     }
   }
 

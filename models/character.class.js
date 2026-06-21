@@ -180,6 +180,7 @@ class Character extends MovableObject {
   }
 
   jump() {
+    this.hasReachedHighestPoint = false;
     this.speedY = (30 / 480) * canvas.height;
     this.jumpingSound.play();
   }

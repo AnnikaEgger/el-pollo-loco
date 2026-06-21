@@ -38,7 +38,13 @@ function createLevel1() {
       new ChickenSmall(),
       new ChickenSmall(),
     ],
-    [new Cloud()],
+    [
+      new Cloud(0, 0),
+      new Cloud(1, canvas.width),
+      new Cloud(0, canvas.width * 2),
+      new Cloud(1, canvas.width * 3),
+      new Cloud(0, canvas.width * 4),
+    ],
     [
       new BackgroundObject(
         "img/5_background/layers/air.png",
@@ -174,6 +180,11 @@ function createLevel1() {
       new ThrowableObject(getRandomX("bottle"), BOTTLE_Y, false, "on ground"),
     ],
     [
+      new Coin(getRandomX("coin"), getRandomY("coin")),
+      new Coin(getRandomX("coin"), getRandomY("coin")),
+      new Coin(getRandomX("coin"), getRandomY("coin")),
+      new Coin(getRandomX("coin"), getRandomY("coin")),
+      new Coin(getRandomX("coin"), getRandomY("coin")),
       new Coin(getRandomX("coin"), getRandomY("coin")),
       new Coin(getRandomX("coin"), getRandomY("coin")),
       new Coin(getRandomX("coin"), getRandomY("coin")),

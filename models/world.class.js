@@ -40,19 +40,20 @@ class World {
   run() {
     setInterval(() => {
       this.playBackgroundSounds();
-      this.checkCollisions();
       this.checkThrowObjects();
+      this.checkCollisions();
       this.checkIfBottleCollected();
       this.checkIfCoinCollected();
       this.checkIfEnemyHitByBottle();
-    }, 100);
+    }, 1000 / 60);
   }
 
   playBackgroundSounds() {
     this.bgMusic.volume = 0.1;
     if (!this.endboss.hadFirstContact) {
-      this.bgMusic.play();
-      if (this.checkIfChickensExist()) this.cluckingSound.play();
+      this.bgMusic.play().catch(() => {});
+      if (this.checkIfChickensExist())
+        this.cluckingSound.play().catch(() => {});
       else this.cluckingSound.pause();
     } else {
       this.bgMusic.pause();
@@ -81,6 +82,7 @@ class World {
   jumpOnAliveChicken(enemy) {
     return (
       this.character.isAboveGround() &&
+      this.character.speedY <= 0 &&
       !(enemy instanceof Endboss) &&
       !enemy.killed
     );
@@ -295,7 +297,7 @@ class World {
 
     obj.draw(this.ctx);
     // movableObj.drawFrame(this.ctx);
-    obj.drawOffsetFrame(this.ctx);
+    // obj.drawOffsetFrame(this.ctx);
 
     if (obj.otherDirection) {
       this.flipImageBack(obj);

@@ -75,3 +75,8 @@ canvas {
   width: 48px;
   height: auto;
 }
+
+.content-wrapper:fullscreen .btns-wrapper button img,
+.content-wrapper:-webkit-full-screen .btns-wrapper button img {
+  width: 5vw;
+}

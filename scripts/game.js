@@ -3,7 +3,7 @@ let keyboard = new Keyboard();
 let isMuted = false;
 
 function init() {
-  resetAudios();
+  muteGame();
   updateGlobalVariables();
   level = createLevel1();
   world = new World(canvas, keyboard, level);
@@ -47,9 +47,10 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
-const allAudios = [];
+let allAudios = [];
 
-function pushAudiosIntoAudiosArr(audio) {
+function pushAudiosIntoAudiosArr() {
+  allAudios = [];
   allAudios.push(...world.character.AUDIOS);
   world.level.enemies.forEach((enemy) => {
     allAudios.push(...enemy.AUDIOS);
@@ -72,10 +73,28 @@ function toggleGameSound() {
   });
 }
 
+function muteGame() {
+  allAudios.forEach((audio) => {
+    audio.muted = true;
+  });
+}
+
 function resetAudios() {
-  // isMuted = false;
-  // toggleGameSound();
-  // toggleGameSound();
+  allAudios.forEach((audio) => {
+    audio.currentTime = 0;
+  });
+}
+
+let fullscreen = false;
+function toggleFullscreen() {
+  element = document.getElementById("fullscreen");
+  fullscreen = !fullscreen;
+
+  if (fullscreen) {
+    openFullscreen(element);
+  } else {
+    closeFullscreen();
+  }
 }
 
 function openFullscreen(element) {
@@ -96,11 +115,6 @@ function closeFullscreen() {
   } else if (document.msExitFullscreen) {
     document.msExitFullscreen();
   }
-}
-
-function toggleFullscreen() {
-  element = document.getElementById("fullscreen");
-  openFullscreen(element);
 }
 
 function resizeCanvas() {

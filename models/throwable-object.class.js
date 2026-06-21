@@ -112,7 +112,7 @@ class ThrowableObject extends MovableObject {
       this.animationTicks++;
       this.playAnimation(this.IMAGES_ROTATING, 0.5, 25);
     }, 25);
-    this.throwingSound.play();
+    if (!isMuted) this.throwingSound.play();
   }
 
   throwIntoRightDirection() {
@@ -124,11 +124,12 @@ class ThrowableObject extends MovableObject {
   }
 
   playSplashAnimation() {
-    this.shatteringSound.play();
     clearInterval(this.throwInt);
+    if (!isMuted) this.shatteringSound.play();
     this.splashInt = setInterval(() => {
       this.animationTicks++;
-      let animationIsFinished = this.playAnimation(this.IMAGES_SPLASH, 0.5, 25);
+      let animationIsFinished = this.playAnimation(this.IMAGES_SPLASH, 1, 25);
+
       if (animationIsFinished) {
         this.splashFinished = true;
         clearInterval(this.splashInt);

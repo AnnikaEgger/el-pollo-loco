@@ -191,7 +191,6 @@ class Endboss extends MovableObject {
   }
 
   attackCharacter() {
-    console.log("attack!");
     this.speed = 10;
     this.jump();
   }
