@@ -8,16 +8,14 @@ class DrawableObject {
   imageCache = {};
   currentImg = 0;
 
-  errorSound = new Audio("../audio/bottle/error.mp3");
+  static errorSound = new Audio("../audio/bottle/error.mp3");
 
-  AUDIOS;
+  static AUDIOS = [DrawableObject.errorSound];
 
   constructor() {
     if (!this.offset) {
       this.offset = { top: 0, bottom: 0, left: 0, right: 0 };
     }
-
-    this.AUDIOS = [this.errorSound];
   }
 
   initAudios() {

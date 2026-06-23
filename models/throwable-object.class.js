@@ -33,21 +33,19 @@ class ThrowableObject extends MovableObject {
     "../img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
-  throwingSound = new Audio("../audio/bottle/throwing.mp3");
-  collectingSound = new Audio("../audio/bottle/collecting.mp3");
-  shatteringSound = new Audio("../audio/bottle/shattering.mp3");
+  static throwingSound = new Audio("../audio/bottle/throwing.mp3");
+  static collectingSound = new Audio("../audio/bottle/collecting.mp3");
+  static shatteringSound = new Audio("../audio/bottle/shattering.mp3");
+  static AUDIOS = [
+    ThrowableObject.throwingSound,
+    ThrowableObject.collectingSound,
+    ThrowableObject.shatteringSound,
+  ];
 
   constructor(state = "on ground", character) {
     super();
     this.state = state;
     this.index = this.getRandomIndex(this.IMAGES_ON_GROUND);
-
-    this.AUDIOS = [
-      ...this.AUDIOS,
-      this.throwingSound,
-      this.collectingSound,
-      this.shatteringSound,
-    ];
 
     if (this.state == "on ground") {
       this.x =
@@ -144,7 +142,7 @@ class ThrowableObject extends MovableObject {
       this.animationTicks++;
       this.playAnimation(this.IMAGES_ROTATING, 0.5, 25);
     }, 25);
-    if (!isMuted) this.throwingSound.play();
+    if (!isMuted) ThrowableObject.throwingSound.play();
   }
 
   throwIntoRightDirection() {
@@ -157,7 +155,7 @@ class ThrowableObject extends MovableObject {
 
   playSplashAnimation() {
     clearInterval(this.throwInt);
-    if (!isMuted) this.shatteringSound.play();
+    if (!isMuted) ThrowableObject.shatteringSound.play();
     this.splashInt = setInterval(() => {
       this.animationTicks++;
       let animationIsFinished = this.playAnimation(this.IMAGES_SPLASH, 1, 25);

@@ -21,11 +21,9 @@ class World {
     this.statusbarEndboss,
   ];
 
-  bgMusic = new Audio("../audio/background-music.mp3");
-  bgMusicEndboss = new Audio("../audio/endboss/background-music.mp3");
-  cluckingSound = new Audio("../audio/chicken/clucking.mp3");
-
-  AUDIOS = [this.bgMusic, this.bgMusicEndboss, this.cluckingSound];
+  static bgMusic = new Audio("../audio/background-music.mp3");
+  static cluckingSound = new Audio("../audio/chicken/clucking.mp3");
+  static AUDIOS = [World.bgMusic, World.cluckingSound];
 
   constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
@@ -56,15 +54,15 @@ class World {
   }
 
   playBackgroundSounds() {
-    this.bgMusic.volume = 0.1;
+    World.bgMusic.volume = 0.1;
     if (!this.endboss.hadFirstContact) {
-      this.bgMusic.play().catch(() => {});
+      World.bgMusic.play().catch(() => {});
       if (this.checkIfChickensExist())
-        this.cluckingSound.play().catch(() => {});
-      else this.cluckingSound.pause();
+        World.cluckingSound.play().catch(() => {});
+      else World.cluckingSound.pause();
     } else {
-      this.bgMusic.pause();
-      this.cluckingSound.pause();
+      World.bgMusic.pause();
+      World.cluckingSound.pause();
     }
   }
 
@@ -159,7 +157,7 @@ class World {
   }
 
   collectBottle(to) {
-    to.collectingSound.play();
+    ThrowableObject.collectingSound.play();
     if (this.availableBottles < 10) this.availableBottles++;
     this.updateBottlesStatusbar();
 
@@ -181,7 +179,7 @@ class World {
   }
 
   collectCoin(coin) {
-    coin.collectingSound.play();
+    Coin.collectingSound.play();
     this.availableCoins += coin.coinValue;
     if (this.availableCoins > 20) this.availableCoins = 20;
     this.updateCoinsStatusbar();
@@ -197,7 +195,7 @@ class World {
       if (this.availableBottles > 0) {
         this.getCoordinatesAndCreateBottle();
       } else {
-        this.character.errorSound.play();
+        Character.errorSound.play();
       }
     }
   }

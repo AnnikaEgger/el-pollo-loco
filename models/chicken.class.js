@@ -4,7 +4,9 @@ class Chicken extends MovableObject {
   moveLeftInt;
   damage;
 
-  dyingSound = new Audio("../audio/chicken/dying.mp3");
+  static dyingSound = new Audio("../audio/chicken/dying.mp3");
+
+  static AUDIOS = [Chicken.dyingSound];
 
   constructor(imgs, y, height, width, offset, speed) {
     super();
@@ -17,8 +19,6 @@ class Chicken extends MovableObject {
     this.speed = speed;
     this.x = (500 / 720) * canvas.width + Math.random() * (canvas.width * 3);
     this.animate(imgs);
-
-    this.AUDIOS = [...this.AUDIOS, this.dyingSound];
   }
 
   resize() {
@@ -41,6 +41,6 @@ class Chicken extends MovableObject {
     clearInterval(this.moveLeftInt);
     clearInterval(this.animationInt);
     this.killed = true;
-    this.dyingSound.play();
+    Chicken.dyingSound.play();
   }
 }

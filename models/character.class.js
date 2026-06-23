@@ -7,11 +7,19 @@ class Character extends MovableObject {
   animationInt;
   bottomY;
 
-  walkingSound = new Audio("../audio/character/walking.wav");
-  snoringSound = new Audio("../audio/character/snoring.wav");
-  hurtingSound = new Audio("../audio/character/hurting.mp3");
-  dyingSound = new Audio("../audio/character/dying.mp3");
-  jumpingSound = new Audio("../audio/character/jumping.wav");
+  static walkingSound = new Audio("../audio/character/walking.wav");
+  static snoringSound = new Audio("../audio/character/snoring.wav");
+  static hurtingSound = new Audio("../audio/character/hurting.mp3");
+  static dyingSound = new Audio("../audio/character/dying.mp3");
+  static jumpingSound = new Audio("../audio/character/jumping.wav");
+
+  static AUDIOS = [
+    Character.walkingSound,
+    Character.snoringSound,
+    Character.hurtingSound,
+    Character.dyingSound,
+    Character.jumpingSound,
+  ];
 
   IMAGES_IDLE = [
     "../img/2_character_pepe/1_idle/idle/I-1.png",
@@ -88,15 +96,6 @@ class Character extends MovableObject {
     this.getDimensions();
     this.y = this.bottomY;
 
-    this.AUDIOS = [
-      ...this.AUDIOS,
-      this.walkingSound,
-      this.snoringSound,
-      this.hurtingSound,
-      this.dyingSound,
-      this.jumpingSound,
-    ];
-
     this.addAudioEventListeners();
     this.idleStartTime = null;
 
@@ -121,16 +120,16 @@ class Character extends MovableObject {
   }
 
   addAudioEventListeners() {
-    this.AUDIOS.forEach((audio) => {
-      audio.addEventListener("play", () => {
-        this.AUDIOS.forEach((otherAudio) => {
-          if (otherAudio !== audio) {
-            otherAudio.pause();
-            otherAudio.currentTime = 0;
-          }
-        });
-      });
-    });
+    // this.AUDIOS.forEach((audio) => {
+    //   audio.addEventListener("play", () => {
+    //     this.AUDIOS.forEach((otherAudio) => {
+    //       if (otherAudio !== audio) {
+    //         otherAudio.pause();
+    //         otherAudio.currentTime = 0;
+    //       }
+    //     });
+    //   });
+    // });
   }
 
   animate() {
@@ -146,13 +145,17 @@ class Character extends MovableObject {
 
   playAnimations() {
     if (this.isDead()) {
-      this.playDeathAnimationAndSound(this.IMAGES_DEAD, this.animationInt);
+      this.playDeathAnimationAndSound(
+        Character,
+        this.IMAGES_DEAD,
+        this.animationInt,
+      );
     } else if (this.checkIdleDuration() >= 15) {
       this.playSleepAnimationAndSound();
     } else if (this.checkIdleDuration() > 0) {
       this.playAnimation(this.IMAGES_IDLE, 2);
     } else if (this.isHurt()) {
-      this.playHurtAnimationAndSound(this.IMAGES_HURT);
+      this.playHurtAnimationAndSound(Character, this.IMAGES_HURT);
     } else if (this.isAboveGround()) {
       this.playAnimation(this.IMAGES_JUMPING, 1);
     } else {
@@ -162,19 +165,19 @@ class Character extends MovableObject {
 
   playSleepAnimationAndSound() {
     this.playAnimation(this.IMAGES_SLEEPING, 2);
-    this.snoringSound.play();
+    Character.snoringSound.play();
   }
 
   playWalkingAnimationAndSound() {
     this.playAnimation(this.IMAGES_WALKING, 1);
-    this.walkingSound.play();
+    Character.walkingSound.play();
   }
 
   handleWalking() {
     if (this.isWalking()) {
       this.playWalkingAnimationAndSound();
     } else {
-      this.walkingSound.pause();
+      Character.walkingSound.pause();
     }
   }
 
@@ -189,7 +192,7 @@ class Character extends MovableObject {
 
   jump() {
     this.speedY = (30 / 480) * canvas.height;
-    this.jumpingSound.play();
+    Character.jumpingSound.play();
   }
 
   isIdle() {

@@ -27,7 +27,6 @@ class MovableObject extends DrawableObject {
   constructor() {
     super();
     const parentAudios = super.initAudios();
-    this.AUDIOS = [...this.AUDIOS];
     this.getDimensions();
   }
 
@@ -130,14 +129,14 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  playHurtAnimationAndSound(imgs) {
+  playHurtAnimationAndSound(objClass, imgs) {
     this.playAnimation(imgs, 1);
-    this.hurtingSound.play();
+    objClass.hurtingSound.play();
   }
 
-  playDeathAnimationAndSound(imgs, animationInterval) {
+  playDeathAnimationAndSound(objClass, imgs, animationInterval) {
     this.playAnimation(imgs, 2);
-    this.dyingSound.play();
+    objClass.dyingSound.play();
     if (this.currentImg == imgs.length - 1) {
       this.playAnimation(imgs, 2);
       clearInterval(animationInterval);

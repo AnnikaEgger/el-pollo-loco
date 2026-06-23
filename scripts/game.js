@@ -69,18 +69,13 @@ let allAudios = [];
 
 function pushAudiosIntoAudiosArr() {
   allAudios = [];
-  allAudios.push(...world.character.AUDIOS);
-  world.level.enemies.forEach((enemy) => {
-    allAudios.push(...enemy.AUDIOS);
-  });
-  world.level.throwableObjects.forEach((to) => {
-    allAudios.push(...to.AUDIOS);
-  });
-  world.level.coins.forEach((coin) => {
-    allAudios.push(...coin.AUDIOS);
-  });
-  allAudios.push(...world.endboss.AUDIOS);
-  allAudios.push(...world.AUDIOS);
+  allAudios.push(...Character.AUDIOS);
+  allAudios.push(...Chicken.AUDIOS);
+  allAudios.push(...Endboss.AUDIOS);
+  allAudios.push(...ThrowableObject.AUDIOS);
+  allAudios.push(...Coin.AUDIOS);
+  allAudios.push(...World.AUDIOS);
+  allAudios.push(...DrawableObject.AUDIOS);
 }
 
 function toggleGameSound() {

@@ -8,10 +8,18 @@ class Endboss extends MovableObject {
   damage = 15;
   bottomY;
 
-  hurtingSound = new Audio("../audio/endboss/hurting.wav");
-  dyingSound = new Audio("../audio/endboss/dying.mp3");
-  alertSound = new Audio("../audio/endboss/awakening.mp3");
-  risingSound = new Audio("../audio/endboss/riser.mp3");
+  static hurtingSound = new Audio("../audio/endboss/hurting.wav");
+  static dyingSound = new Audio("../audio/endboss/dying.mp3");
+  static alertSound = new Audio("../audio/endboss/awakening.mp3");
+  static risingSound = new Audio("../audio/endboss/riser.mp3");
+  static bgMusic = new Audio("../audio/endboss/background-music.mp3");
+  static AUDIOS = [
+    Endboss.hurtingSound,
+    Endboss.dyingSound,
+    Endboss.alertSound,
+    Endboss.risingSound,
+    Endboss.bgMusic,
+  ];
 
   IMAGES_ALERT = [
     "../img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -64,14 +72,6 @@ class Endboss extends MovableObject {
 
     this.applyGravity();
     this.animate();
-
-    this.AUDIOS = [
-      ...this.AUDIOS,
-      this.hurtingSound,
-      this.dyingSound,
-      this.alertSound,
-      this.risingSound,
-    ];
   }
 
   getDimensions() {
@@ -116,7 +116,8 @@ class Endboss extends MovableObject {
 
   handleAwakenedEndboss() {
     if (this.isDead()) this.handleEndbossDeath();
-    else if (this.isHurt()) this.playHurtAnimationAndSound(this.IMAGES_HURT);
+    else if (this.isHurt())
+      this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT);
   }
 
   characterEncountersEndboss() {
@@ -124,22 +125,26 @@ class Endboss extends MovableObject {
   }
 
   handleEndbossDeath() {
-    this.playDeathAnimationAndSound(this.IMAGES_DEAD, this.movementInterval);
-    this.world.bgMusicEndboss.pause();
+    this.playDeathAnimationAndSound(
+      Endboss,
+      this.IMAGES_DEAD,
+      this.movementInterval,
+    );
+    Endboss.bgMusic.pause();
     this.killed = true;
   }
 
   triggerEndbossAwakening() {
     this.hadFirstContact = true;
-    this.risingSound.play();
+    Endboss.risingSound.play();
 
-    this.risingSound.onended = () => {
-      this.alertSound.play();
+    Endboss.risingSound.onended = () => {
+      Endboss.alertSound.play();
       this.animationIndex = 0;
     };
 
-    this.alertSound.onended = () => {
-      this.world.bgMusicEndboss.play();
+    Endboss.alertSound.onended = () => {
+      Endboss.bgMusic.play();
       this.startEndbossMovement();
     };
   }
@@ -159,7 +164,7 @@ class Endboss extends MovableObject {
 
   killChicken() {
     super.killChicken();
-    this.world.bgMusicEndboss.pause();
+    Endboss.bgMusic.pause();
   }
 
   moveEndboss() {

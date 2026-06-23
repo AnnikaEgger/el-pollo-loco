@@ -6,7 +6,9 @@ class Coin extends DrawableObject {
 
   COINS = ["../img/8_coin/coin_1.png", "../img/8_coin/coin_2.png"];
 
-  collectingSound = new Audio("../audio/coin/collecting.mp3");
+  static collectingSound = new Audio("../audio/coin/collecting.mp3");
+
+  static AUDIOS = [Coin.collectingSound];
 
   constructor() {
     super();
@@ -17,8 +19,6 @@ class Coin extends DrawableObject {
     this.y =
       this.maxY + Math.random() * ((320 / 480) * canvas.height - this.maxY);
     this.getDimensions();
-
-    this.AUDIOS = [...this.AUDIOS, this.collectingSound];
 
     this.loadImage(this.COINS[this.index]);
   }
