@@ -1,5 +1,5 @@
 class Statusbar extends DrawableObject {
-  x = 20;
+  x;
   y = 0;
 
   offset = { top: 0, bottom: 0, left: 0, right: 0 };
@@ -21,13 +21,10 @@ class Statusbar extends DrawableObject {
     }
   }
 
-  resize() {
-    this.getDimensions();
-  }
-
   getDimensions() {
     this.width = (200 / 720) * canvas.width;
     this.height = (60 / 480) * canvas.height;
+    this.x = (20 / 720) * canvas.width;
   }
 
   setPercentage(percentage) {

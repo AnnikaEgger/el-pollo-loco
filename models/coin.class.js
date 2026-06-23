@@ -11,6 +11,11 @@ class Coin extends DrawableObject {
   constructor() {
     super();
     this.index = this.getRandomIndex(this.COINS);
+    this.x =
+      Math.random() * (canvas.width * 3 - (250 / 720) * canvas.width) +
+      (250 / 720) * canvas.width;
+    this.y =
+      this.maxY + Math.random() * ((320 / 480) * canvas.height - this.maxY);
     this.getDimensions();
 
     this.AUDIOS = [...this.AUDIOS, this.collectingSound];
@@ -19,12 +24,6 @@ class Coin extends DrawableObject {
   }
 
   getDimensions() {
-    this.x =
-      Math.random() * (canvas.width * 3 - (250 / 720) * canvas.width) +
-      (250 / 720) * canvas.width;
-    this.y =
-      this.maxY + Math.random() * ((320 / 480) * canvas.height - this.maxY);
-
     if (this.index == 0) {
       this.getSmallCoin();
     } else {

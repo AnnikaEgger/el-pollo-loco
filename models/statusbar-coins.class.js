@@ -20,9 +20,4 @@ class StatusbarCoins extends Statusbar {
     super.getDimensions();
     this.y = (100 / 480) * canvas.height;
   }
-
-  resize() {
-    super.resize();
-    this.getDimensions();
-  }
 }

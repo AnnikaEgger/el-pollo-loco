@@ -1,6 +1,8 @@
 let world;
 let keyboard = new Keyboard();
 let isMuted = false;
+let oldCanvasHeight;
+let oldCanvasWidth;
 
 function init() {
   // level = createLevel1().catch((error) => console.log(error));
@@ -18,7 +20,9 @@ function resizeGame() {
   muteGame();
 
   const allObjects = [
+    world.level,
     world.character,
+    ...world.STATUSBARS,
     ...world.level.enemies,
     ...world.level.backgroundObjects,
     ...world.level.clouds,
@@ -132,6 +136,9 @@ function closeFullscreen() {
 }
 
 function resizeCanvas() {
+  oldCanvasHeight = canvas.height;
+  oldCanvasWidth = canvas.width;
+
   if (document.fullscreenElement) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;

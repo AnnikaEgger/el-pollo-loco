@@ -1,10 +1,10 @@
 class MovableObject extends DrawableObject {
-  speed = (0.15 / 720) * canvas.width;
+  speed;
   otherDirection = false;
   energy = 100;
   lastHit = 0;
   speedY = 0;
-  acceleration = (2.5 / 480) * canvas.height;
+  acceleration;
   animationTicks = 0;
   lastImages;
   isInvincible = false;
@@ -28,6 +28,11 @@ class MovableObject extends DrawableObject {
     super();
     const parentAudios = super.initAudios();
     this.AUDIOS = [...this.AUDIOS];
+    this.getDimensions();
+  }
+
+  getDimensions() {
+    this.acceleration = (2.5 / 480) * canvas.height;
   }
 
   applyGravity() {

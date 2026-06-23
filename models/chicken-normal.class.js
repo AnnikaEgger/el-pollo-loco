@@ -22,9 +22,9 @@ class ChickenNormal extends Chicken {
     );
   }
 
-  resize() {
-    super.resize();
-    this.y = (360 / 480) * canvas.height;
+  getDimensions() {
+    super.getDimensions();
+
     this.height = (60 / 480) * canvas.height;
     this.width = (80 / 720) * canvas.width;
     this.offset = {
@@ -33,7 +33,6 @@ class ChickenNormal extends Chicken {
       top: (5 / 480) * canvas.height,
       bottom: (5 / 480) * canvas.height,
     };
-    this.speed = this.speed * (canvas.width / 720);
   }
 
   killChicken() {

@@ -12,6 +12,14 @@ class Level {
     this.backgroundObjects = backgroundObjects;
     this.throwableObjects = throwableObjects;
     this.coins = coins;
+    this.getDimensions();
+  }
+
+  getDimensions() {
     this.levelEndX = canvas.width * 4;
+  }
+
+  resize() {
+    this.getDimensions();
   }
 }

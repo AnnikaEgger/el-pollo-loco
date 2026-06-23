@@ -14,6 +14,13 @@ class World {
   availableCoins = 0;
   allowNewBottle = true;
 
+  STATUSBARS = [
+    this.statusbarHealth,
+    this.statusbarBottles,
+    this.statusbarCoins,
+    this.statusbarEndboss,
+  ];
+
   bgMusic = new Audio("../audio/background-music.mp3");
   bgMusicEndboss = new Audio("../audio/endboss/background-music.mp3");
   cluckingSound = new Audio("../audio/chicken/clucking.mp3");
@@ -216,12 +223,7 @@ class World {
   }
 
   spawnAndThrowBottle(x, y) {
-    let bottle = new ThrowableObject(
-      "throw",
-      this.character.otherDirection,
-      x,
-      y,
-    );
+    let bottle = new ThrowableObject("throw", this.character);
     this.level.throwableObjects.push(bottle);
     bottle.throw();
   }
@@ -296,7 +298,7 @@ class World {
     }
 
     obj.draw(this.ctx);
-    // movableObj.drawFrame(this.ctx);
+    // obj.drawFrame(this.ctx);
     // obj.drawOffsetFrame(this.ctx);
 
     if (obj.otherDirection) {

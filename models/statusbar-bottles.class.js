@@ -20,8 +20,4 @@ class StatusbarBottles extends Statusbar {
     super.getDimensions();
     this.y = (50 / 480) * canvas.height;
   }
-
-  resize() {
-    this.getDimensions();
-  }
 }

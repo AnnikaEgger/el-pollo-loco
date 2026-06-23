@@ -8,6 +8,7 @@ class ThrowableObject extends MovableObject {
   otherDirection = false;
   bottomY;
   index;
+  character;
 
   DEFAULT_IMG = "../img/6_salsa_bottle/salsa_bottle.png";
 
@@ -36,14 +37,10 @@ class ThrowableObject extends MovableObject {
   collectingSound = new Audio("../audio/bottle/collecting.mp3");
   shatteringSound = new Audio("../audio/bottle/shattering.mp3");
 
-  // constructor(x, y, otherDirection, state) {
-  constructor(state = "on ground", otherDirection = false, x, y) {
+  constructor(state = "on ground", character) {
     super();
     this.state = state;
-    this.otherDirection = otherDirection;
     this.index = this.getRandomIndex(this.IMAGES_ON_GROUND);
-
-    this.getDimensions(x, y);
 
     this.AUDIOS = [
       ...this.AUDIOS,
@@ -52,11 +49,25 @@ class ThrowableObject extends MovableObject {
       this.shatteringSound,
     ];
 
-    if (this.state == "on ground") this.loadImgOnGround();
-    else this.loadImgsForThrow();
+    if (this.state == "on ground") {
+      this.x =
+        Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
+        (400 / 720) * canvas.width;
+      this.loadImgOnGround();
+      this.otherDirection = false;
+    } else {
+      this.character = character;
+      this.otherDirection = character.otherDirection;
+      this.loadImgsForThrow();
+      this.getDimensionsForThrow();
+    }
+
+    this.getDimensions();
   }
 
-  getDimensions(x, y) {
+  getDimensions() {
+    super.getDimensions();
+
     this.width = (60 / 720) * canvas.width;
     this.height = (50 / 480) * canvas.height;
     this.bottomY = (370 / 480) * canvas.height;
@@ -65,14 +76,11 @@ class ThrowableObject extends MovableObject {
     if (this.state == "on ground") {
       this.getDimensionsOnGround();
     } else {
-      this.getDimensionsForThrow(x, y);
+      this.getOffsetForThrow();
     }
   }
 
   getDimensionsOnGround() {
-    this.x =
-      Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
-      (400 / 720) * canvas.width;
     this.y = this.bottomY;
     if (this.index == 0) {
       this.getOffsetForLeftTilt();
@@ -81,10 +89,14 @@ class ThrowableObject extends MovableObject {
     }
   }
 
-  getDimensionsForThrow(x, y) {
-    this.x = x;
-    this.y = y;
-    this.getOffsetForThrow();
+  getDimensionsForThrow() {
+    if (this.character.otherDirection) {
+      this.x = this.character.x;
+      this.y = this.character.y + (100 / 480) * canvas.height;
+    } else {
+      this.x = this.character.x + (100 / 720) * canvas.width;
+      this.y = this.character.y + (100 / 480) * canvas.height;
+    }
   }
 
   loadImgOnGround() {

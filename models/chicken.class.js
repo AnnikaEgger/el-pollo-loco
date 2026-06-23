@@ -22,7 +22,8 @@ class Chicken extends MovableObject {
   }
 
   resize() {
-    this.x = this.x * (500 / 720);
+    super.resize();
+    this.speed = this.speed * (canvas.width / oldCanvasWidth);
   }
 
   animate(arr) {

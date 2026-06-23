@@ -86,6 +86,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
 
     this.getDimensions();
+    this.y = this.bottomY;
 
     this.AUDIOS = [
       ...this.AUDIOS,
@@ -104,9 +105,10 @@ class Character extends MovableObject {
   }
 
   getDimensions() {
+    super.getDimensions();
     this.height = (280 / 480) * canvas.height;
     this.width = (140 / 720) * canvas.width;
-    this.y = (150 / 480) * canvas.height;
+    this.bottomY = (150 / 480) * canvas.height;
 
     this.offset = {
       left: (35 / 720) * canvas.width,
@@ -115,7 +117,6 @@ class Character extends MovableObject {
       bottom: (15 / 480) * canvas.height,
     };
 
-    this.bottomY = (150 / 480) * canvas.height;
     this.speed = (15 / 720) * canvas.width;
   }
 

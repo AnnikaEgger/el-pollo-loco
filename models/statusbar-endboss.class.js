@@ -18,11 +18,6 @@ class StatusbarEndboss extends Statusbar {
 
   getDimensions() {
     super.getDimensions();
-    this.x = (500 / 720) * canvas.width;
-  }
-
-  resize() {
-    super.resize();
-    this.getDimensions();
+    this.x = (490 / 720) * canvas.width;
   }
 }

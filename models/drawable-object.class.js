@@ -72,5 +72,14 @@ class DrawableObject {
 
   resize() {
     this.getDimensions();
+
+    if (
+      this instanceof BackgroundObject ||
+      (this instanceof ThrowableObject && this.state === "on ground") ||
+      this instanceof Statusbar
+    )
+      return;
+    this.x = (this.x / oldCanvasWidth) * canvas.width;
+    this.y = (this.y / oldCanvasHeight) * canvas.height;
   }
 }

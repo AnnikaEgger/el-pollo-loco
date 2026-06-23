@@ -2,11 +2,11 @@ class Endboss extends MovableObject {
   speedY;
   hadFirstContact = false;
   world;
-  speed = (5 / 720) * canvas.width;
+  speed;
   movementInterval;
   animationIndex;
   damage = 15;
-  bottomY = (60 / 480) * canvas.height;
+  bottomY;
 
   hurtingSound = new Audio("../audio/endboss/hurting.wav");
   dyingSound = new Audio("../audio/endboss/dying.mp3");
@@ -57,7 +57,11 @@ class Endboss extends MovableObject {
   constructor() {
     super();
     this.loadAllImages();
+
     this.getDimensions();
+    this.x = canvas.width * 4;
+    this.y = this.bottomY;
+
     this.applyGravity();
     this.animate();
 
@@ -71,10 +75,10 @@ class Endboss extends MovableObject {
   }
 
   getDimensions() {
+    super.getDimensions();
+
     this.height = (400 / 480) * canvas.height;
     this.width = (250 / 720) * canvas.width;
-    this.y = (60 / 480) * canvas.height;
-    this.x = canvas.width * 4;
 
     this.offset = {
       left: (30 / 720) * canvas.width,
@@ -82,6 +86,9 @@ class Endboss extends MovableObject {
       top: (90 / 480) * canvas.height,
       bottom: (30 / 480) * canvas.height,
     };
+
+    this.speed = (5 / 720) * canvas.width;
+    this.bottomY = (50 / 480) * canvas.height;
   }
 
   loadAllImages() {
@@ -194,13 +201,13 @@ class Endboss extends MovableObject {
   }
 
   attackCharacter() {
-    this.speed = 10;
+    this.speed = (10 / 720) * canvas.width;
     this.jump();
   }
 
   jump() {
     if (this.isAboveGround()) return;
-    this.speedY = (50 / 480) * canvas.height;
+    this.speedY = (35 / 480) * canvas.height;
     // setInterval(() => this.playAnimation(this.IMAGES_ATTACK, 1), 50);
     this.playAnimation(this.IMAGES_ATTACK, 0.5, 100);
   }
