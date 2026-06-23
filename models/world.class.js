@@ -1,6 +1,6 @@
 class World {
   character = new Character();
-  level;
+  level = level1;
   endboss = new Endboss();
   canvas;
   ctx;
@@ -25,10 +25,9 @@ class World {
   static cluckingSound = new Audio("../audio/chicken/clucking.mp3");
   static AUDIOS = [World.bgMusic, World.cluckingSound];
 
-  constructor(canvas, keyboard, level) {
+  constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
-    this.level = level;
     this.keyboard = keyboard;
     this.level.enemies.push(this.endboss);
 
@@ -118,7 +117,10 @@ class World {
   }
 
   handleHitOnEndboss(bottle, enemy) {
+    if (enemy.isInvincible) return;
     enemy.hit(bottle.damage);
+    console.log(enemy.isInvincible);
+
     this.statusbarEndboss.setPercentage(enemy.energy);
     enemy.isInvincible = true;
     setTimeout(() => {
@@ -297,7 +299,7 @@ class World {
 
     obj.draw(this.ctx);
     // obj.drawFrame(this.ctx);
-    // obj.drawOffsetFrame(this.ctx);
+    obj.drawOffsetFrame(this.ctx);
 
     if (obj.otherDirection) {
       this.flipImageBack(obj);

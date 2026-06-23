@@ -4,6 +4,7 @@ class Endboss extends MovableObject {
   world;
   speed;
   movementInterval;
+  animationInt;
   animationIndex;
   damage = 15;
   bottomY;
@@ -80,15 +81,19 @@ class Endboss extends MovableObject {
     this.height = (400 / 480) * canvas.height;
     this.width = (250 / 720) * canvas.width;
 
+    this.getOffset();
+
+    this.speed = (5 / 720) * canvas.width;
+    this.bottomY = (50 / 480) * canvas.height;
+  }
+
+  getOffset() {
     this.offset = {
       left: (30 / 720) * canvas.width,
       right: (35 / 720) * canvas.width,
       top: (90 / 480) * canvas.height,
       bottom: (30 / 480) * canvas.height,
     };
-
-    this.speed = (5 / 720) * canvas.width;
-    this.bottomY = (50 / 480) * canvas.height;
   }
 
   loadAllImages() {
@@ -101,23 +106,15 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    this.animationIndex = 0;
-    const animationInterval = setInterval(() => {
-      this.animationTicks++;
-
-      if (this.animationIndex <= this.IMAGES_ALERT.length) {
-        this.playAlertAnimationAndSound();
-      } else this.handleAwakenedEndboss();
+    this.animationInt = setInterval(() => {
       if (this.characterEncountersEndboss()) this.triggerEndbossAwakening();
-
-      this.animationIndex += 1 / 2;
-    }, 50);
+    }, 100);
   }
 
-  handleAwakenedEndboss() {
+  checkIfHurtOrDead() {
     if (this.isDead()) this.handleEndbossDeath();
     else if (this.isHurt())
-      this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT);
+      this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT, 100);
   }
 
   characterEncountersEndboss() {
@@ -129,24 +126,43 @@ class Endboss extends MovableObject {
       Endboss,
       this.IMAGES_DEAD,
       this.movementInterval,
+      1,
     );
     Endboss.bgMusic.pause();
-    this.killed = true;
   }
 
   triggerEndbossAwakening() {
     this.hadFirstContact = true;
-    Endboss.risingSound.play();
+    // Endboss.risingSound.play();
+    // this.animateAlertBlinking();
 
-    Endboss.risingSound.onended = () => {
-      Endboss.alertSound.play();
-      this.animationIndex = 0;
-    };
+    // Endboss.risingSound.onended = () => {
+    //   Endboss.alertSound.play();
+    //   this.animateScream();
+    // };
 
-    Endboss.alertSound.onended = () => {
-      Endboss.bgMusic.play();
-      this.startEndbossMovement();
-    };
+    // Endboss.alertSound.onended = () => {
+    Endboss.bgMusic.play();
+    this.startEndbossMovement();
+    // };
+  }
+
+  animateAlertBlinking() {
+    let index = 0;
+    const blinkInt = setInterval(() => {
+      this.animationTicks++;
+      if (index == 5) clearInterval(blinkInt);
+      this.playAnimation(this.IMAGES_ALERT, 1, 200);
+      index++;
+    }, 200);
+  }
+
+  animateScream() {
+    this.img = this.imageCache[this.IMAGES_ALERT[this.IMAGES_ALERT.length - 2]];
+  }
+
+  animateLastAlertImg() {
+    this.img = this.imageCache[this.IMAGES_ALERT[this.IMAGES_ALERT.length - 1]];
   }
 
   startEndbossMovement() {
@@ -155,11 +171,12 @@ class Endboss extends MovableObject {
     this.movementInterval = setInterval(() => {
       this.animationTicks++;
       this.moveEndboss();
+      this.checkIfHurtOrDead();
     }, 100);
   }
 
   playAlertAnimationAndSound() {
-    this.playAnimation(this.IMAGES_ALERT, 2, 50);
+    this.playAnimation(this.IMAGES_ALERT, 1.5, 100);
   }
 
   killChicken() {
@@ -168,8 +185,13 @@ class Endboss extends MovableObject {
   }
 
   moveEndboss() {
+    if (this.isDead()) return;
     if (this.characterIsNear()) this.attackCharacter();
-    else this.playAnimation(this.IMAGES_WALKING, 1, 100);
+    else {
+      this.playAnimation(this.IMAGES_WALKING, 1, 100);
+      this.speed = (5 / 720) * canvas.width;
+    }
+
     if (this.characterIsLeft()) this.moveLeft();
     else if (this.characterIsRight()) this.moveRight();
   }
@@ -206,14 +228,13 @@ class Endboss extends MovableObject {
   }
 
   attackCharacter() {
-    this.speed = (10 / 720) * canvas.width;
+    this.speed = (15 / 720) * canvas.width;
+    this.playAnimation(this.IMAGES_ATTACK, 1, 100);
     this.jump();
   }
 
   jump() {
     if (this.isAboveGround()) return;
-    this.speedY = (35 / 480) * canvas.height;
-    // setInterval(() => this.playAnimation(this.IMAGES_ATTACK, 1), 50);
-    this.playAnimation(this.IMAGES_ATTACK, 0.5, 100);
+    this.speedY = (25 / 480) * canvas.height;
   }
 }

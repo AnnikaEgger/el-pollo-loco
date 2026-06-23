@@ -1,3 +1,4 @@
+const canvas = document.getElementById("canvas");
 let world;
 let keyboard = new Keyboard();
 let isMuted = false;
@@ -5,20 +6,11 @@ let oldCanvasHeight;
 let oldCanvasWidth;
 
 function init() {
-  // level = createLevel1().catch((error) => console.log(error));
-
-  try {
-    level = createLevel1();
-  } catch (error) {
-    console.log(error);
-  }
-  world = new World(canvas, keyboard, level);
+  world = new World(canvas, keyboard);
   pushAudiosIntoAudiosArr();
 }
 
 function resizeGame() {
-  muteGame();
-
   const allObjects = [
     world.level,
     world.character,
@@ -83,12 +75,6 @@ function toggleGameSound() {
 
   allAudios.forEach((audio) => {
     audio.muted = isMuted;
-  });
-}
-
-function muteGame() {
-  allAudios.forEach((audio) => {
-    audio.muted = true;
   });
 }
 

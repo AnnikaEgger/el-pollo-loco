@@ -149,6 +149,7 @@ class Character extends MovableObject {
         Character,
         this.IMAGES_DEAD,
         this.animationInt,
+        2,
       );
     } else if (this.checkIdleDuration() >= 15) {
       this.playSleepAnimationAndSound();

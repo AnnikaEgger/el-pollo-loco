@@ -106,9 +106,8 @@ class MovableObject extends DrawableObject {
     this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0;
-    } else {
-      this.lastHit = Date.now();
     }
+    this.lastHit = Date.now();
   }
 
   isWalking() {
@@ -134,12 +133,12 @@ class MovableObject extends DrawableObject {
     objClass.hurtingSound.play();
   }
 
-  playDeathAnimationAndSound(objClass, imgs, animationInterval) {
-    this.playAnimation(imgs, 2);
+  playDeathAnimationAndSound(objClass, imgs, int, speed) {
+    this.playAnimation(imgs, speed);
     objClass.dyingSound.play();
     if (this.currentImg == imgs.length - 1) {
-      this.playAnimation(imgs, 2);
-      clearInterval(animationInterval);
+      this.playAnimation(imgs, speed);
+      clearInterval(int);
     }
   }
 }
