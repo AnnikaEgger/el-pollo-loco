@@ -1,5 +1,5 @@
 class StatusbarCoins extends Statusbar {
-  y = (100 / 480) * canvas.height;
+  y;
 
   static IMAGES = [
     "../img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
@@ -13,5 +13,16 @@ class StatusbarCoins extends Statusbar {
   constructor() {
     let chosenImages = StatusbarCoins.IMAGES;
     super(chosenImages, "coins");
+    this.getDimensions();
+  }
+
+  getDimensions() {
+    super.getDimensions();
+    this.y = (100 / 480) * canvas.height;
+  }
+
+  resize() {
+    super.resize();
+    this.getDimensions();
   }
 }

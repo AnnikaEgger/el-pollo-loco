@@ -1,6 +1,5 @@
 class StatusbarEndboss extends Statusbar {
   y = 0;
-  x = (500 / 720) * canvas.width;
 
   static IMAGES = [
     "../img/7_statusbars/2_statusbar_endboss/green/green0.png",
@@ -14,5 +13,16 @@ class StatusbarEndboss extends Statusbar {
   constructor() {
     let chosenImages = StatusbarEndboss.IMAGES;
     super(chosenImages, "endboss");
+    this.getDimensions();
+  }
+
+  getDimensions() {
+    super.getDimensions();
+    this.x = (500 / 720) * canvas.width;
+  }
+
+  resize() {
+    super.resize();
+    this.getDimensions();
   }
 }

@@ -1,12 +1,13 @@
 class ThrowableObject extends MovableObject {
-  speedX = (10 / 720) * canvas.width;
+  speedX;
   state;
   throwInt;
   splashInt;
   splashFinished = false;
   damage = 10;
   otherDirection = false;
-  bottomY = (370 / 480) * canvas.height;
+  bottomY;
+  index;
 
   DEFAULT_IMG = "../img/6_salsa_bottle/salsa_bottle.png";
 
@@ -35,14 +36,14 @@ class ThrowableObject extends MovableObject {
   collectingSound = new Audio("../audio/bottle/collecting.mp3");
   shatteringSound = new Audio("../audio/bottle/shattering.mp3");
 
-  constructor(x, y, otherDirection, state) {
+  // constructor(x, y, otherDirection, state) {
+  constructor(state = "on ground", otherDirection = false, x, y) {
     super();
     this.state = state;
-    this.x = x;
-    this.y = y;
     this.otherDirection = otherDirection;
-    this.width = (60 / 720) * canvas.width;
-    this.height = (50 / 480) * canvas.height;
+    this.index = this.getRandomIndex(this.IMAGES_ON_GROUND);
+
+    this.getDimensions(x, y);
 
     this.AUDIOS = [
       ...this.AUDIOS,
@@ -51,27 +52,46 @@ class ThrowableObject extends MovableObject {
       this.shatteringSound,
     ];
 
+    if (this.state == "on ground") this.loadImgOnGround();
+    else this.loadImgsForThrow();
+  }
+
+  getDimensions(x, y) {
+    this.width = (60 / 720) * canvas.width;
+    this.height = (50 / 480) * canvas.height;
+    this.bottomY = (370 / 480) * canvas.height;
+    this.speedX = (10 / 720) * canvas.width;
+
     if (this.state == "on ground") {
-      this.createBottleOnGround();
-    } else if (this.state == "throw") {
-      this.createBottleThrow();
+      this.getDimensionsOnGround();
+    } else {
+      this.getDimensionsForThrow(x, y);
     }
   }
 
-  createBottleOnGround() {
-    let index = this.getRandomIndex(this.IMAGES_ON_GROUND);
-
-    if (index == 0) {
+  getDimensionsOnGround() {
+    this.x =
+      Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
+      (400 / 720) * canvas.width;
+    this.y = this.bottomY;
+    if (this.index == 0) {
       this.getOffsetForLeftTilt();
     } else {
       this.getOffsetForRightTilt();
     }
-
-    this.loadImage(this.IMAGES_ON_GROUND[index]);
   }
 
-  createBottleThrow() {
+  getDimensionsForThrow(x, y) {
+    this.x = x;
+    this.y = y;
     this.getOffsetForThrow();
+  }
+
+  loadImgOnGround() {
+    this.loadImage(this.IMAGES_ON_GROUND[this.index]);
+  }
+
+  loadImgsForThrow() {
     this.loadImage(this.DEFAULT_IMG);
     this.loadImages(this.IMAGES_ROTATING);
     this.loadImages(this.IMAGES_SPLASH);

@@ -1,28 +1,38 @@
 class Coin extends DrawableObject {
   offsetValue;
   coinValue;
+  index;
+  maxY = (65 / 480) * canvas.height;
 
   COINS = ["../img/8_coin/coin_1.png", "../img/8_coin/coin_2.png"];
 
   collectingSound = new Audio("../audio/coin/collecting.mp3");
 
-  constructor(x, y) {
+  constructor() {
     super();
-    let index = this.getRandomIndex(this.COINS);
+    this.index = this.getRandomIndex(this.COINS);
+    this.getDimensions();
 
-    if (index == 0) {
+    this.AUDIOS = [...this.AUDIOS, this.collectingSound];
+
+    this.loadImage(this.COINS[this.index]);
+  }
+
+  getDimensions() {
+    this.x =
+      Math.random() * (canvas.width * 3 - (250 / 720) * canvas.width) +
+      (250 / 720) * canvas.width;
+    this.y =
+      this.maxY + Math.random() * ((320 / 480) * canvas.height - this.maxY);
+
+    if (this.index == 0) {
       this.getSmallCoin();
     } else {
       this.getBigCoin();
     }
     this.getOffset();
-
-    this.AUDIOS = [...this.AUDIOS, this.collectingSound];
-
-    this.loadImage(this.COINS[index]);
-    this.x = x;
-    this.y = y;
   }
+
   getSmallCoin() {
     this.offsetValue = (45 / 720) * canvas.width;
     this.width = (120 / 720) * canvas.width;

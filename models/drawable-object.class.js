@@ -69,4 +69,8 @@ class DrawableObject {
   getRandomIndex(array) {
     return Math.floor(Math.random() * array.length);
   }
+
+  resize() {
+    this.getDimensions();
+  }
 }

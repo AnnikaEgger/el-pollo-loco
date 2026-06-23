@@ -6,14 +6,18 @@ class Cloud extends MovableObject {
     "../img/5_background/layers/4_clouds/2.png",
   ];
 
-  constructor(index, x) {
+  constructor(index, xMultiplier) {
     super();
     this.loadImage(this.IMAGES[index]);
+    this.getDimensions(xMultiplier);
+    this.animate();
+  }
 
-    this.x = x + Math.random() * ((500 / 720) * canvas.width);
+  getDimensions(xMultiplier) {
+    this.x =
+      xMultiplier * canvas.width + Math.random() * ((500 / 720) * canvas.width);
     this.width = canvas.width;
     this.height = (250 / 480) * canvas.height;
-    this.animate();
   }
 
   animate() {

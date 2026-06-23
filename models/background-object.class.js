@@ -1,10 +1,16 @@
 class BackgroundObject extends MovableObject {
   y = 0;
+  xMultiplier;
 
-  constructor(imagePath, x, canvas) {
+  constructor(imagePath, xMultiplier) {
     super().loadImage(imagePath);
+    this.xMultiplier = xMultiplier;
+    this.getDimensions();
+  }
+
+  getDimensions() {
     this.height = canvas.height;
     this.width = canvas.width;
-    this.x = x;
+    this.x = this.xMultiplier * canvas.width;
   }
 }

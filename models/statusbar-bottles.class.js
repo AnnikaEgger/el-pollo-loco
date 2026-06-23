@@ -1,5 +1,5 @@
 class StatusbarBottles extends Statusbar {
-  y = (50 / 480) * canvas.height;
+  y;
 
   static IMAGES = [
     "../img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/0.png",
@@ -13,5 +13,15 @@ class StatusbarBottles extends Statusbar {
   constructor() {
     let chosenImages = StatusbarBottles.IMAGES;
     super(chosenImages, "bottles");
+    this.getDimensions();
+  }
+
+  getDimensions() {
+    super.getDimensions();
+    this.y = (50 / 480) * canvas.height;
+  }
+
+  resize() {
+    this.getDimensions();
   }
 }

@@ -12,14 +12,22 @@ class Statusbar extends DrawableObject {
     this.IMAGES = images;
     this.loadImages(this.IMAGES);
 
-    this.width = (200 / 720) * canvas.width;
-    this.height = (60 / 480) * canvas.height;
+    this.getDimensions();
 
     if (type == "health" || type == "endboss") {
       this.setPercentage(100);
     } else {
       this.setPercentage(0);
     }
+  }
+
+  resize() {
+    this.getDimensions();
+  }
+
+  getDimensions() {
+    this.width = (200 / 720) * canvas.width;
+    this.height = (60 / 480) * canvas.height;
   }
 
   setPercentage(percentage) {

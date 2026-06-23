@@ -57,7 +57,20 @@ class Endboss extends MovableObject {
   constructor() {
     super();
     this.loadAllImages();
+    this.getDimensions();
+    this.applyGravity();
+    this.animate();
 
+    this.AUDIOS = [
+      ...this.AUDIOS,
+      this.hurtingSound,
+      this.dyingSound,
+      this.alertSound,
+      this.risingSound,
+    ];
+  }
+
+  getDimensions() {
     this.height = (400 / 480) * canvas.height;
     this.width = (250 / 720) * canvas.width;
     this.y = (60 / 480) * canvas.height;
@@ -69,16 +82,6 @@ class Endboss extends MovableObject {
       top: (90 / 480) * canvas.height,
       bottom: (30 / 480) * canvas.height,
     };
-    this.applyGravity();
-    this.animate();
-
-    this.AUDIOS = [
-      ...this.AUDIOS,
-      this.hurtingSound,
-      this.dyingSound,
-      this.alertSound,
-      this.risingSound,
-    ];
   }
 
   loadAllImages() {

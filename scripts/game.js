@@ -3,16 +3,30 @@ let keyboard = new Keyboard();
 let isMuted = false;
 
 function init() {
-  muteGame();
-  updateGlobalVariables();
-  level = createLevel1();
+  // level = createLevel1().catch((error) => console.log(error));
+
+  try {
+    level = createLevel1();
+  } catch (error) {
+    console.log(error);
+  }
   world = new World(canvas, keyboard, level);
   pushAudiosIntoAudiosArr();
 }
 
-function updateGlobalVariables() {
-  MAX_Y = (65 / 480) * canvas.height;
-  BOTTLE_Y = (370 / 480) * canvas.height;
+function resizeGame() {
+  muteGame();
+
+  const allObjects = [
+    world.character,
+    ...world.level.enemies,
+    ...world.level.backgroundObjects,
+    ...world.level.clouds,
+    ...world.level.coins,
+    ...world.level.throwableObjects,
+  ];
+
+  allObjects.forEach((obj) => obj.resize());
 }
 
 window.addEventListener("keydown", (event) => {
@@ -126,7 +140,7 @@ function resizeCanvas() {
     canvas.height = 480;
   }
 
-  init();
+  resizeGame();
 }
 
 document.addEventListener("fullscreenchange", resizeCanvas);

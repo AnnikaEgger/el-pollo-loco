@@ -1,11 +1,11 @@
 class Character extends MovableObject {
   imgSrc = "../img/2_character_pepe/1_idle/idle/I-1.png";
   world;
-  speed = 15;
+  speed;
   idleStartTime;
   deadAnimationProgress = 0;
   animationInt;
-  bottomY = (150 / 480) * canvas.height;
+  bottomY;
 
   walkingSound = new Audio("../audio/character/walking.wav");
   snoringSound = new Audio("../audio/character/snoring.wav");
@@ -85,16 +85,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
 
-    this.height = (280 / 480) * canvas.height;
-    this.width = (140 / 720) * canvas.width;
-    this.y = (150 / 480) * canvas.height;
-
-    this.offset = {
-      left: (35 / 720) * canvas.width,
-      right: (40 / 720) * canvas.width,
-      top: (120 / 480) * canvas.height,
-      bottom: (15 / 480) * canvas.height,
-    };
+    this.getDimensions();
 
     this.AUDIOS = [
       ...this.AUDIOS,
@@ -110,6 +101,22 @@ class Character extends MovableObject {
 
     this.applyGravity();
     this.animate();
+  }
+
+  getDimensions() {
+    this.height = (280 / 480) * canvas.height;
+    this.width = (140 / 720) * canvas.width;
+    this.y = (150 / 480) * canvas.height;
+
+    this.offset = {
+      left: (35 / 720) * canvas.width,
+      right: (40 / 720) * canvas.width,
+      top: (120 / 480) * canvas.height,
+      bottom: (15 / 480) * canvas.height,
+    };
+
+    this.bottomY = (150 / 480) * canvas.height;
+    this.speed = (15 / 720) * canvas.width;
   }
 
   addAudioEventListeners() {
@@ -180,7 +187,6 @@ class Character extends MovableObject {
   }
 
   jump() {
-    this.hasReachedHighestPoint = false;
     this.speedY = (30 / 480) * canvas.height;
     this.jumpingSound.play();
   }

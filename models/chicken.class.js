@@ -21,6 +21,10 @@ class Chicken extends MovableObject {
     this.AUDIOS = [...this.AUDIOS, this.dyingSound];
   }
 
+  resize() {
+    this.x = this.x * (500 / 720);
+  }
+
   animate(arr) {
     this.moveLeftInt = setInterval(() => {
       this.moveLeft();
