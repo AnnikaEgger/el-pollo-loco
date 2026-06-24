@@ -137,7 +137,8 @@ class ThrowableObject extends MovableObject {
   throw() {
     this.speedY = (25 / 480) * canvas.height;
     this.applyGravity();
-    this.throwInt = setInterval(() => {
+    this.throwInt = this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       this.throwIntoRightDirection();
       this.animationTicks++;
       this.playAnimation(this.IMAGES_ROTATING, 0.5, 25);
@@ -156,7 +157,8 @@ class ThrowableObject extends MovableObject {
   playSplashAnimation() {
     clearInterval(this.throwInt);
     if (!isMuted) ThrowableObject.shatteringSound.play();
-    this.splashInt = setInterval(() => {
+    this.splashInt = this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       this.animationTicks++;
       let animationIsFinished = this.playAnimation(this.IMAGES_SPLASH, 1, 25);
 

@@ -13,6 +13,8 @@ class World {
   availableBottles = 10;
   availableCoins = 0;
   allowNewBottle = true;
+  intervalIds = [];
+  isPaused = false;
 
   STATUSBARS = [
     this.statusbarHealth,
@@ -41,8 +43,14 @@ class World {
     obj.world = this;
   }
 
+  setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    this.intervalIds.push(id);
+  }
+
   run() {
-    setInterval(() => {
+    this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       this.playBackgroundSounds();
       this.checkThrowObjects();
       this.checkCollisions();

@@ -9,15 +9,16 @@ class MovableObject extends DrawableObject {
   lastImages;
   isInvincible = false;
   intervalIds = [];
+  isPaused = false;
 
-  //   setStoppableInterval(fn, time) {
-  //     let id = setInterval(fn, time);
-  //     this.intervalIds.push(id);
-  //   }
+  setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    this.intervalIds.push(id);
+  }
 
-  //   stopGame() {
-  //     this.intervalIds.forEach(clearInterval);
-  //   }
+  stopGame() {
+    this.intervalIds.forEach(clearInterval);
+  }
 
   //   /* Alternative (quick and dirty), um alle Intervalle zu beenden. */
   // clearAllIntervals() {
@@ -35,7 +36,8 @@ class MovableObject extends DrawableObject {
   }
 
   applyGravity() {
-    setInterval(() => {
+    this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
@@ -85,10 +87,12 @@ class MovableObject extends DrawableObject {
   }
 
   moveLeft() {
+    if (this.isPaused) return;
     this.x -= this.speed;
   }
 
   moveRight() {
+    if (this.isPaused) return;
     this.x += this.speed;
   }
 

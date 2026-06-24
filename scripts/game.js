@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 let isMuted = false;
 let oldCanvasHeight;
 let oldCanvasWidth;
+isPaused = false;
 
 function init() {
   world = new World(canvas, keyboard);
@@ -78,6 +79,22 @@ function toggleGameSound() {
   });
 }
 
+function pauseAudios() {
+  allAudios.forEach((audio) => {
+    audio.wasPlaying = !audio.paused;
+    if (audio.wasPlaying) audio.pause();
+  });
+}
+
+function continueAudios() {
+  allAudios.forEach((audio) => {
+    if (audio.wasPlaying) {
+      audio.play();
+      audio.wasPlaying = false;
+    }
+  });
+}
+
 function resetAudios() {
   allAudios.forEach((audio) => {
     audio.currentTime = 0;
@@ -129,6 +146,35 @@ function resizeCanvas() {
   }
 
   resizeGame();
+}
+
+function togglePauseGame() {
+  isPaused = !isPaused;
+
+  const allObjsWithInt = [
+    world,
+    world.character,
+    ...world.level.enemies,
+    ...world.level.clouds,
+    ...world.level.throwableObjects,
+  ];
+
+  if (isPaused) pauseGame(allObjsWithInt);
+  else continueGame(allObjsWithInt);
+}
+
+function pauseGame(allObjsWithInt) {
+  pauseAudios();
+  allObjsWithInt.forEach((obj) => {
+    obj.isPaused = true;
+  });
+}
+
+function continueGame(allObjsWithInt) {
+  continueAudios();
+  allObjsWithInt.forEach((obj) => {
+    obj.isPaused = false;
+  });
 }
 
 document.addEventListener("fullscreenchange", resizeCanvas);

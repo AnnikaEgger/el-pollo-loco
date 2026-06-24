@@ -120,24 +120,25 @@ class Character extends MovableObject {
   }
 
   addAudioEventListeners() {
-    // this.AUDIOS.forEach((audio) => {
-    //   audio.addEventListener("play", () => {
-    //     this.AUDIOS.forEach((otherAudio) => {
-    //       if (otherAudio !== audio) {
-    //         otherAudio.pause();
-    //         otherAudio.currentTime = 0;
-    //       }
-    //     });
-    //   });
-    // });
+    Character.AUDIOS.forEach((audio) => {
+      audio.addEventListener("play", () => {
+        Character.AUDIOS.forEach((otherAudio) => {
+          if (otherAudio !== audio) {
+            otherAudio.pause();
+            otherAudio.currentTime = 0;
+          }
+        });
+      });
+    });
   }
 
   animate() {
-    setInterval(() => {
+    this.setStoppableInterval(() => {
       this.moveCharacter();
     }, 1000 / 60);
 
-    this.animationInt = setInterval(() => {
+    this.animationInt = this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       this.animationTicks++;
       this.playAnimations();
     }, 50);
@@ -183,7 +184,7 @@ class Character extends MovableObject {
   }
 
   moveCharacter() {
-    if (this.isDead()) return;
+    if (this.isDead() || this.isPaused) return;
     if (this.world.keyboard.LEFT && this.x > 0) this.moveLeft();
     if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX)
       this.moveRight();

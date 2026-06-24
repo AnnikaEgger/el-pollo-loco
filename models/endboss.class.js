@@ -106,7 +106,8 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    this.animationInt = setInterval(() => {
+    this.animationInt = this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       if (this.characterEncountersEndboss()) this.triggerEndbossAwakening();
     }, 100);
   }
@@ -149,7 +150,8 @@ class Endboss extends MovableObject {
 
   animateAlertBlinking() {
     let index = 0;
-    const blinkInt = setInterval(() => {
+    const blinkInt = this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       this.animationTicks++;
       if (index == 5) clearInterval(blinkInt);
       this.playAnimation(this.IMAGES_ALERT, 1, 200);
@@ -168,7 +170,8 @@ class Endboss extends MovableObject {
   startEndbossMovement() {
     if (this.movementInterval) clearInterval(this.movementInterval);
 
-    this.movementInterval = setInterval(() => {
+    this.movementInterval = this.setStoppableInterval(() => {
+      if (this.isPaused) return;
       this.animationTicks++;
       this.moveEndboss();
       this.checkIfHurtOrDead();
