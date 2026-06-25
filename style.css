@@ -108,7 +108,7 @@ canvas {
 }
 
 .outro-container {
-  display: none;
+  display: unset;
   width: 720px;
   height: 480px;
 }

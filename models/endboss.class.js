@@ -8,6 +8,7 @@ class Endboss extends MovableObject {
   animationIndex;
   damage = 15;
   bottomY;
+  energy = 1;
 
   static hurtingSound = new Audio("../audio/endboss/hurting.wav");
   static dyingSound = new Audio("../audio/endboss/dying.mp3");
@@ -112,12 +113,6 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
-  // checkIfHurtOrDead() {
-  //   if (this.isDead()) this.handleEndbossDeath();
-  //   else if (this.isHurt())
-  //     this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT, 100);
-  // }
-
   characterEncountersEndboss() {
     return this.world.character.isNearEndboss() && !this.hadFirstContact;
   }
@@ -129,7 +124,28 @@ class Endboss extends MovableObject {
       this.movementInterval,
       1,
     );
-    Endboss.bgMusic.pause();
+  }
+
+  playDeathAnimationAndSound(objClass, imgs, int, speed) {
+    gameWon = true;
+    this.world.isPaused = true;
+    pauseAudios();
+    objClass.dyingSound.play();
+
+    let deathInt = this.setStoppableInterval(() => {
+      this.animationTicks++;
+      this.playAnimation(imgs, speed);
+
+      if (this.currentImg == imgs.length - 1) {
+        this.playAnimation(imgs, speed);
+
+        clearInterval(deathInt);
+
+        objClass.dyingSound.onended = () => {
+          this.world.handleWin();
+        };
+      }
+    }, 50);
   }
 
   triggerEndbossAwakening() {
@@ -249,7 +265,6 @@ class Endboss extends MovableObject {
 
     if (this.isDead()) {
       this.handleEndbossDeath();
-      this.world.handleWin();
     }
   }
 }

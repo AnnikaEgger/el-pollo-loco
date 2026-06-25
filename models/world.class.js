@@ -146,6 +146,7 @@ class World {
   // world.character.energy = 0
 
   handleWin() {
+    endGame();
     World.winSound.play();
   }
 

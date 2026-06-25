@@ -6,12 +6,16 @@ let oldCanvasHeight;
 let oldCanvasWidth;
 isPaused = false;
 let allObjsWithInt = [];
-let gameLost;
-let gameWon;
+let gameLost = false;
+let gameWon = false;
 
 function init() {
-  world = new World(canvas, keyboard);
+  initNewWorld();
   pushAudiosIntoAudiosArr();
+}
+
+function initNewWorld() {
+  world = new World(canvas, keyboard);
 
   allObjsWithInt = [
     world,
@@ -190,9 +194,7 @@ function endGame() {
   const outroContainer = document.getElementById("outro-container");
   const outroImg = document.getElementById("outro-img");
 
-  allObjsWithInt.forEach((obj) => {
-    obj.intervalIds.forEach(clearInterval);
-  });
+  clearAllIntervals();
   pauseAudios();
 
   outroContainer.width = canvas.width + "px";
@@ -204,6 +206,36 @@ function endGame() {
   } else if (gameWon) {
     outroImg.src = "./img/You won, you lost/You Win A.png";
   }
+}
+
+function restartGame() {
+  const outroContainer = document.getElementById("outro-container");
+  outroContainer.style.display = "none";
+
+  clearAllIntervals();
+  allObjsWithInt = [];
+  gameLost = false;
+  gameWon = false;
+  isPaused = false;
+
+  pauseAudios();
+  resetAudios();
+
+  keyboard.LEFT = false;
+  keyboard.RIGHT = false;
+  keyboard.UP = false;
+  keyboard.DOWN = false;
+  keyboard.SPACE = false;
+  keyboard.D = false;
+
+  level1 = initLevel();
+  initNewWorld();
+}
+
+function clearAllIntervals() {
+  allObjsWithInt.forEach((obj) => {
+    obj.intervalIds.forEach(clearInterval);
+  });
 }
 
 document.addEventListener("fullscreenchange", resizeCanvas);
