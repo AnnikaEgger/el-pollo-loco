@@ -8,8 +8,29 @@ isPaused = false;
 let allObjsWithInt = [];
 let gameLost = false;
 let gameWon = false;
+let gameStarted = false;
+const bgMusicStart = new Audio("./audio/background-music-start-screen.mp3");
+bgMusicStart.loop = true;
+let allAudios = [bgMusicStart];
 
 function init() {
+  document.addEventListener(
+    "click",
+    () => {
+      if (!gameStarted) {
+        bgMusicStart.play();
+      }
+    },
+    { once: true },
+  );
+}
+
+function startGame() {
+  gameStarted = true;
+  const homeScreen = document.getElementById("home-screen");
+  homeScreen.style.display = "none";
+  bgMusicStart.pause();
+
   initNewWorld();
   pushAudiosIntoAudiosArr();
 }
@@ -73,10 +94,7 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
-let allAudios = [];
-
 function pushAudiosIntoAudiosArr() {
-  allAudios = [];
   allAudios.push(...Character.AUDIOS);
   allAudios.push(...Chicken.AUDIOS);
   allAudios.push(...Endboss.AUDIOS);
@@ -191,26 +209,29 @@ function continueGame() {
 }
 
 function endGame() {
-  const outroContainer = document.getElementById("outro-container");
-  const outroImg = document.getElementById("outro-img");
+  const outroScreen = document.getElementById("outro-screen");
+  const gameOverImg = document.getElementById("game-over-img");
+  const youWinImg = document.getElementById("you-win-img");
 
   clearAllIntervals();
   pauseAudios();
 
-  outroContainer.width = canvas.width + "px";
-  outroContainer.height = canvas.height + "px";
-  outroContainer.style.display = "unset";
+  outroScreen.width = canvas.width + "px";
+  outroScreen.height = canvas.height + "px";
+  outroScreen.style.display = "flex";
 
   if (gameLost) {
-    outroImg.src = "./img/9_intro_outro_screens/game_over/game over!.png";
+    youWinImg.classList.add("display-none");
+    gameOverImg.classList.remove("display-none");
   } else if (gameWon) {
-    outroImg.src = "./img/You won, you lost/You Win A.png";
+    gameOverImg.classList.add("display-none");
+    youWinImg.classList.remove("display-none");
   }
 }
 
-function restartGame() {
-  const outroContainer = document.getElementById("outro-container");
-  outroContainer.style.display = "none";
+function clearGame() {
+  const outroScreen = document.getElementById("outro-screen");
+  outroScreen.style.display = "none";
 
   clearAllIntervals();
   allObjsWithInt = [];
@@ -227,7 +248,17 @@ function restartGame() {
   keyboard.DOWN = false;
   keyboard.SPACE = false;
   keyboard.D = false;
+}
 
+function backToHomeScreen() {
+  clearGame();
+  const homeScreen = document.getElementById("home-screen");
+  homeScreen.style.display = "unset";
+  bgMusicStart.play();
+}
+
+function restartGame() {
+  clearGame();
   level1 = initLevel();
   initNewWorld();
 }

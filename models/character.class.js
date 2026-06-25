@@ -7,6 +7,7 @@ class Character extends MovableObject {
   animationInt;
   bottomY;
   alreadyDead = false;
+  energy = 5;
 
   static walkingSound = new Audio("../audio/character/walking.wav");
   static snoringSound = new Audio("../audio/character/snoring.wav");

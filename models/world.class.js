@@ -24,7 +24,7 @@ class World {
     this.statusbarEndboss,
   ];
 
-  static bgMusic = new Audio("../audio/background-music.mp3");
+  static bgMusic = new Audio("../audio/background-music-game.mp3");
   static cluckingSound = new Audio("../audio/chicken/clucking.mp3");
   static winSound = new Audio("../audio/win.mp3");
   static gameOverSound = new Audio("../audio/game-over.mp3");

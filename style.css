@@ -2,11 +2,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url("./img/raniramli-desert-5396906.jpg");
+  background-position: center;
 }
 
 * {
   font-family: "Spicy Rice", serif;
   font-weight: 300;
+  color: rgb(250, 242, 223);
 }
 
 button {
@@ -14,10 +17,6 @@ button {
   border: unset;
   cursor: pointer;
   background-color: unset;
-}
-
-button:hover {
-  background-color: rgb(212, 211, 211);
 }
 
 .content-wrapper {
@@ -86,8 +85,76 @@ canvas {
   width: 5vw;
 }
 
-.outro-container {
+.overlay-container {
   position: absolute;
+  width: 720px;
+  height: 480px;
+}
+
+.overlay-img {
+  /* width: 100%;
+  height: 100%; */
+}
+
+.overlay-img--full {
+  width: 100%;
+  height: 100%;
+}
+
+.display-none {
+  display: none;
+}
+
+.overlay-img--win {
+  width: 80%;
+  align-self: center;
+  justify-self: center;
+}
+
+.home-container {
+  display: flex;
+}
+
+.wood-signs-container {
+  position: absolute;
+  top: 64px;
+  left: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.wood-sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wood-sign p {
+  filter: drop-shadow(3px 4px 2px rgba(0, 0, 0, 0.8));
+}
+
+.wood-sign:hover {
+  transform: rotate(-3deg);
+}
+
+.wood-sign:hover p {
+  text-decoration: underline;
+  filter: brightness(1.4) drop-shadow(3px 4px 2px rgba(0, 0, 0, 0.8));
+}
+
+.wood-sign p {
+  position: absolute;
+}
+
+.wood-sign img {
+  width: 100px;
+}
+
+.outro-container {
+  display: none;
+  justify-content: center;
 }
 
 .outro-container button {
@@ -98,6 +165,7 @@ canvas {
 
 .outro-btns-container {
   position: absolute;
+  top: 0;
   display: flex;
   gap: 48px;
 }
@@ -107,13 +175,27 @@ canvas {
   height: auto;
 }
 
-.outro-container {
-  display: unset;
-  width: 720px;
-  height: 480px;
+.pause-menu {
+  display: none;
 }
 
-.outro-container img {
-  width: 100%;
-  height: 100%;
+.pause-btn {
+  /* display: none; */
+}
+
+.start-btn {
+  position: absolute;
+  right: 200px;
+  top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.start-btn img {
+  width: 64px;
+}
+
+.start-btn p {
+  font-size: 24px;
 }

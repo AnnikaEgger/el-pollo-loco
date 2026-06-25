@@ -7,7 +7,7 @@
     <title>El Pollo Loco</title>
     <link
       rel="shortcut icon"
-      href="./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png"
+      href="./img/6_salsa_bottle/salsa_bottle.png"
       type="image/x-icon"
     />
 
@@ -53,28 +53,99 @@
     <div id="fullscreen" class="content-wrapper">
       <canvas id="canvas" width="720px" height="480px"></canvas>
 
-      <div id="outro-container" class="outro-container">
+      <div id="home-screen" class="overlay-container home-container">
         <img
-          id="outro-img"
+          class="overlay-img overlay-img--full"
+          src="./img/9_intro_outro_screens/start/startscreen_1.png"
+          alt=""
+        />
+
+        <button onclick="startGame()" class="start-btn">
+          <img src="./icons/start-icon.png" alt="start icon" />
+          <p>Start Game!</p>
+        </button>
+
+        <div class="wood-signs-container">
+          <button class="wood-sign">
+            <p>Story</p>
+            <img src="./img/wood-sign.svg" alt="wooden sign" />
+          </button>
+
+          <button class="wood-sign">
+            <p>Instructions</p>
+            <img src="./img/wood-sign.svg" alt="wooden sign" />
+          </button>
+
+          <button class="wood-sign">
+            <p>Settings</p>
+            <img src="./img/wood-sign.svg" alt="wooden sign" />
+          </button>
+
+          <button class="wood-sign">
+            <p>Legal Notice</p>
+            <img src="./img/wood-sign.svg" alt="wooden sign" />
+          </button>
+
+          <button class="wood-sign">
+            <p>Privacy Policy</p>
+            <img src="./img/wood-sign.svg" alt="wooden sign" />
+          </button>
+        </div>
+      </div>
+
+      <div id="outro-screen" class="overlay-container outro-container">
+        <img
+          id="game-over-img"
           src="./img/9_intro_outro_screens/game_over/game over!.png"
-          alt="Outro Screen "
-          class="outro-screen"
+          alt="Outro Screen"
+          class="outro-screen overlay-img overlay-img--full display-none"
+        />
+        <img
+          id="you-win-img"
+          src="./img/You won, you lost/You Win B.png"
+          alt="Outro Screen"
+          class="outro-screen overlay-img overlay-img--win display-none"
         />
         <div class="outro-btns-container">
-          <button onclick="restartGame()">Retry</button>
-          <button>Menu</button>
+          <button onclick="restartGame()">
+            <p>Retry</p>
+            <img src="./icons/restart-icon.png" alt="restart icon" />
+          </button>
+          <button onclick="backToHomeScreen()">
+            <p>Menu</p>
+            <img src="./icons/home-icon.png" alt="home icon" />
+          </button>
         </div>
       </div>
 
       <div class="btns-wrapper">
         <button class="mute-btn" onclick="toggleGameSound()">
-          <img src="./icons/mute-icon.png" alt="Mute Icon" />
+          <img src="./icons/sound-icon.png" alt="Mute Icon" />
         </button>
-        <button onclick="togglePauseGame()">
+        <button class="pause-btn" onclick="togglePauseGame()">
           <img src="./icons/pause-icon.png" alt="Pause Icon" />
         </button>
         <button onclick="toggleFullscreen()" class="fullscreen-btn">
           <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
+        </button>
+      </div>
+
+      <div class="pause-menu">
+        <button>
+          <img src="./icons/settings-icon.png" alt="settings icon" />
+          <p>Settings</p>
+        </button>
+        <button onclick="restartGame()">
+          <img src="./icons/restart-icon.png" alt="restart icon" />
+          <p>Restart</p>
+        </button>
+        <button>
+          <img src="./icons/home-icon.png" alt="home icon" />
+          <p>Menu</p>
+        </button>
+        <button class="wood-sign">
+          <p>Instructions</p>
+          <img src="" alt="wooden sign" />
         </button>
       </div>
     </div>
