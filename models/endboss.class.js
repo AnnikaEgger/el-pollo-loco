@@ -112,11 +112,11 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
-  checkIfHurtOrDead() {
-    if (this.isDead()) this.handleEndbossDeath();
-    else if (this.isHurt())
-      this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT, 100);
-  }
+  // checkIfHurtOrDead() {
+  //   if (this.isDead()) this.handleEndbossDeath();
+  //   else if (this.isHurt())
+  //     this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT, 100);
+  // }
 
   characterEncountersEndboss() {
     return this.world.character.isNearEndboss() && !this.hadFirstContact;
@@ -134,18 +134,18 @@ class Endboss extends MovableObject {
 
   triggerEndbossAwakening() {
     this.hadFirstContact = true;
-    // Endboss.risingSound.play();
-    // this.animateAlertBlinking();
+    Endboss.risingSound.play();
+    this.animateAlertBlinking();
 
-    // Endboss.risingSound.onended = () => {
-    //   Endboss.alertSound.play();
-    //   this.animateScream();
-    // };
+    Endboss.risingSound.onended = () => {
+      Endboss.alertSound.play();
+      this.animateScream();
+    };
 
-    // Endboss.alertSound.onended = () => {
-    Endboss.bgMusic.play();
-    this.startEndbossMovement();
-    // };
+    Endboss.alertSound.onended = () => {
+      Endboss.bgMusic.play();
+      this.startEndbossMovement();
+    };
   }
 
   animateAlertBlinking() {
@@ -174,7 +174,9 @@ class Endboss extends MovableObject {
       if (this.isPaused) return;
       this.animationTicks++;
       this.moveEndboss();
-      this.checkIfHurtOrDead();
+      if (this.isHurt())
+        this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT, 100);
+      if (this.isDead()) this.handleEndbossDeath();
     }, 100);
   }
 
@@ -182,6 +184,7 @@ class Endboss extends MovableObject {
     this.playAnimation(this.IMAGES_ALERT, 1.5, 100);
   }
 
+  // sinnvoll die Funktion der Chickens zu nehmen?
   killChicken() {
     super.killChicken();
     Endboss.bgMusic.pause();
@@ -239,5 +242,14 @@ class Endboss extends MovableObject {
   jump() {
     if (this.isAboveGround()) return;
     this.speedY = (25 / 480) * canvas.height;
+  }
+
+  hit(damage, statusbar) {
+    super.hit(damage, statusbar);
+
+    if (this.isDead()) {
+      this.handleEndbossDeath();
+      this.world.handleWin();
+    }
   }
 }

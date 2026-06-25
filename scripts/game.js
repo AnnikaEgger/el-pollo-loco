@@ -5,10 +5,21 @@ let isMuted = false;
 let oldCanvasHeight;
 let oldCanvasWidth;
 isPaused = false;
+let allObjsWithInt = [];
+let gameLost;
+let gameWon;
 
 function init() {
   world = new World(canvas, keyboard);
   pushAudiosIntoAudiosArr();
+
+  allObjsWithInt = [
+    world,
+    world.character,
+    ...world.level.enemies,
+    ...world.level.clouds,
+    ...world.level.throwableObjects,
+  ];
 }
 
 function resizeGame() {
@@ -76,6 +87,12 @@ function toggleGameSound() {
 
   allAudios.forEach((audio) => {
     audio.muted = isMuted;
+  });
+}
+
+function muteGame() {
+  allAudios.forEach((audio) => {
+    audio.muted = true;
   });
 }
 
@@ -151,30 +168,42 @@ function resizeCanvas() {
 function togglePauseGame() {
   isPaused = !isPaused;
 
-  const allObjsWithInt = [
-    world,
-    world.character,
-    ...world.level.enemies,
-    ...world.level.clouds,
-    ...world.level.throwableObjects,
-  ];
-
   if (isPaused) pauseGame(allObjsWithInt);
   else continueGame(allObjsWithInt);
 }
 
-function pauseGame(allObjsWithInt) {
+function pauseGame() {
   pauseAudios();
   allObjsWithInt.forEach((obj) => {
     obj.isPaused = true;
   });
 }
 
-function continueGame(allObjsWithInt) {
+function continueGame() {
   continueAudios();
   allObjsWithInt.forEach((obj) => {
     obj.isPaused = false;
   });
+}
+
+function endGame() {
+  const outroContainer = document.getElementById("outro-container");
+  const outroImg = document.getElementById("outro-img");
+
+  allObjsWithInt.forEach((obj) => {
+    obj.intervalIds.forEach(clearInterval);
+  });
+  pauseAudios();
+
+  outroContainer.width = canvas.width + "px";
+  outroContainer.height = canvas.height + "px";
+  outroContainer.style.display = "unset";
+
+  if (gameLost) {
+    outroImg.src = "./img/9_intro_outro_screens/game_over/game over!.png";
+  } else if (gameWon) {
+    outroImg.src = "./img/You won, you lost/You Win A.png";
+  }
 }
 
 document.addEventListener("fullscreenchange", resizeCanvas);

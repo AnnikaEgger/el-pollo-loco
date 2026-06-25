@@ -4,6 +4,11 @@ body {
   align-items: center;
 }
 
+* {
+  font-family: "Spicy Rice", serif;
+  font-weight: 300;
+}
+
 button {
   appearance: none;
   border: unset;
@@ -79,4 +84,36 @@ canvas {
 .content-wrapper:fullscreen .btns-wrapper button img,
 .content-wrapper:-webkit-full-screen .btns-wrapper button img {
   width: 5vw;
+}
+
+.outro-container {
+  position: absolute;
+}
+
+.outro-container button {
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 24px;
+}
+
+.outro-btns-container {
+  position: absolute;
+  display: flex;
+  gap: 48px;
+}
+
+.outro-container button img {
+  width: 48px;
+  height: auto;
+}
+
+.outro-container {
+  display: none;
+  width: 720px;
+  height: 480px;
+}
+
+.outro-container img {
+  width: 100%;
+  height: 100%;
 }

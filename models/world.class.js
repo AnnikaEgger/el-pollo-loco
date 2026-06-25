@@ -15,6 +15,7 @@ class World {
   allowNewBottle = true;
   intervalIds = [];
   isPaused = false;
+  gameOverImg = "../img/You won, you lost/Game Over.png";
 
   STATUSBARS = [
     this.statusbarHealth,
@@ -25,7 +26,15 @@ class World {
 
   static bgMusic = new Audio("../audio/background-music.mp3");
   static cluckingSound = new Audio("../audio/chicken/clucking.mp3");
-  static AUDIOS = [World.bgMusic, World.cluckingSound];
+  static winSound = new Audio("../audio/win.mp3");
+  static gameOverSound = new Audio("../audio/game-over.mp3");
+
+  static AUDIOS = [
+    World.bgMusic,
+    World.cluckingSound,
+    World.winSound,
+    World.gameOverSound,
+  ];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -85,7 +94,7 @@ class World {
         if (this.jumpOnAliveChicken(enemy)) {
           enemy.killChicken();
         } else if (this.characterIsHittable(enemy)) {
-          this.character.hit(enemy.damage);
+          this.character.hit(enemy.damage, this.statusbarHealth);
         }
       }
     });
@@ -124,16 +133,20 @@ class World {
     });
   }
 
-  handleHitOnEndboss(bottle, enemy) {
-    if (enemy.isInvincible) return;
-    enemy.hit(bottle.damage);
-    console.log(enemy.isInvincible);
+  handleHitOnEndboss(bottle, endboss) {
+    if (endboss.isInvincible) return;
+    endboss.hit(bottle.damage, this.statusbarEndboss);
+  }
 
-    this.statusbarEndboss.setPercentage(enemy.energy);
-    enemy.isInvincible = true;
-    setTimeout(() => {
-      enemy.isInvincible = false;
-    }, 1000);
+  handleGameOver() {
+    endGame();
+    World.gameOverSound.play();
+  }
+
+  // world.character.energy = 0
+
+  handleWin() {
+    World.winSound.play();
   }
 
   handleBottleHit(bottle, enemy) {

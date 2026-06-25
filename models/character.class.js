@@ -6,6 +6,8 @@ class Character extends MovableObject {
   deadAnimationProgress = 0;
   animationInt;
   bottomY;
+  alreadyDead = false;
+  energy = 5;
 
   static walkingSound = new Audio("../audio/character/walking.wav");
   static snoringSound = new Audio("../audio/character/snoring.wav");
@@ -145,14 +147,10 @@ class Character extends MovableObject {
   }
 
   playAnimations() {
-    if (this.isDead()) {
-      this.playDeathAnimationAndSound(
-        Character,
-        this.IMAGES_DEAD,
-        this.animationInt,
-        2,
-      );
-    } else if (this.checkIdleDuration() >= 15) {
+    if (this.isDead()) return;
+    // if (this.isDead()) this.handleCharacterDeath();
+
+    if (this.checkIdleDuration() >= 15) {
       this.playSleepAnimationAndSound();
     } else if (this.checkIdleDuration() > 0) {
       this.playAnimation(this.IMAGES_IDLE, 2);
@@ -245,14 +243,57 @@ class Character extends MovableObject {
     this.otherDirection = false;
   }
 
-  hit(damage) {
-    super.hit(damage);
+  hit(damage, statusbar) {
+    super.hit(damage, statusbar);
 
-    this.isInvincible = true;
-    setTimeout(() => {
-      this.isInvincible = false;
-    }, 1500);
-
-    this.world.statusbarHealth.setPercentage(this.energy);
+    if (this.isDead() && !this.alreadyDead) {
+      this.handleCharacterDeath();
+    }
   }
+
+  handleCharacterDeath() {
+    this.alreadyDead = true;
+    clearInterval(this.animationInt);
+    this.playDeathAnimationAndSound(
+      Character,
+      this.IMAGES_DEAD,
+      this.animationInt,
+      2,
+    );
+  }
+
+  playDeathAnimationAndSound(objClass, imgs, int, speed) {
+    gameLost = true;
+    this.world.isPaused = true;
+    pauseAudios();
+    objClass.dyingSound.play();
+
+    let deathInt = this.setStoppableInterval(() => {
+      this.animationTicks++;
+      this.playAnimation(imgs, speed);
+
+      if (this.currentImg == imgs.length - 1) {
+        this.playAnimation(imgs, speed);
+
+        // setTimeout(() => {
+        clearInterval(deathInt);
+        // }, 100);
+
+        objClass.dyingSound.onended = () => {
+          // setTimeout(() => {
+          this.world.handleGameOver();
+          // }, 100);
+        };
+      }
+    }, 50);
+  }
+
+  // playDeathAnimationAndSound(objClass, imgs, int, speed) {
+
+  //   objClass.dyingSound.play();
+  //   this.playAnimation(imgs, speed);
+  //   if (this.currentImg == imgs.length) {
+  //     clearInterval(this.animationInt);
+  //   }
+  // }
 }

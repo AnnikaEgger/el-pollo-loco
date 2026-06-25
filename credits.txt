@@ -20,3 +20,12 @@ fullscreen icon
 
 pause icon
 <a href="https://www.flaticon.com/free-icons/pause" title="pause icons">Pause icons created by Slidicon - Flaticon</a>
+
+sad trombone sound
+saddertrombones.mp3 by NotR -- https://freesound.org/s/172950/ -- License: Attribution NonCommercial 3.0
+
+restart icon
+<a href="https://www.flaticon.com/free-icons/refresh" title="refresh icons">Refresh icons created by ghufronagustian - Flaticon</a>
+
+home icon
+<a href="https://www.flaticon.com/free-icons/real-estate" title="real estate icons">Real estate icons created by NajmunNahar - Flaticon</a>

@@ -11,6 +11,13 @@
       type="image/x-icon"
     />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="standard.css" />
     <link rel="stylesheet" href="style.css" />
 
@@ -45,6 +52,20 @@
 
     <div id="fullscreen" class="content-wrapper">
       <canvas id="canvas" width="720px" height="480px"></canvas>
+
+      <div id="outro-container" class="outro-container">
+        <img
+          id="outro-img"
+          src="./img/9_intro_outro_screens/game_over/game over!.png"
+          alt="Outro Screen "
+          class="outro-screen"
+        />
+        <div class="outro-btns-container">
+          <button>Retry</button>
+          <button>Menu</button>
+        </div>
+      </div>
+
       <div class="btns-wrapper">
         <button class="mute-btn" onclick="toggleGameSound()">
           <img src="./icons/mute-icon.png" alt="Mute Icon" />

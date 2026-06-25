@@ -14,16 +14,8 @@ class MovableObject extends DrawableObject {
   setStoppableInterval(fn, time) {
     let id = setInterval(fn, time);
     this.intervalIds.push(id);
+    return id;
   }
-
-  stopGame() {
-    this.intervalIds.forEach(clearInterval);
-  }
-
-  //   /* Alternative (quick and dirty), um alle Intervalle zu beenden. */
-  // clearAllIntervals() {
-  //     for (let i = 1; i < 9999; i++) window.clearInterval(i);
-  //   }
 
   constructor() {
     super();
@@ -105,12 +97,19 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  hit(damage) {
+  hit(damage, statusbar) {
     if (this.isInvincible) return;
     this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0;
     }
+
+    this.isInvincible = true;
+    setTimeout(() => {
+      this.isInvincible = false;
+    }, 1000);
+
+    statusbar.setPercentage(this.energy);
     this.lastHit = Date.now();
   }
 
@@ -137,12 +136,14 @@ class MovableObject extends DrawableObject {
     objClass.hurtingSound.play();
   }
 
-  playDeathAnimationAndSound(objClass, imgs, int, speed) {
-    this.playAnimation(imgs, speed);
-    objClass.dyingSound.play();
-    if (this.currentImg == imgs.length - 1) {
-      this.playAnimation(imgs, speed);
-      clearInterval(int);
-    }
-  }
+  // playDeathAnimationAndSound(objClass, imgs, int, speed) {
+  //   let deathInt = this.setStoppableInterval(() => {
+  //     this.playAnimation(imgs, speed);
+  //   }, 100);
+  //   objClass.dyingSound.play();
+  //   if (this.currentImg == imgs.length - 1) {
+  //     // this.playAnimation(imgs, speed);
+  //     clearInterval(deathInt);
+  //   }
+  // }
 }
