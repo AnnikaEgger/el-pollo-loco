@@ -2,14 +2,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url("./img/raniramli-desert-5396906.jpg");
+  /* background-image: url("./img/raniramli-desert-5396906.jpg"); */
   background-position: center;
+
+  font-weight: 300;
+  color: rgb(250, 242, 223);
 }
 
 * {
   font-family: "Spicy Rice", serif;
-  font-weight: 300;
-  color: rgb(250, 242, 223);
 }
 
 button {
@@ -18,6 +19,8 @@ button {
   cursor: pointer;
   background-color: unset;
 }
+
+/* #region content wrapper */
 
 .content-wrapper {
   position: relative;
@@ -58,6 +61,8 @@ button {
   image-rendering: crisp-edges; */
 }
 
+/* #endregion */
+
 canvas {
   background-color: black;
 }
@@ -87,13 +92,8 @@ canvas {
 
 .overlay-container {
   position: absolute;
-  width: 720px;
-  height: 480px;
-}
-
-.overlay-img {
-  /* width: 100%;
-  height: 100%; */
+  width: 100%;
+  height: 100%;
 }
 
 .overlay-img--full {
@@ -105,24 +105,21 @@ canvas {
   display: none;
 }
 
-.overlay-img--win {
-  width: 80%;
-  align-self: center;
-  justify-self: center;
-}
-
-.home-container {
-  display: flex;
-}
-
-.wood-signs-container {
+/* #region wood signs and btns */
+.wood-signs-container--home {
   position: absolute;
   top: 64px;
   left: 8px;
+}
 
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.wood-signs-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wood-signs-menu--home li {
+  padding-bottom: 16px;
 }
 
 .wood-sign {
@@ -135,10 +132,6 @@ canvas {
   filter: drop-shadow(3px 4px 2px rgba(0, 0, 0, 0.8));
 }
 
-.wood-sign:hover {
-  transform: rotate(-3deg);
-}
-
 .wood-sign:hover p {
   text-decoration: underline;
   filter: brightness(1.4) drop-shadow(3px 4px 2px rgba(0, 0, 0, 0.8));
@@ -148,39 +141,35 @@ canvas {
   position: absolute;
 }
 
-.wood-sign img {
-  width: 100px;
+.wood-sign,
+.wood-btn {
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+  cursor: pointer;
 }
 
-.outro-container {
-  display: none;
-  justify-content: center;
+.wood-sign:hover,
+.wood-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
-.outro-container button {
-  border-radius: 50%;
-  padding: 4px;
-  font-size: 24px;
+.wood-sign:active,
+.wood-btn:active {
+  transform: translateY(2px);
 }
 
-.outro-btns-container {
-  position: absolute;
-  top: 0;
+/* #endregion */
+
+/* #region home screen */
+.home-container {
   display: flex;
-  gap: 48px;
 }
 
-.outro-container button img {
-  width: 48px;
-  height: auto;
-}
-
-.pause-menu {
-  display: none;
-}
-
-.pause-btn {
-  /* display: none; */
+.home-container .wood-sign img {
+  width: 100px;
+  height: 48px;
 }
 
 .start-btn {
@@ -199,3 +188,107 @@ canvas {
 .start-btn p {
   font-size: 24px;
 }
+/* #endregion */
+
+/* #region pause menu */
+.pause-menu {
+  display: none;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+}
+
+.pause-menu .wood-sign {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pause-menu .wood-sign img {
+  width: 250px;
+  height: 64px;
+}
+
+.pause-menu::backdrop {
+}
+
+.wood-signs-menu--pause li {
+  padding-bottom: 16px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.close-btn img {
+  width: 48px;
+}
+
+/* #endregion */
+
+/* #region end screen */
+.outro-container {
+  display: none;
+  justify-content: center;
+}
+
+.outro-container button {
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 24px;
+}
+
+.outro-btns-container {
+  position: absolute;
+  top: 60px;
+  display: flex;
+  gap: 48px;
+}
+
+.outro-container button img {
+  width: 48px;
+  height: auto;
+}
+
+.overlay-img--win {
+  width: 80%;
+  align-self: center;
+  justify-self: center;
+}
+/* #endregion */
+
+/* #region information container */
+
+.information-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-image: url(./img/5_background/first_half_background.png);
+  background-position: center;
+}
+
+.information-container h2 {
+}
+
+.infotext-container {
+  padding: 16px;
+  width: 80%;
+  height: 75%;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 24px;
+  color: black;
+}
+
+/* #endregion */

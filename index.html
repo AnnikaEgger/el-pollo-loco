@@ -24,7 +24,7 @@
     <script src="./models/level.class.js"></script>
     <script src="./models/keyboard.class.js"></script>
 
-    <script src="./models/drawable-object.class.js"></script>
+    <!-- <script src="./models/drawable-object.class.js"></script>
     <script src="./models/movable-object.class.js"></script>
     <script src="./models/throwable-object.class.js"></script>
     <script src="./models/chicken.class.js"></script>
@@ -42,16 +42,16 @@
     <script src="./models/endboss.class.js"></script>
     <script src="./levels/level1.js" defer></script>
     <script src="./models/world.class.js"></script>
-    <script src="./models/character.class.js"></script>
+    <script src="./models/character.class.js"></script> -->
 
+    <script src="./scripts/templates.js"></script>
     <script src="./scripts/game.js" defer></script>
   </head>
-
   <body onload="init()">
     <h1>El Pollo Loco</h1>
 
     <div id="fullscreen" class="content-wrapper">
-      <canvas id="canvas" width="720px" height="480px"></canvas>
+      <canvas id="canvas" width="720" height="480"></canvas>
 
       <div id="home-screen" class="overlay-container home-container">
         <img
@@ -60,37 +60,64 @@
           alt=""
         />
 
-        <button onclick="startGame()" class="start-btn">
-          <img src="./icons/start-icon.png" alt="start icon" />
+        <button class="wood-btn start-btn" onclick="startGame()">
+          <img src="./icons/play-icon.png" alt="start icon" />
           <p>Start Game!</p>
         </button>
 
-        <div class="wood-signs-container">
-          <button class="wood-sign">
-            <p>Story</p>
-            <img src="./img/wood-sign.svg" alt="wooden sign" />
-          </button>
+        <nav class="wood-signs-container wood-signs-container--home">
+          <ul class="wood-signs-menu wood-signs-menu--home">
+            <li>
+              <button
+                onclick="openInfoContainer('Story')"
+                class="wood-btn wood-sign"
+              >
+                <p>Story</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
 
-          <button class="wood-sign">
-            <p>Instructions</p>
-            <img src="./img/wood-sign.svg" alt="wooden sign" />
-          </button>
+            <li>
+              <button
+                onclick="openInfoContainer('Instructions')"
+                class="wood-btn wood-sign"
+              >
+                <p>Instructions</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
 
-          <button class="wood-sign">
-            <p>Settings</p>
-            <img src="./img/wood-sign.svg" alt="wooden sign" />
-          </button>
+            <li>
+              <button
+                onclick="openInfoContainer('Settings')"
+                class="wood-btn wood-sign"
+              >
+                <p>Settings</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
 
-          <button class="wood-sign">
-            <p>Legal Notice</p>
-            <img src="./img/wood-sign.svg" alt="wooden sign" />
-          </button>
+            <li>
+              <button
+                onclick="openInfoContainer('Legal Notice')"
+                class="wood-btn wood-sign"
+              >
+                <p>Legal Notice</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
 
-          <button class="wood-sign">
-            <p>Privacy Policy</p>
-            <img src="./img/wood-sign.svg" alt="wooden sign" />
-          </button>
-        </div>
+            <li>
+              <button
+                onclick="openInfoContainer('Privacy Policy')"
+                class="wood-btn wood-sign"
+              >
+                <p>Privacy Policy</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       <div id="outro-screen" class="overlay-container outro-container">
@@ -107,11 +134,11 @@
           class="outro-screen overlay-img overlay-img--win display-none"
         />
         <div class="outro-btns-container">
-          <button onclick="restartGame()">
+          <button class="wood-btn" onclick="restartGame()">
             <p>Retry</p>
             <img src="./icons/restart-icon.png" alt="restart icon" />
           </button>
-          <button onclick="backToHomeScreen()">
+          <button class="wood-btn" onclick="backToHomeScreen()">
             <p>Menu</p>
             <img src="./icons/home-icon.png" alt="home icon" />
           </button>
@@ -119,34 +146,105 @@
       </div>
 
       <div class="btns-wrapper">
-        <button class="mute-btn" onclick="toggleGameSound()">
-          <img src="./icons/sound-icon.png" alt="Mute Icon" />
+        <button class="wood-btn mute-btn" onclick="toggleGameSound()">
+          <img id="mute-btn-img" src="./icons/mute-icon.png" alt="Mute Icon" />
         </button>
-        <button class="pause-btn" onclick="togglePauseGame()">
-          <img src="./icons/pause-icon.png" alt="Pause Icon" />
+        <button
+          id="pause-btn"
+          class="wood-btn pause-btn display-none"
+          onclick="togglePauseGame()"
+        >
+          <img
+            id="pause-btn-img"
+            src="./icons/pause-icon.png"
+            alt="Pause Icon"
+          />
         </button>
-        <button onclick="toggleFullscreen()" class="fullscreen-btn">
+        <button onclick="toggleFullscreen()" class="wood-btn fullscreen-btn">
           <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
         </button>
       </div>
 
-      <div class="pause-menu">
-        <button>
-          <img src="./icons/settings-icon.png" alt="settings icon" />
-          <p>Settings</p>
+      <dialog id="pause-dialog" class="pause-menu display-none">
+        <nav class="wood-signs-container">
+          <ul class="wood-signs-menu wood-signs-menu--pause">
+            <li>
+              <button onclick="togglePauseGame()" class="wood-btn wood-sign">
+                <p>Continue</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button class="wood-btn wood-sign">
+                <p>Instructions</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button class="wood-btn wood-sign">
+                <p>Settings</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button onclick="backToHomeScreen()" class="wood-btn wood-sign">
+                <p>Home</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button onclick="restartGame()" class="wood-btn wood-sign">
+                <p>Restart</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+        <button
+          onclick="togglePauseGame()"
+          class="wood-btn close-btn close-btn--pause-menu"
+        >
+          <img src="./icons/close-icon.png" alt="close icon" />
         </button>
-        <button onclick="restartGame()">
-          <img src="./icons/restart-icon.png" alt="restart icon" />
-          <p>Restart</p>
+      </dialog>
+
+      <div id="info-container" class="information-container">
+        <button
+          onclick="backToHomeScreen()"
+          class="wood-btn close-btn close-btn--info-container"
+        >
+          <img src="./icons/close-icon.png" alt="close icon" />
         </button>
-        <button>
-          <img src="./icons/home-icon.png" alt="home icon" />
-          <p>Menu</p>
-        </button>
-        <button class="wood-sign">
-          <p>Instructions</p>
-          <img src="" alt="wooden sign" />
-        </button>
+        <h2 id="infotext-headline">Story</h2>
+        <div id="infotext-container" class="infotext-container">
+          <div class="game-instructions">
+            <h2>How to Play</h2>
+            <p>Use the following keys to control your character:</p>
+
+            Desktop
+
+            <ul style="list-style: none; padding: 0">
+              <li style="margin-bottom: 12px">
+                <kbd>←</kbd> <kbd>→</kbd> : <strong>Move</strong> (Left / Right)
+              </li>
+              <li style="margin-bottom: 12px">
+                <kbd>Space</kbd> : <strong>Jump</strong>
+              </li>
+              <li style="margin-bottom: 12px">
+                <kbd>D</kbd> : <strong>Throw Bottle</strong>
+              </li>
+            </ul>
+
+            <p style="margin-top: 20px; font-style: italic">
+              Good luck! Dodge the obstacles and defeat your enemies.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </body>

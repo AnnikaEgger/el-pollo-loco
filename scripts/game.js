@@ -10,8 +10,11 @@ let gameLost = false;
 let gameWon = false;
 let gameStarted = false;
 const bgMusicStart = new Audio("./audio/background-music-start-screen.mp3");
+const btnClickSound = new Audio("./audio/wood-button-click.mp3");
 bgMusicStart.loop = true;
-let allAudios = [bgMusicStart];
+let allAudios = [bgMusicStart, btnClickSound];
+
+function styleHTMLElements() {}
 
 function init() {
   document.addEventListener(
@@ -23,12 +26,23 @@ function init() {
     },
     { once: true },
   );
+
+  document.addEventListener("click", (e) => {
+    const button = e.target.closest(".wood-sign");
+    if (button) {
+      btnClickSound.currentTime = 0;
+      btnClickSound.play();
+    }
+  });
 }
 
 function startGame() {
   gameStarted = true;
   const homeScreen = document.getElementById("home-screen");
+  const pauseBtn = document.getElementById("pause-btn");
   homeScreen.style.display = "none";
+  pauseBtn.classList.remove("display-none");
+
   bgMusicStart.pause();
 
   initNewWorld();
@@ -110,6 +124,14 @@ function toggleGameSound() {
   allAudios.forEach((audio) => {
     audio.muted = isMuted;
   });
+
+  toggleSoundIcon();
+}
+
+function toggleSoundIcon() {
+  const muteBtnImg = document.getElementById("mute-btn-img");
+  if (isMuted) muteBtnImg.src = "./icons/sound-icon.png";
+  else muteBtnImg.src = "./icons/mute-icon.png";
 }
 
 function muteGame() {
@@ -189,12 +211,33 @@ function resizeCanvas() {
 
 function togglePauseGame() {
   isPaused = !isPaused;
+  console.log(isPaused);
 
-  if (isPaused) pauseGame(allObjsWithInt);
-  else continueGame(allObjsWithInt);
+  if (isPaused) {
+    pauseGame(allObjsWithInt);
+  } else {
+    continueGame(allObjsWithInt);
+  }
+}
+
+function openPauseMenu() {
+  const pauseDialog = document.getElementById("pause-dialog");
+  pauseDialog.style.display = "flex";
+  pauseDialog.showModal();
+}
+
+function closePauseMenu() {
+  const pauseDialog = document.getElementById("pause-dialog");
+  pauseDialog.style.display = "none";
+  pauseDialog.close();
 }
 
 function pauseGame() {
+  const pauseBtnImg = document.getElementById("pause-btn-img");
+  pauseBtnImg.src = "./icons/play-icon.png";
+
+  openPauseMenu();
+
   pauseAudios();
   allObjsWithInt.forEach((obj) => {
     obj.isPaused = true;
@@ -202,6 +245,10 @@ function pauseGame() {
 }
 
 function continueGame() {
+  const pauseBtnImg = document.getElementById("pause-btn-img");
+  pauseBtnImg.src = "./icons/pause-icon.png";
+
+  closePauseMenu();
   continueAudios();
   allObjsWithInt.forEach((obj) => {
     obj.isPaused = false;
@@ -250,14 +297,44 @@ function clearGame() {
   keyboard.D = false;
 }
 
+function closeInfoContainer() {
+  document.getElementById("info-container").style.display = "none";
+}
+
+function openInfoContainer(content) {
+  const infoContainer = document.getElementById("info-container");
+  const infoText = document.getElementById("infotext-container");
+  const headline = document.getElementById("infotext-headline");
+
+  infoContainer.style.display = "flex";
+
+  const htmlTemplates = {
+    "story": storyHTML,
+    "legal notice": legalNoticeHTML,
+    "privacy policy": privacyPolicyHTML,
+    "instructions": instructionsHTML,
+    // "settings": settingsHTML,
+  };
+
+  headline.innerText = content;
+  infoText.innerHTML = "";
+  if (htmlTemplates[content.toLowerCase()])
+    infoText.innerHTML = htmlTemplates[content.toLowerCase()]();
+}
+
 function backToHomeScreen() {
+  closePauseMenu();
+  closeInfoContainer();
+
   clearGame();
-  const homeScreen = document.getElementById("home-screen");
-  homeScreen.style.display = "unset";
+  document.getElementById("home-screen").style.display = "unset";
+  document.getElementById("pause-btn").classList.add("display-none");
   bgMusicStart.play();
 }
 
 function restartGame() {
+  isPaused = false;
+  continueGame();
   clearGame();
   level1 = initLevel();
   initNewWorld();
