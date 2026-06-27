@@ -9,12 +9,6 @@ let allObjsWithInt = [];
 let gameLost = false;
 let gameWon = false;
 let gameStarted = false;
-const bgMusicStart = new Audio("./audio/background-music-start-screen.mp3");
-const btnClickSound = new Audio("./audio/wood-button-click.mp3");
-bgMusicStart.loop = true;
-let allAudios = [bgMusicStart, btnClickSound];
-
-function styleHTMLElements() {}
 
 function init() {
   document.addEventListener(
@@ -40,8 +34,10 @@ function init() {
 
 function startGame() {
   gameStarted = true;
-  const pauseBtn = document.getElementById("pause-btn");
-  pauseBtn.classList.remove("display-none");
+  document.getElementById("imprint-container").classList.remove("display-flex");
+  document.getElementById("imprint-container").classList.add("display-none");
+  document.getElementById("pause-btn").classList.remove("display-none");
+
   clearOverlayContainer();
 
   bgMusicStart.pause();
@@ -61,21 +57,6 @@ function initNewWorld() {
     ...world.level.clouds,
     ...world.level.throwableObjects,
   ];
-}
-
-function resizeGame() {
-  const allObjects = [
-    world.level,
-    world.character,
-    ...world.STATUSBARS,
-    ...world.level.enemies,
-    ...world.level.backgroundObjects,
-    ...world.level.clouds,
-    ...world.level.coins,
-    ...world.level.throwableObjects,
-  ];
-
-  allObjects.forEach((obj) => obj.resize());
 }
 
 window.addEventListener("keydown", (event) => {
@@ -110,6 +91,95 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+function togglePauseGame() {
+  isPaused = !isPaused;
+  console.log(isPaused);
+
+  if (isPaused) {
+    pauseGame(allObjsWithInt);
+  } else {
+    continueGame(allObjsWithInt);
+  }
+}
+
+function pauseGame() {
+  const pauseBtnImg = document.getElementById("pause-btn-img");
+  pauseBtnImg.src = "./icons/play-icon.png";
+
+  openPauseMenu();
+
+  pauseAudios();
+  allObjsWithInt.forEach((obj) => {
+    obj.isPaused = true;
+  });
+}
+
+function continueGame() {
+  clearOverlayContainer();
+  const pauseBtnImg = document.getElementById("pause-btn-img");
+  pauseBtnImg.src = "./icons/pause-icon.png";
+
+  continueAudios();
+  allObjsWithInt.forEach((obj) => {
+    obj.isPaused = false;
+  });
+}
+
+function endGame() {
+  overlayContainer.innerHTML = endScreenHTML();
+  const gameOverImg = document.getElementById("game-over-img");
+  const youWinImg = document.getElementById("you-win-img");
+
+  clearAllIntervals();
+  pauseAudios();
+
+  if (gameLost) {
+    youWinImg.classList.add("display-none");
+    gameOverImg.classList.remove("display-none");
+  } else if (gameWon) {
+    gameOverImg.classList.add("display-none");
+    youWinImg.classList.remove("display-none");
+  }
+}
+
+function clearGame() {
+  clearAllIntervals();
+  allObjsWithInt = [];
+  gameLost = false;
+  gameWon = false;
+  isPaused = false;
+
+  pauseAudios();
+  resetAudios();
+
+  keyboard.LEFT = false;
+  keyboard.RIGHT = false;
+  keyboard.UP = false;
+  keyboard.DOWN = false;
+  keyboard.SPACE = false;
+  keyboard.D = false;
+}
+
+function restartGame() {
+  isPaused = false;
+  continueGame();
+  clearGame();
+  level1 = initLevel();
+  initNewWorld();
+}
+
+function clearAllIntervals() {
+  allObjsWithInt.forEach((obj) => {
+    obj.intervalIds.forEach(clearInterval);
+  });
+}
+
+// #region audios
+const bgMusicStart = new Audio("./audio/background-music-start-screen.mp3");
+const btnClickSound = new Audio("./audio/wood-button-click.mp3");
+bgMusicStart.loop = true;
+let allAudios = [bgMusicStart, btnClickSound];
+
 function pushAudiosIntoAudiosArr() {
   allAudios.push(...Character.AUDIOS);
   allAudios.push(...Chicken.AUDIOS);
@@ -128,12 +198,6 @@ function toggleGameSound() {
   });
 
   toggleSoundIcon();
-}
-
-function toggleSoundIcon() {
-  const muteBtnImg = document.getElementById("mute-btn-img");
-  if (isMuted) muteBtnImg.src = "./icons/sound-icon.png";
-  else muteBtnImg.src = "./icons/mute-icon.png";
 }
 
 function muteGame() {
@@ -164,183 +228,4 @@ function resetAudios() {
   });
 }
 
-let fullscreen = false;
-function toggleFullscreen() {
-  element = document.getElementById("fullscreen");
-  fullscreen = !fullscreen;
-
-  if (fullscreen) {
-    openFullscreen(element);
-  } else {
-    closeFullscreen();
-  }
-}
-
-function openFullscreen(element) {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  }
-}
-
-function closeFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-}
-
-function resizeCanvas() {
-  oldCanvasHeight = canvas.height;
-  oldCanvasWidth = canvas.width;
-
-  if (document.fullscreenElement) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  } else {
-    canvas.width = 720;
-    canvas.height = 480;
-  }
-
-  if (gameStarted) resizeGame();
-}
-
-function togglePauseGame() {
-  isPaused = !isPaused;
-  console.log(isPaused);
-
-  if (isPaused) {
-    pauseGame(allObjsWithInt);
-  } else {
-    continueGame(allObjsWithInt);
-  }
-}
-
-function openPauseMenu() {
-  overlayContainer.innerHTML = pauseMenuHTML();
-}
-
-function pauseGame() {
-  const pauseBtnImg = document.getElementById("pause-btn-img");
-  pauseBtnImg.src = "./icons/play-icon.png";
-
-  openPauseMenu();
-
-  pauseAudios();
-  allObjsWithInt.forEach((obj) => {
-    obj.isPaused = true;
-  });
-}
-
-function continueGame() {
-  const pauseBtnImg = document.getElementById("pause-btn-img");
-  pauseBtnImg.src = "./icons/pause-icon.png";
-
-  closePauseMenu();
-  continueAudios();
-  allObjsWithInt.forEach((obj) => {
-    obj.isPaused = false;
-  });
-}
-
-function endGame() {
-  const outroScreen = document.getElementById("outro-screen");
-  const gameOverImg = document.getElementById("game-over-img");
-  const youWinImg = document.getElementById("you-win-img");
-
-  clearAllIntervals();
-  pauseAudios();
-
-  outroScreen.width = canvas.width + "px";
-  outroScreen.height = canvas.height + "px";
-  outroScreen.classList.remove("display-flex");
-  outroScreen.classList.add("display-none");
-
-  if (gameLost) {
-    youWinImg.classList.add("display-none");
-    gameOverImg.classList.remove("display-none");
-  } else if (gameWon) {
-    gameOverImg.classList.add("display-none");
-    youWinImg.classList.remove("display-none");
-  }
-}
-
-function clearGame() {
-  clearAllIntervals();
-  allObjsWithInt = [];
-  gameLost = false;
-  gameWon = false;
-  isPaused = false;
-
-  pauseAudios();
-  resetAudios();
-
-  keyboard.LEFT = false;
-  keyboard.RIGHT = false;
-  keyboard.UP = false;
-  keyboard.DOWN = false;
-  keyboard.SPACE = false;
-  keyboard.D = false;
-}
-
-const overlayContainer = document.getElementById("overlay-container");
-function showHomeScreen() {
-  overlayContainer.innerHTML = homeScreenHTML();
-}
-
-function closeInfoScreen(origin) {
-  if (origin == "pause menu") openPauseMenu();
-  else backToHomeScreen();
-}
-
-function showInfoScreen(content, origin = "home screen") {
-  const htmlTemplates = {
-    "story": storyHTML,
-    "legal notice": legalNoticeHTML,
-    "privacy policy": privacyPolicyHTML,
-    "instructions": instructionsHTML,
-    // "settings": settingsHTML,
-  };
-
-  let contentText = content.toLowerCase();
-
-  overlayContainer.innerHTML = InfoScreenHTML(
-    htmlTemplates[contentText](content, origin),
-  );
-}
-
-function backToHomeScreen(origin) {
-  clearGame();
-  bgMusicStart.play();
-  showHomeScreen();
-
-  document.getElementById("pause-btn").classList.add("display-none");
-}
-
-function clearOverlayContainer() {
-  overlayContainer.innerHTML = "";
-}
-
-function restartGame() {
-  isPaused = false;
-  continueGame();
-  clearGame();
-  level1 = initLevel();
-  initNewWorld();
-}
-
-function clearAllIntervals() {
-  allObjsWithInt.forEach((obj) => {
-    obj.intervalIds.forEach(clearInterval);
-  });
-}
-
-document.addEventListener("fullscreenchange", resizeCanvas);
-document.addEventListener("webkitfullscreenchange", resizeCanvas);
-document.addEventListener("msfullscreenchange", resizeCanvas);
+// #endregion

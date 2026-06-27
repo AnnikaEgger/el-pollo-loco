@@ -12,7 +12,7 @@
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.g<sta>tic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap"
       rel="stylesheet"
@@ -24,7 +24,7 @@
     <script src="./models/level.class.js"></script>
     <script src="./models/keyboard.class.js"></script>
 
-    <!-- <script src="./models/drawable-object.class.js"></script>
+    <script src="./models/drawable-object.class.js"></script>
     <script src="./models/movable-object.class.js"></script>
     <script src="./models/throwable-object.class.js"></script>
     <script src="./models/chicken.class.js"></script>
@@ -42,9 +42,10 @@
     <script src="./models/endboss.class.js"></script>
     <script src="./levels/level1.js" defer></script>
     <script src="./models/world.class.js"></script>
-    <script src="./models/character.class.js"></script> -->
+    <script src="./models/character.class.js"></script>
 
     <script src="./scripts/templates.js"></script>
+    <script src="./scripts/display-manager.js" defer></script>
     <script src="./scripts/game.js" defer></script>
   </head>
   <body onload="init()">
@@ -70,6 +71,16 @@
             alt="Pause Icon"
           />
         </button>
+
+        <div id="imprint-container" class="imprint-container display-flex">
+          <button onclick="showInfoScreen('Legal Notice')">
+            <p>Legal Notice</p>
+          </button>
+
+          <button onclick="showInfoScreen('Privacy Policy')">
+            <p>Privacy Policy</p>
+          </button>
+        </div>
         <button onclick="toggleFullscreen()" class="wood-btn fullscreen-btn">
           <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
         </button>

@@ -9,6 +9,9 @@ body {
   background-image: url("./img/desert.png");
   background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
+  height: 100dvh;
+  width: 100dvw;
 
   font-weight: 300;
   color: var(--beige);
@@ -60,14 +63,17 @@ button {
 /* #region content wrapper */
 
 .content-wrapper {
+  width: 720px;
+  height: 480px;
   position: relative;
   display: flex;
   flex-direction: column;
+  container-type: size;
 }
 
 .content-wrapper:fullscreen {
-  /* width: 100vw;
-  height: 100vh; */
+  width: 100dvw;
+  height: 100dvh;
   background-color: #000;
   display: flex;
   justify-content: center;
@@ -102,25 +108,16 @@ button {
 
 .btns-wrapper {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
-.btns-wrapper button {
-  border-radius: 50%;
-  padding: 4px;
-}
-
-.btns-wrapper button img {
-  width: 3.5dvw;
+.wood-btn img {
+  width: 6cqw;
   height: auto;
-}
-
-.content-wrapper:fullscreen .btns-wrapper button img,
-.content-wrapper:-webkit-full-screen .btns-wrapper button img {
-  width: 5dvw;
 }
 
 .overlay-container {
@@ -143,10 +140,11 @@ button {
 }
 
 /* #region wood signs and btns */
+
 .wood-signs-container--home {
   position: absolute;
-  top: 64px;
-  left: 8px;
+  top: 6cqh;
+  width: 100%;
 }
 
 .wood-signs-menu {
@@ -155,13 +153,19 @@ button {
   margin: 0;
 }
 
+.wood-signs-menu--home {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.wood-signs-menu--home p {
+  font-size: 3cqw;
+}
+
 .wood-signs-menu p {
   color: var(--beige);
   letter-spacing: 2px;
-}
-
-.wood-signs-menu--home li {
-  padding-bottom: 16px;
 }
 
 .wood-sign {
@@ -176,7 +180,6 @@ button {
 
 .wood-sign:hover p {
   text-decoration: underline;
-  filter: brightness(1.4) drop-shadow(3px 4px 2px rgba(0, 0, 0, 0.8));
 }
 
 .wood-sign p {
@@ -187,18 +190,17 @@ button {
 .wood-btn {
   transition:
     transform 0.1s ease,
-    box-shadow 0.1s ease;
+    color 0.1s ease;
 }
 
 .wood-sign:hover,
 .wood-btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
+  transform: translateY(-0.5cqh);
 }
 
 .wood-sign:active,
 .wood-btn:active {
-  transform: translateY(2px);
+  transform: translateY(-0.5cqh);
 }
 
 /* #endregion */
@@ -208,33 +210,64 @@ button {
   display: flex;
 }
 
-.home-container .wood-sign img {
-  width: 100px;
-
-  height: 48px;
+.wood-signs-menu--home img {
+  width: 18cqw;
+  height: 10cqh;
 }
 
-.start-btn {
-  position: absolute;
-  right: 200px;
-  top: 24px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.wood-sign:hover p,
+.wood-btn:hover p {
+  background: linear-gradient(to bottom, #fff37a 0%, #ffae00 60%, #d88000 100%);
 
-.start-btn img {
-  width: 64px;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  display: inline-block;
 }
 
 .start-btn p {
-  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  color: #ffd23f;
+
+  font-size: 4cqw;
+  letter-spacing: 0.5cqw;
+
+  background: linear-gradient(to bottom, #fff37a 0%, #ffae00 60%, #d88000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: none;
+  filter: drop-shadow(-1px -1px 0px #421d05) drop-shadow(1px -1px 0px #421d05)
+    drop-shadow(-1px 1px 0px #421d05) drop-shadow(1px 1px 0px #421d05)
+    drop-shadow(0px 2px 0px #301402) drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.5));
+}
+
+.imprint-container {
+  gap: 2cqw;
+}
+
+.imprint-container p {
+  color: var(--beige);
+  font-size: 2.5cqw;
+  text-decoration: underline;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+  display: inline-block;
+}
+
+.imprint-container button:hover p {
+  color: #ffd23f;
+  transform: translateY(-0.25cqh);
 }
 /* #endregion */
 
 /* #region pause menu */
 .pause-menu {
-  /* position: absolute; */
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-self: center;
@@ -249,32 +282,32 @@ button {
 .pause-menu .wood-sign {
   display: flex;
   align-items: center;
-  gap: 16px;
 }
 
 .pause-menu .wood-sign img {
-  width: 250px;
-  height: 64px;
+  width: 35cqw;
+  height: 12cqh;
 }
 
-.pause-menu::backdrop {
+.wood-signs-menu--pause {
+  /* position: absolute; */
+  top: 5cqh;
+  display: flex;
+  flex-direction: column;
+  gap: 3cqh;
 }
 
-.wood-signs-menu--pause li {
-  padding-bottom: 16px;
+.wood-signs-container--pause {
+  padding-bottom: 8cqh;
 }
 
 .wood-signs-menu--pause p {
-  font-size: 32px;
+  font-size: 4cqw;
 }
 
 .close-btn {
   position: absolute;
   padding: 0;
-}
-
-.close-btn img {
-  width: 48px;
 }
 
 .close-btn--pause-menu {
@@ -286,25 +319,32 @@ button {
 
 /* #region end screen */
 .outro-container {
+  display: flex;
   justify-content: center;
 }
 
 .outro-container button {
   border-radius: 50%;
-  padding: 4px;
-  font-size: 24px;
+  font-size: 5cqw;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 2cqh;
+}
+
+.outro-container button p {
+  color: var(--beige);
+}
+
+.outro-container .wood-btn img {
+  width: 7cqw;
 }
 
 .outro-btns-container {
   position: absolute;
-  top: 60px;
+  top: 20cqh;
   display: flex;
-  gap: 48px;
-}
-
-.outro-container button img {
-  width: 48px;
-  height: auto;
+  gap: 6cqw;
 }
 
 .overlay-img--win {
@@ -317,7 +357,6 @@ button {
 /* #region information container */
 
 .information-container {
-  /* position: absolute; */
   width: 100%;
   height: 100%;
   display: flex;
