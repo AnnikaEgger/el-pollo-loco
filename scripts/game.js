@@ -34,14 +34,15 @@ function init() {
       btnClickSound.play();
     }
   });
+
+  showHomeScreen();
 }
 
 function startGame() {
   gameStarted = true;
-  const homeScreen = document.getElementById("home-screen");
   const pauseBtn = document.getElementById("pause-btn");
-  homeScreen.style.display = "none";
   pauseBtn.classList.remove("display-none");
+  clearOverlayContainer();
 
   bgMusicStart.pause();
 
@@ -50,6 +51,7 @@ function startGame() {
 }
 
 function initNewWorld() {
+  initLevel();
   world = new World(canvas, keyboard);
 
   allObjsWithInt = [
@@ -206,7 +208,7 @@ function resizeCanvas() {
     canvas.height = 480;
   }
 
-  resizeGame();
+  if (gameStarted) resizeGame();
 }
 
 function togglePauseGame() {
@@ -221,15 +223,7 @@ function togglePauseGame() {
 }
 
 function openPauseMenu() {
-  const pauseDialog = document.getElementById("pause-dialog");
-  pauseDialog.style.display = "flex";
-  pauseDialog.showModal();
-}
-
-function closePauseMenu() {
-  const pauseDialog = document.getElementById("pause-dialog");
-  pauseDialog.style.display = "none";
-  pauseDialog.close();
+  overlayContainer.innerHTML = pauseMenuHTML();
 }
 
 function pauseGame() {
@@ -265,7 +259,8 @@ function endGame() {
 
   outroScreen.width = canvas.width + "px";
   outroScreen.height = canvas.height + "px";
-  outroScreen.style.display = "flex";
+  outroScreen.classList.remove("display-flex");
+  outroScreen.classList.add("display-none");
 
   if (gameLost) {
     youWinImg.classList.add("display-none");
@@ -277,9 +272,6 @@ function endGame() {
 }
 
 function clearGame() {
-  const outroScreen = document.getElementById("outro-screen");
-  outroScreen.style.display = "none";
-
   clearAllIntervals();
   allObjsWithInt = [];
   gameLost = false;
@@ -297,17 +289,17 @@ function clearGame() {
   keyboard.D = false;
 }
 
-function closeInfoContainer() {
-  document.getElementById("info-container").style.display = "none";
+const overlayContainer = document.getElementById("overlay-container");
+function showHomeScreen() {
+  overlayContainer.innerHTML = homeScreenHTML();
 }
 
-function openInfoContainer(content) {
-  const infoContainer = document.getElementById("info-container");
-  const infoText = document.getElementById("infotext-container");
-  const headline = document.getElementById("infotext-headline");
+function closeInfoScreen(origin) {
+  if (origin == "pause menu") openPauseMenu();
+  else backToHomeScreen();
+}
 
-  infoContainer.style.display = "flex";
-
+function showInfoScreen(content, origin = "home screen") {
   const htmlTemplates = {
     "story": storyHTML,
     "legal notice": legalNoticeHTML,
@@ -316,20 +308,23 @@ function openInfoContainer(content) {
     // "settings": settingsHTML,
   };
 
-  headline.innerText = content;
-  infoText.innerHTML = "";
-  if (htmlTemplates[content.toLowerCase()])
-    infoText.innerHTML = htmlTemplates[content.toLowerCase()]();
+  let contentText = content.toLowerCase();
+
+  overlayContainer.innerHTML = InfoScreenHTML(
+    htmlTemplates[contentText](content, origin),
+  );
 }
 
-function backToHomeScreen() {
-  closePauseMenu();
-  closeInfoContainer();
-
+function backToHomeScreen(origin) {
   clearGame();
-  document.getElementById("home-screen").style.display = "unset";
-  document.getElementById("pause-btn").classList.add("display-none");
   bgMusicStart.play();
+  showHomeScreen();
+
+  document.getElementById("pause-btn").classList.add("display-none");
+}
+
+function clearOverlayContainer() {
+  overlayContainer.innerHTML = "";
 }
 
 function restartGame() {

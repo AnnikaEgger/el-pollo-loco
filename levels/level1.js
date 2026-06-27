@@ -1,7 +1,7 @@
-let level1 = initLevel();
+let level1;
 
 function initLevel() {
-  return new Level(
+  level1 = new Level(
     [
       new ChickenNormal(),
       new ChickenNormal(),

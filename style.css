@@ -1,16 +1,53 @@
+:root {
+  --beige: rgba(250, 242, 223, 1);
+}
+
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-image: url("./img/raniramli-desert-5396906.jpg"); */
+  background-image: url("./img/desert.png");
   background-position: center;
+  background-repeat: no-repeat;
 
   font-weight: 300;
-  color: rgb(250, 242, 223);
+  color: var(--beige);
+}
+
+h1 {
+  font-size: 64px;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+@font-face {
+  font-family: "Zabars";
+  src: url(./fonts/zabars.ttf) format("truetype");
+}
+
+canvas {
+  background-color: black;
+  display: block;
+}
+
+@media only screen and (max-width: 720px) {
+  canvas {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-height: 480px) {
+  canvas {
+    height: 100dvh;
+  }
+
+  .game-title {
+    display: none;
+  }
 }
 
 * {
-  font-family: "Spicy Rice", serif;
+  font-family: "Zabars", serif;
 }
 
 button {
@@ -63,10 +100,6 @@ button {
 
 /* #endregion */
 
-canvas {
-  background-color: black;
-}
-
 .btns-wrapper {
   position: absolute;
   bottom: 0px;
@@ -81,13 +114,13 @@ canvas {
 }
 
 .btns-wrapper button img {
-  width: 48px;
+  width: 3.5dvw;
   height: auto;
 }
 
 .content-wrapper:fullscreen .btns-wrapper button img,
 .content-wrapper:-webkit-full-screen .btns-wrapper button img {
-  width: 5vw;
+  width: 5dvw;
 }
 
 .overlay-container {
@@ -105,6 +138,10 @@ canvas {
   display: none;
 }
 
+.display-flex {
+  display: flex;
+}
+
 /* #region wood signs and btns */
 .wood-signs-container--home {
   position: absolute;
@@ -116,6 +153,11 @@ canvas {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.wood-signs-menu p {
+  color: var(--beige);
+  letter-spacing: 2px;
 }
 
 .wood-signs-menu--home li {
@@ -146,7 +188,6 @@ canvas {
   transition:
     transform 0.1s ease,
     box-shadow 0.1s ease;
-  cursor: pointer;
 }
 
 .wood-sign:hover,
@@ -169,6 +210,7 @@ canvas {
 
 .home-container .wood-sign img {
   width: 100px;
+
   height: 48px;
 }
 
@@ -192,7 +234,8 @@ canvas {
 
 /* #region pause menu */
 .pause-menu {
-  display: none;
+  /* position: absolute; */
+  display: flex;
   flex-direction: column;
   justify-self: center;
   align-items: center;
@@ -221,21 +264,28 @@ canvas {
   padding-bottom: 16px;
 }
 
+.wood-signs-menu--pause p {
+  font-size: 32px;
+}
+
 .close-btn {
   position: absolute;
-  top: 0;
-  right: 0;
+  padding: 0;
 }
 
 .close-btn img {
   width: 48px;
 }
 
+.close-btn--pause-menu {
+  top: 16px;
+  right: 16px;
+}
+
 /* #endregion */
 
 /* #region end screen */
 .outro-container {
-  display: none;
   justify-content: center;
 }
 
@@ -267,7 +317,7 @@ canvas {
 /* #region information container */
 
 .information-container {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 100%;
   display: flex;

@@ -30,8 +30,176 @@
 // </p>`;
 // }
 
-function legalNoticeHTML() {
-  return `<h1>Legal Notice</h1>
+function homeScreenHTML() {
+  return `  <div
+        id="home-screen"
+        class="overlay-container home-container"
+      >
+        <img
+          class="overlay-img overlay-img--full"
+          src="./img/9_intro_outro_screens/start/startscreen_1.png"
+          alt=""
+        />
+
+        <button class="wood-btn start-btn" onclick="startGame()">
+          <img src="./icons/play-icon.png" alt="start icon" />
+          <p>Start Game!</p>
+        </button>
+
+        <nav class="wood-signs-container wood-signs-container--home">
+          <ul class="wood-signs-menu wood-signs-menu--home">
+            <li>
+              <button onclick="showInfoScreen('Story')" class="wood-btn wood-sign">
+                <p>Story</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onclick="showInfoScreen('Instructions')"
+                class="wood-btn wood-sign"
+              >
+                <p>Instructions</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button onclick="showInfoScreen('Settings')" class="wood-btn wood-sign">
+                <p>Settings</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onclick="showInfoScreen('Legal Notice')"
+                class="wood-btn wood-sign"
+              >
+                <p>Legal Notice</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onclick="showInfoScreen('Privacy Policy')"
+                class="wood-btn wood-sign"
+              >
+                <p>Privacy Policy</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>`;
+}
+
+function pauseMenuHTML() {
+  return `<div id="pause-overlay" class="pause-menu">
+        <nav class="wood-signs-container">
+          <ul class="wood-signs-menu wood-signs-menu--pause">
+            <li>
+              <button onclick="togglePauseGame()" class="wood-btn wood-sign">
+                <p>Continue</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onclick="showInfoScreen('Instructions', 'pause menu')"
+                class="wood-btn wood-sign"
+              >
+                <p>Instructions</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onclick="showInfoScreen('Settings', 'pause menu')"
+                class="wood-btn wood-sign"
+              >
+                <p>Settings</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                onclick="backToHomeScreen('pause menu')"
+                class="wood-btn wood-sign"
+              >
+                <p>Home</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+
+            <li>
+              <button onclick="restartGame()" class="wood-btn wood-sign">
+                <p>Restart</p>
+                <img src="./img/wood-sign.svg" alt="wooden sign" />
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+        <button
+          onclick="togglePauseGame()"
+          class="wood-btn close-btn close-btn--pause-menu"
+        >
+          <img src="./icons/close-icon.png" alt="close icon" />
+        </button>
+      </div>`;
+}
+
+function outroScreenHTML() {
+  return `     <div
+        id="outro-screen"
+        class="overlay-container outro-container"
+      >
+        <img
+          id="game-over-img"
+          src="./img/9_intro_outro_screens/game_over/game over!.png"
+          alt="Outro Screen"
+          class="outro-screen overlay-img overlay-img--full display-none"
+        />
+        <img
+          id="you-win-img"
+          src="./img/You won, you lost/You Win B.png"
+          alt="Outro Screen"
+          class="outro-screen overlay-img overlay-img--win display-none"
+        />
+        <div class="outro-btns-container">
+          <button class="wood-btn" onclick="restartGame()">
+            <p>Retry</p>
+            <img src="./icons/restart-icon.png" alt="restart icon" />
+          </button>
+          <button class="wood-btn" onclick="backToHomeScreen('game')">
+            <p>Menu</p>
+            <img src="./icons/home-icon.png" alt="home icon" />
+          </button>
+        </div>
+      </div>`;
+}
+
+function InfoScreenHTML(innerContent) {
+  return `<div id="info-container" class="information-container">${innerContent}</div>`;
+}
+
+function legalNoticeHTML(headline, origin) {
+  return `<button
+  onclick="closeInfoScreen('${origin}')"
+  class="wood-btn close-btn close-btn--info-container"
+>
+  <img src="./icons/close-icon.png" alt="close icon" />
+</button>
+<h2 id="infotext-headline">${headline}</h2>
+
+<div id="infotext-container" class="infotext-container">
+<h1>Legal Notice</h1>
 
 <p>Annika Egger<br />
 Alte Schule 3<br />
@@ -59,11 +227,23 @@ endboss riser
 Risers - Horror Whooshes Tension Builder 1.mp3 by original_sound -- https://freesound.org/s/494981/ -- License: Attribution 3.0
 
 sad trombone sound
-saddertrombones.mp3 by NotR -- https://freesound.org/s/172950/ -- License: Attribution NonCommercial 3.0`;
+saddertrombones.mp3 by NotR -- https://freesound.org/s/172950/ -- License: Attribution NonCommercial 3.0
+
+</div>`;
 }
 
-function privacyPolicyHTML() {
-  return `<h1>Privacy Policy</h1>
+function privacyPolicyHTML(headline, origin) {
+  return `   <button
+  onclick="closeInfoScreen('${origin}')"
+  class="wood-btn close-btn close-btn--info-container"
+>
+  <img src="./icons/close-icon.png" alt="close icon" />
+</button>
+<h2 id="infotext-headline">${headline}</h2>
+
+<div id="infotext-container" class="infotext-container">
+
+ <h1>Privacy Policy</h1>
 
 <h2>1. Data Protection at a Glance</h2>
 
@@ -154,11 +334,22 @@ Email: annikaegger83@gmail.com
 
 <p>If you have restricted the processing of your personal data, such data – apart from storage – may only be processed with your consent or for the establishment, exercise, or defence of legal claims, or for the protection of the rights of another natural or legal person, or for reasons of important public interest of the European Union or a Member State.</p>
 
-<p>Source: <a href="https://www.e-recht24.de">https://www.e-recht24.de</a></p>`;
+<p>Source: <a href="https://www.e-recht24.de">https://www.e-recht24.de</a></p>
+
+</div>`;
 }
 
-function storyHTML() {
-  return `    <p>
+function storyHTML(headline, origin) {
+  return ` <button
+ onclick="closeInfoScreen('${origin}')"
+  class="wood-btn close-btn close-btn--info-container"
+>
+  <img src="./icons/close-icon.png" alt="close icon" />
+</button>
+<h2 id="infotext-headline">${headline}</h2>
+
+<div id="infotext-container" class="infotext-container">
+   <p>
             There is only one man crazy enough to take on an army of
             <b>"pollo locos"</b>...<br /><br />
 
@@ -180,11 +371,21 @@ function storyHTML() {
             Now step into the shoes of Pepe Peligroso and save the desert from
             the wildest chicken invasion ever seen. <br />
             ¡A luchar!
-          </p>`;
+          </p>
+          </div>`;
 }
 
-function instructionsHTML() {
-  return `
+function instructionsHTML(headline, origin) {
+  return `<button
+ onclick="closeInfoScreen('${origin}')"
+  class="wood-btn close-btn close-btn--info-container"
+>
+  <img src="./icons/close-icon.png" alt="close icon" />
+</button>
+<h2 id="infotext-headline">${headline}</h2>
+
+<div id="infotext-container" class="infotext-container">
+
     <div class="game-instructions">
       <h2>How to Play</h2>
       <p>Use the following keys to control your character:</p>
@@ -204,6 +405,7 @@ function instructionsHTML() {
       <p style="margin-top: 20px; font-style: italic;">
         Good luck! Dodge the obstacles and defeat your enemies.
       </p>
+    </div>
     </div>
   `;
 }

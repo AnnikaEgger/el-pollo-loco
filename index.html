@@ -48,102 +48,12 @@
     <script src="./scripts/game.js" defer></script>
   </head>
   <body onload="init()">
-    <h1>El Pollo Loco</h1>
+    <h1 class="game-title">El Pollo Loco</h1>
 
     <div id="fullscreen" class="content-wrapper">
       <canvas id="canvas" width="720" height="480"></canvas>
 
-      <div id="home-screen" class="overlay-container home-container">
-        <img
-          class="overlay-img overlay-img--full"
-          src="./img/9_intro_outro_screens/start/startscreen_1.png"
-          alt=""
-        />
-
-        <button class="wood-btn start-btn" onclick="startGame()">
-          <img src="./icons/play-icon.png" alt="start icon" />
-          <p>Start Game!</p>
-        </button>
-
-        <nav class="wood-signs-container wood-signs-container--home">
-          <ul class="wood-signs-menu wood-signs-menu--home">
-            <li>
-              <button
-                onclick="openInfoContainer('Story')"
-                class="wood-btn wood-sign"
-              >
-                <p>Story</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button
-                onclick="openInfoContainer('Instructions')"
-                class="wood-btn wood-sign"
-              >
-                <p>Instructions</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button
-                onclick="openInfoContainer('Settings')"
-                class="wood-btn wood-sign"
-              >
-                <p>Settings</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button
-                onclick="openInfoContainer('Legal Notice')"
-                class="wood-btn wood-sign"
-              >
-                <p>Legal Notice</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button
-                onclick="openInfoContainer('Privacy Policy')"
-                class="wood-btn wood-sign"
-              >
-                <p>Privacy Policy</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-      <div id="outro-screen" class="overlay-container outro-container">
-        <img
-          id="game-over-img"
-          src="./img/9_intro_outro_screens/game_over/game over!.png"
-          alt="Outro Screen"
-          class="outro-screen overlay-img overlay-img--full display-none"
-        />
-        <img
-          id="you-win-img"
-          src="./img/You won, you lost/You Win B.png"
-          alt="Outro Screen"
-          class="outro-screen overlay-img overlay-img--win display-none"
-        />
-        <div class="outro-btns-container">
-          <button class="wood-btn" onclick="restartGame()">
-            <p>Retry</p>
-            <img src="./icons/restart-icon.png" alt="restart icon" />
-          </button>
-          <button class="wood-btn" onclick="backToHomeScreen()">
-            <p>Menu</p>
-            <img src="./icons/home-icon.png" alt="home icon" />
-          </button>
-        </div>
-      </div>
+      <div id="overlay-container" class="overlay-container"></div>
 
       <div class="btns-wrapper">
         <button class="wood-btn mute-btn" onclick="toggleGameSound()">
@@ -163,88 +73,6 @@
         <button onclick="toggleFullscreen()" class="wood-btn fullscreen-btn">
           <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
         </button>
-      </div>
-
-      <dialog id="pause-dialog" class="pause-menu display-none">
-        <nav class="wood-signs-container">
-          <ul class="wood-signs-menu wood-signs-menu--pause">
-            <li>
-              <button onclick="togglePauseGame()" class="wood-btn wood-sign">
-                <p>Continue</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button class="wood-btn wood-sign">
-                <p>Instructions</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button class="wood-btn wood-sign">
-                <p>Settings</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button onclick="backToHomeScreen()" class="wood-btn wood-sign">
-                <p>Home</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-            <li>
-              <button onclick="restartGame()" class="wood-btn wood-sign">
-                <p>Restart</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-          </ul>
-        </nav>
-
-        <button
-          onclick="togglePauseGame()"
-          class="wood-btn close-btn close-btn--pause-menu"
-        >
-          <img src="./icons/close-icon.png" alt="close icon" />
-        </button>
-      </dialog>
-
-      <div id="info-container" class="information-container">
-        <button
-          onclick="backToHomeScreen()"
-          class="wood-btn close-btn close-btn--info-container"
-        >
-          <img src="./icons/close-icon.png" alt="close icon" />
-        </button>
-        <h2 id="infotext-headline">Story</h2>
-        <div id="infotext-container" class="infotext-container">
-          <div class="game-instructions">
-            <h2>How to Play</h2>
-            <p>Use the following keys to control your character:</p>
-
-            Desktop
-
-            <ul style="list-style: none; padding: 0">
-              <li style="margin-bottom: 12px">
-                <kbd>←</kbd> <kbd>→</kbd> : <strong>Move</strong> (Left / Right)
-              </li>
-              <li style="margin-bottom: 12px">
-                <kbd>Space</kbd> : <strong>Jump</strong>
-              </li>
-              <li style="margin-bottom: 12px">
-                <kbd>D</kbd> : <strong>Throw Bottle</strong>
-              </li>
-            </ul>
-
-            <p style="margin-top: 20px; font-style: italic">
-              Good luck! Dodge the obstacles and defeat your enemies.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   </body>
