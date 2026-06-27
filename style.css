@@ -15,6 +15,11 @@ body {
 
   font-weight: 300;
   color: var(--beige);
+  font-family: "Zabars", serif;
+}
+
+button p {
+  font-family: "Zabars", serif;
 }
 
 h1 {
@@ -31,26 +36,6 @@ h1 {
 canvas {
   background-color: black;
   display: block;
-}
-
-@media only screen and (max-width: 720px) {
-  canvas {
-    width: 100%;
-  }
-}
-
-@media only screen and (max-height: 480px) {
-  canvas {
-    height: 100dvh;
-  }
-
-  .game-title {
-    display: none;
-  }
-}
-
-* {
-  font-family: "Zabars", serif;
 }
 
 button {
@@ -305,16 +290,6 @@ button {
   font-size: 4cqw;
 }
 
-.close-btn {
-  position: absolute;
-  padding: 0;
-}
-
-.close-btn--pause-menu {
-  top: 16px;
-  right: 16px;
-}
-
 /* #endregion */
 
 /* #region end screen */
@@ -362,22 +337,96 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   background-image: url(./img/5_background/first_half_background.png);
   background-position: center;
 }
 
+.close-btn {
+  position: absolute;
+  padding: 0;
+}
+
+.close-btn--info-container {
+  top: 16px;
+  right: 16px;
+}
+
 .information-container h2 {
+  font-family: "Spicy Rice", serif;
+
+  font-size: 5cqw;
+  margin-bottom: 3cqh;
+  color: var(--beige);
 }
 
 .infotext-container {
   padding: 16px;
   width: 80%;
-  height: 75%;
+  max-width: 750px;
+  max-height: 75%;
   overflow-y: auto;
-  background-color: white;
-  border-radius: 24px;
   color: black;
+  border-radius: 24px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.infotext-container--story,
+.information-container--instructions {
+  scrollbar-color: var(--beige) transparent;
+}
+
+.infotext-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.infotext-container--story p {
+  font-family: "Spicy Rice", serif;
+  font-size: 24px;
+  text-align: center;
+  color: var(--beige);
+}
+
+.infotext-container--imprint {
+  background-color: white;
+  font-family: Arial, sans-serif;
+  scrollbar-color: grey transparent;
+  text-align: justify;
+}
+
+.infotext-container--imprint h3 {
+  font-size: 24px;
+}
+
+.infotext-container--imprint h4 {
+  font-size: 20px;
+}
+
+.infotext-container--imprint h5 {
+  font-size: 16px;
+}
+
+.infotext-container--imprint p {
+  font-size: 16px;
+}
+/* #endregion */
+
+/* #region responsive */
+@media only screen and (max-width: 720px) {
+  canvas {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-height: 480px) {
+  canvas {
+    height: 100dvh;
+  }
+
+  .game-title {
+    display: none;
+  }
 }
 
 /* #endregion */

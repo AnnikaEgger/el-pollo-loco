@@ -34,9 +34,6 @@ function init() {
 
 function startGame() {
   gameStarted = true;
-  document.getElementById("imprint-container").classList.remove("display-flex");
-  document.getElementById("imprint-container").classList.add("display-none");
-  document.getElementById("pause-btn").classList.remove("display-none");
 
   clearOverlayContainer();
 
@@ -47,6 +44,8 @@ function startGame() {
 }
 
 function initNewWorld() {
+  btnsWrapper.innerHTML = gameScreenBtnsHTML();
+
   initLevel();
   world = new World(canvas, keyboard);
 

@@ -1,4 +1,6 @@
 // #region fullscreen
+let fullscreen = false;
+
 document.addEventListener("fullscreenchange", resizeCanvas);
 document.addEventListener("webkitfullscreenchange", resizeCanvas);
 document.addEventListener("msfullscreenchange", resizeCanvas);
@@ -18,7 +20,6 @@ function resizeGame() {
   allObjects.forEach((obj) => obj.resize());
 }
 
-let fullscreen = false;
 function toggleFullscreen() {
   element = document.getElementById("fullscreen");
   fullscreen = !fullscreen;
@@ -69,8 +70,11 @@ function resizeCanvas() {
 
 // #region overlay
 const overlayContainer = document.getElementById("overlay-container");
+const btnsWrapper = document.getElementById("btns-wrapper");
+
 function showHomeScreen() {
   overlayContainer.innerHTML = homeScreenHTML();
+  btnsWrapper.innerHTML = homeScreenBtnsHTML();
 }
 
 function closeInfoScreen(origin) {
@@ -95,6 +99,7 @@ function showInfoScreen(content, origin = "home screen") {
   }
 
   overlayContainer.innerHTML = InfoScreenHTML(innerContent);
+  btnsWrapper.innerHTML = infoScreenBtnsHTML();
 }
 
 function backToHomeScreen(origin) {
@@ -104,9 +109,6 @@ function backToHomeScreen(origin) {
   }
 
   showHomeScreen();
-  document.getElementById("pause-btn").classList.add("display-none");
-  document.getElementById("imprint-container").classList.remove("display-none");
-  document.getElementById("imprint-container").classList.add("display-flex");
 }
 
 function clearOverlayContainer() {
@@ -115,6 +117,7 @@ function clearOverlayContainer() {
 
 function openPauseMenu() {
   overlayContainer.innerHTML = pauseMenuHTML();
+  btnsWrapper.innerHTML = gameScreenBtnsHTML();
 }
 
 // #endregion
