@@ -5,7 +5,7 @@ function homeScreenHTML() {
       >
         <img
           class="overlay-img overlay-img--full"
-          src="./img/9_intro_outro_screens/start/startscreen_1.png"
+          src="./assets/img/9_intro_outro_screens/start/startscreen_1.png"
           alt=""
         />
 
@@ -19,14 +19,14 @@ function homeScreenHTML() {
               class="wood-btn wood-sign start-btn"
             >
               <p>Play</p>
-                <img src="./img/wood-sign.svg" alt="start icon" />
+                <img src="./assets/img/wood-sign.svg" alt="start icon" />
             </button>
             </li>
 
             <li>
               <button onclick="showInfoScreen('Story')" class="wood-btn wood-sign">
                 <p>Story</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
 
@@ -36,14 +36,14 @@ function homeScreenHTML() {
                 class="wood-btn wood-sign"
               >
                 <p>Instructions</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
 
             <li>
               <button onclick="showInfoScreen('Settings')" class="wood-btn wood-sign">
                 <p>Settings</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
 
@@ -60,14 +60,14 @@ function pauseMenuHTML() {
             <li>
               <button onclick="togglePauseGame()" class="wood-btn wood-sign">
                 <p>Continue</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
 
             <li>
               <button onclick="restartGame()" class="wood-btn wood-sign">
                 <p>Restart</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
 
@@ -77,7 +77,7 @@ function pauseMenuHTML() {
                 class="wood-btn wood-sign"
               >
                 <p>Home</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
 
@@ -87,7 +87,7 @@ function pauseMenuHTML() {
                 class="wood-btn wood-sign"
               >
                 <p>Instructions</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
 
@@ -97,7 +97,7 @@ function pauseMenuHTML() {
                 class="wood-btn wood-sign"
               >
                 <p>Settings</p>
-                <img src="./img/wood-sign.svg" alt="wooden sign" />
+                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
          
@@ -114,25 +114,20 @@ function endScreenHTML() {
         class="overlay-container outro-container"
       >
         <img
-          id="game-over-img"
-          src="./img/9_intro_outro_screens/game_over/game over!.png"
+          id="endscreen-img"
+          src=""
           alt="Outro Screen"
-          class="outro-screen overlay-img overlay-img--full display-none"
+          class="outro-screen overlay-img overlay-img--full"
         />
-        <img
-          id="you-win-img"
-          src="./img/You won, you lost/You Win B.png"
-          alt="Outro Screen"
-          class="outro-screen overlay-img overlay-img--win display-none"
-        />
+       
         <div class="outro-btns-container">
           <button class="wood-btn" onclick="restartGame()">
             <p>Retry</p>
-            <img src="./icons/restart-icon.png" alt="restart icon" />
+            <img src="./assets/icons/restart-icon.png" alt="restart icon" />
           </button>
           <button class="wood-btn" onclick="backToHomeScreen('game')">
             <p>Home</p>
-            <img src="./icons/home-icon.png" alt="home icon" />
+            <img src="./assets/icons/home-icon.png" alt="home icon" />
           </button>
         </div>
       </div>`;
@@ -147,7 +142,7 @@ function legalNoticeHTML(headline, origin) {
   onclick="closeInfoScreen('${origin}')"
   class="wood-btn close-btn close-btn--info-container"
 >
-  <img src="./icons/close-icon.png" alt="close icon" />
+  <img src="./assets/icons/close-icon.png" alt="close icon" />
 </button>
 <h2 id="infotext-headline" class="infotext-headline--${headline}">${headline}</h2>
 
@@ -207,6 +202,9 @@ function legalNoticeHTML(headline, origin) {
         </li>
     </ul>
 
+    screen lock icon
+    <a href="https://www.flaticon.com/free-icons/screen-rotate" title="screen rotate icons">Screen rotate icons created by Andrean Prabowo - Flaticon</a>
+
 </article>`;
 }
 
@@ -214,7 +212,7 @@ function privacyPolicyHTML(headline, origin) {
   return `   <button
   onclick="closeInfoScreen('${origin}')"
   class="wood-btn close-btn close-btn--info-container">
-  <img src="./icons/close-icon.png" alt="close icon" />
+  <img src="./assets/icons/close-icon.png" alt="close icon" />
 </button>
 <h2 id="infotext-headline">${headline}</h2>
 
@@ -392,7 +390,7 @@ function storyHTML(headline, origin) {
  onclick="closeInfoScreen('${origin}')"
   class="wood-btn close-btn close-btn--info-container"
 >
-  <img src="./icons/close-icon.png" alt="close icon" />
+  <img src="./assets/icons/close-icon.png" alt="close icon" />
 </button>
 <h2 id="infotext-headline">${headline}</h2>
 
@@ -428,7 +426,7 @@ function instructionsHTML(headline, origin) {
  onclick="closeInfoScreen('${origin}')"
   class="wood-btn close-btn close-btn--info-container"
 >
-  <img src="./icons/close-icon.png" alt="close icon" />
+  <img src="./assets/icons/close-icon.png" alt="close icon" />
 </button>
 <h2 id="infotext-headline">${headline}</h2>
 
@@ -458,9 +456,9 @@ function instructionsHTML(headline, origin) {
   `;
 }
 
-function homeScreenBtnsHTML() {
+function homeScreenBtnsHTML(muteIconSrc) {
   return ` <button class="wood-btn mute-btn" onclick="toggleGameSound()">
-          <img id="mute-btn-img" src="./icons/mute-icon.png" alt="Mute Icon" />
+          <img id="mute-btn-img" src=${muteIconSrc} />
         </button>
         <div id="imprint-container" class="imprint-container display-flex">
           <button onclick="showInfoScreen('Legal Notice')">
@@ -472,23 +470,23 @@ function homeScreenBtnsHTML() {
           </button>
         </div>
         <button onclick="toggleFullscreen()" class="wood-btn fullscreen-btn">
-          <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
+          <img src="./assets/icons/fullscreen-icon.png" alt="Fullscreen Icon" />
         </button>`;
 }
 
-function infoScreenBtnsHTML() {
+function infoScreenBtnsHTML(muteIconSrc) {
   return ` <button class="wood-btn mute-btn" onclick="toggleGameSound()">
-          <img id="mute-btn-img" src="./icons/mute-icon.png" alt="Mute Icon" />
+          <img id="mute-btn-img" src=${muteIconSrc} />
         </button>
 
         <button onclick="toggleFullscreen()" class="wood-btn fullscreen-btn">
-          <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
+          <img src="./assets/icons/fullscreen-icon.png" alt="Fullscreen Icon" />
         </button>`;
 }
 
-function gameScreenBtnsHTML() {
+function gameScreenBtnsHTML(muteIconSrc, pauseIconSrc) {
   return ` <button class="wood-btn mute-btn" onclick="toggleGameSound()">
-          <img id="mute-btn-img" src="./icons/mute-icon.png" alt="Mute Icon" />
+          <img id="mute-btn-img" src=${muteIconSrc} />
         </button>
         <button
           id="pause-btn"
@@ -497,14 +495,11 @@ function gameScreenBtnsHTML() {
         >
           <img
             id="pause-btn-img"
-            src="./icons/pause-icon.png"
+            src=${pauseIconSrc}
             alt="Pause Icon"
           />
         </button>
         <button onclick="toggleFullscreen()" class="wood-btn fullscreen-btn">
-          <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
+          <img src="./assets/icons/fullscreen-icon.png" alt="Fullscreen Icon" />
         </button>`;
 }
-
-// game controls
-// sonstige Hinweise

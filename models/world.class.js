@@ -15,7 +15,7 @@ class World {
   allowNewBottle = true;
   intervalIds = [];
   isPaused = false;
-  gameOverImg = "../img/You won, you lost/Game Over.png";
+  gameOverImg = "./assets/img/You won, you lost/Game Over.png";
 
   STATUSBARS = [
     this.statusbarHealth,
@@ -24,10 +24,12 @@ class World {
     this.statusbarEndboss,
   ];
 
-  static bgMusic = new Audio("../audio/background-music-game.mp3");
-  static cluckingSound = new Audio("../audio/chicken/clucking.mp3");
-  static winSound = new Audio("../audio/win.mp3");
-  static gameOverSound = new Audio("../audio/game-over.mp3");
+  static bgMusic = new Audio(
+    "./assets/audio/general/background-music-game.mp3",
+  );
+  static cluckingSound = new Audio("./assets/audio/chicken/clucking.mp3");
+  static winSound = new Audio("./assets/audio/general/win.mp3");
+  static gameOverSound = new Audio("./assets/audio/general/game-over.mp3");
 
   static AUDIOS = [
     World.bgMusic,
@@ -142,8 +144,6 @@ class World {
     endGame();
     World.gameOverSound.play();
   }
-
-  // world.character.energy = 0
 
   handleWin() {
     endGame();
@@ -320,7 +320,6 @@ class World {
     }
 
     obj.draw(this.ctx);
-    // obj.drawFrame(this.ctx);
     obj.drawOffsetFrame(this.ctx);
 
     if (obj.otherDirection) {

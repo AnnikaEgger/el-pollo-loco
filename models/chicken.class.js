@@ -4,7 +4,7 @@ class Chicken extends MovableObject {
   moveLeftInt;
   damage;
 
-  static dyingSound = new Audio("../audio/chicken/dying.mp3");
+  static dyingSound = new Audio("./assets/audio/chicken/dying.mp3");
 
   static AUDIOS = [Chicken.dyingSound];
 

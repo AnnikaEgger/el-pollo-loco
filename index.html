@@ -7,7 +7,7 @@
     <title>El Pollo Loco</title>
     <link
       rel="shortcut icon"
-      href="./img/6_salsa_bottle/salsa_bottle.png"
+      href="./assets/img/6_salsa_bottle/salsa_bottle.png"
       type="image/x-icon"
     />
 
@@ -56,35 +56,31 @@
 
       <div id="overlay-container" class="overlay-container"></div>
 
-      <div id="btns-wrapper" class="btns-wrapper">
-        <button class="wood-btn mute-btn" onclick="toggleGameSound()">
-          <img id="mute-btn-img" src="./icons/mute-icon.png" alt="Mute Icon" />
-        </button>
-        <button
-          id="pause-btn"
-          class="wood-btn pause-btn display-none"
-          onclick="togglePauseGame()"
-        >
-          <img
-            id="pause-btn-img"
-            src="./icons/pause-icon.png"
-            alt="Pause Icon"
-          />
-        </button>
+      <div id="panel" class="panel"></div>
 
-        <div id="imprint-container" class="imprint-container display-flex">
-          <button onclick="showInfoScreen('Legal Notice')">
-            <p>Legal Notice</p>
+      <div class="control-panel">
+        <div class="panel-wrapper">
+          <button id="move-left-btn" class="wood-btn">
+            <img src="./assets/icons/arrow-left.png" alt="arrow left" />
           </button>
-
-          <button onclick="showInfoScreen('Privacy Policy')">
-            <p>Privacy Policy</p>
+          <button id="move-right-btn" class="wood-btn">
+            <img src="./assets/icons/arrow-right.png" alt="arrow right" />
           </button>
         </div>
-        <button onclick="toggleFullscreen()" class="wood-btn fullscreen-btn">
-          <img src="./icons/fullscreen-icon.png" alt="Fullscreen Icon" />
-        </button>
+        <div class="panel-wrapper">
+          <button id="jump-btn" class="wood-btn">
+            <img src="./assets/icons/arrow-up.png" alt="arrow up" />
+          </button>
+          <button id="throw-btn" class="wood-btn">
+            <img src="./assets/icons/bottle.png" alt="bottle" />
+          </button>
+        </div>
       </div>
+    </div>
+
+    <div class="landscape-warning">
+      <img src="./assets/icons/screen-rotate.png" alt="rotate screen icon" />
+      <p>Rotate your device to play!</p>
     </div>
   </body>
 </html>

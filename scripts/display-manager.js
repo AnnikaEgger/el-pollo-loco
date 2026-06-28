@@ -70,11 +70,11 @@ function resizeCanvas() {
 
 // #region overlay
 const overlayContainer = document.getElementById("overlay-container");
-const btnsWrapper = document.getElementById("btns-wrapper");
+const btnsWrapper = document.getElementById("panel");
 
 function showHomeScreen() {
   overlayContainer.innerHTML = homeScreenHTML();
-  btnsWrapper.innerHTML = homeScreenBtnsHTML();
+  btnsWrapper.innerHTML = homeScreenBtnsHTML(getSoundIconSrc());
 }
 
 function closeInfoScreen(origin) {
@@ -88,7 +88,6 @@ function showInfoScreen(content, origin = "home screen") {
     "legal notice": legalNoticeHTML,
     "privacy policy": privacyPolicyHTML,
     "instructions": instructionsHTML,
-    // "settings": settingsHTML,
   };
 
   let contentText = content.toLowerCase();
@@ -99,13 +98,13 @@ function showInfoScreen(content, origin = "home screen") {
   }
 
   overlayContainer.innerHTML = InfoScreenHTML(innerContent);
-  btnsWrapper.innerHTML = infoScreenBtnsHTML();
+  btnsWrapper.innerHTML = infoScreenBtnsHTML(getSoundIconSrc());
 }
 
 function backToHomeScreen(origin) {
   if (origin == "game") {
     clearGame();
-    bgMusicStart.play();
+    if (!isMuted) bgMusicStart.play();
   }
 
   showHomeScreen();
@@ -117,13 +116,26 @@ function clearOverlayContainer() {
 
 function openPauseMenu() {
   overlayContainer.innerHTML = pauseMenuHTML();
-  btnsWrapper.innerHTML = gameScreenBtnsHTML();
+  btnsWrapper.innerHTML = gameScreenBtnsHTML(
+    getSoundIconSrc(),
+    getPauseIconSrc(),
+  );
 }
 
 // #endregion
 
 function toggleSoundIcon() {
   const muteBtnImg = document.getElementById("mute-btn-img");
-  if (isMuted) muteBtnImg.src = "./icons/sound-icon.png";
-  else muteBtnImg.src = "./icons/mute-icon.png";
+  if (isMuted) muteBtnImg.src = "./assets/icons/sound-icon.png";
+  else muteBtnImg.src = "./assets/icons/mute-icon.png";
+}
+
+function getSoundIconSrc() {
+  if (isMuted) return "./assets/icons/sound-icon.png";
+  else return "./assets/icons/mute-icon.png";
+}
+
+function getPauseIconSrc() {
+  if (isPaused) return "./assets/icons/play-icon.png";
+  else return "./assets/icons/pause-icon.png";
 }

@@ -10,7 +10,12 @@ let gameLost = false;
 let gameWon = false;
 let gameStarted = false;
 
+function gameEnded() {
+  return gameLost || gameWon;
+}
+
 function init() {
+  lockScreenOrientation();
   document.addEventListener(
     "click",
     () => {
@@ -44,7 +49,10 @@ function startGame() {
 }
 
 function initNewWorld() {
-  btnsWrapper.innerHTML = gameScreenBtnsHTML();
+  btnsWrapper.innerHTML = gameScreenBtnsHTML(
+    getSoundIconSrc(),
+    getPauseIconSrc(),
+  );
 
   initLevel();
   world = new World(canvas, keyboard);
@@ -58,41 +66,8 @@ function initNewWorld() {
   ];
 }
 
-window.addEventListener("keydown", (event) => {
-  if (event.code === "ArrowLeft") {
-    keyboard.LEFT = true;
-  } else if (event.code === "ArrowRight") {
-    keyboard.RIGHT = true;
-  } else if (event.code === "ArrowDown") {
-    keyboard.DOWN = true;
-  } else if (event.code === "ArrowUp") {
-    keyboard.UP = true;
-  } else if (event.code === "Space") {
-    keyboard.SPACE = true;
-  } else if (event.code === "KeyD") {
-    keyboard.D = true;
-  }
-});
-
-window.addEventListener("keyup", (event) => {
-  if (event.code === "ArrowLeft") {
-    keyboard.LEFT = false;
-  } else if (event.code === "ArrowRight") {
-    keyboard.RIGHT = false;
-  } else if (event.code === "ArrowDown") {
-    keyboard.DOWN = false;
-  } else if (event.code === "ArrowUp") {
-    keyboard.UP = false;
-  } else if (event.code === "Space") {
-    keyboard.SPACE = false;
-  } else if (event.code === "KeyD") {
-    keyboard.D = false;
-  }
-});
-
 function togglePauseGame() {
   isPaused = !isPaused;
-  console.log(isPaused);
 
   if (isPaused) {
     pauseGame(allObjsWithInt);
@@ -102,9 +77,6 @@ function togglePauseGame() {
 }
 
 function pauseGame() {
-  const pauseBtnImg = document.getElementById("pause-btn-img");
-  pauseBtnImg.src = "./icons/play-icon.png";
-
   openPauseMenu();
 
   pauseAudios();
@@ -115,8 +87,9 @@ function pauseGame() {
 
 function continueGame() {
   clearOverlayContainer();
+  if (gameEnded()) showEndScreen();
   const pauseBtnImg = document.getElementById("pause-btn-img");
-  pauseBtnImg.src = "./icons/pause-icon.png";
+  pauseBtnImg.src = "./assets/icons/pause-icon.png";
 
   continueAudios();
   allObjsWithInt.forEach((obj) => {
@@ -124,21 +97,19 @@ function continueGame() {
   });
 }
 
-function endGame() {
+function showEndScreen() {
   overlayContainer.innerHTML = endScreenHTML();
-  const gameOverImg = document.getElementById("game-over-img");
-  const youWinImg = document.getElementById("you-win-img");
+  const endScreenImg = document.getElementById("endscreen-img");
+  if (gameLost)
+    endScreenImg.src =
+      "./assets/img/9_intro_outro_screens/game_over/game over!.png";
+  else endScreenImg.src = "./assets/img/You won, you lost/You Win B.png";
+}
 
+function endGame() {
+  showEndScreen();
   clearAllIntervals();
   pauseAudios();
-
-  if (gameLost) {
-    youWinImg.classList.add("display-none");
-    gameOverImg.classList.remove("display-none");
-  } else if (gameWon) {
-    gameOverImg.classList.add("display-none");
-    youWinImg.classList.remove("display-none");
-  }
 }
 
 function clearGame() {
@@ -174,8 +145,10 @@ function clearAllIntervals() {
 }
 
 // #region audios
-const bgMusicStart = new Audio("./audio/background-music-start-screen.mp3");
-const btnClickSound = new Audio("./audio/wood-button-click.mp3");
+const bgMusicStart = new Audio(
+  "./assets/audio/general/background-music-start-screen.mp3",
+);
+const btnClickSound = new Audio("./assets/audio/general/wood-button-click.mp3");
 bgMusicStart.loop = true;
 let allAudios = [bgMusicStart, btnClickSound];
 
@@ -228,3 +201,87 @@ function resetAudios() {
 }
 
 // #endregion
+
+// #region game control
+
+window.addEventListener("keydown", (event) => {
+  if (event.code === "ArrowLeft") {
+    keyboard.LEFT = true;
+  } else if (event.code === "ArrowRight") {
+    keyboard.RIGHT = true;
+  } else if (event.code === "ArrowDown") {
+    keyboard.DOWN = true;
+  } else if (event.code === "ArrowUp") {
+    keyboard.UP = true;
+  } else if (event.code === "Space") {
+    keyboard.SPACE = true;
+  } else if (event.code === "KeyD") {
+    keyboard.D = true;
+  }
+});
+
+window.addEventListener("keyup", (event) => {
+  if (event.code === "ArrowLeft") {
+    keyboard.LEFT = false;
+  } else if (event.code === "ArrowRight") {
+    keyboard.RIGHT = false;
+  } else if (event.code === "ArrowDown") {
+    keyboard.DOWN = false;
+  } else if (event.code === "ArrowUp") {
+    keyboard.UP = false;
+  } else if (event.code === "Space") {
+    keyboard.SPACE = false;
+  } else if (event.code === "KeyD") {
+    keyboard.D = false;
+  }
+});
+
+document.getElementById("move-left-btn").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  keyboard.LEFT = true;
+});
+
+document.getElementById("move-left-btn").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.LEFT = false;
+});
+
+document
+  .getElementById("move-right-btn")
+  .addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    keyboard.RIGHT = true;
+  });
+
+document.getElementById("move-right-btn").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.RIGHT = false;
+});
+
+document.getElementById("jump-btn").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  keyboard.SPACE = true;
+});
+
+document.getElementById("jump-btn").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.SPACE = false;
+});
+
+document.getElementById("throw-btn").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  keyboard.D = true;
+});
+
+document.getElementById("throw-btn").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.D = false;
+});
+
+// #endregion
+
+function lockScreenOrientation() {
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock("portrait-primary").catch(() => {});
+  }
+}

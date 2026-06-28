@@ -1,13 +1,13 @@
 class ChickenSmall extends Chicken {
   damage = 5;
-  IMAGE_DEAD = "../img/3_enemies_chicken/chicken_small/2_dead/dead.png";
+  IMAGE_DEAD = "./assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png";
 
   constructor() {
     super(
       [
-        "../img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
-        "../img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
-        "../img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
+        "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
+        "./assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
+        "./assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
       ],
       (370 / 480) * canvas.height,
       (50 / 480) * canvas.height,

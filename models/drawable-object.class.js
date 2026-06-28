@@ -8,7 +8,7 @@ class DrawableObject {
   imageCache = {};
   currentImg = 0;
 
-  static errorSound = new Audio("../audio/bottle/error.mp3");
+  static errorSound = new Audio("./assets/audio/bottle/error.mp3");
 
   static AUDIOS = [DrawableObject.errorSound];
 

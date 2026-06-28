@@ -4,9 +4,9 @@ class Coin extends DrawableObject {
   index;
   maxY = (65 / 480) * canvas.height;
 
-  COINS = ["../img/8_coin/coin_1.png", "../img/8_coin/coin_2.png"];
+  COINS = ["./assets/img/8_coin/coin_1.png", "../img/8_coin/coin_2.png"];
 
-  static collectingSound = new Audio("../audio/coin/collecting.mp3");
+  static collectingSound = new Audio("./assets/audio/coin/collecting.mp3");
 
   static AUDIOS = [Coin.collectingSound];
 

@@ -2,10 +2,9 @@ class Cloud extends MovableObject {
   y = 0;
 
   IMAGES = [
-    "../img/5_background/layers/4_clouds/1.png",
-    "../img/5_background/layers/4_clouds/2.png",
+    "./assets/img/5_background/layers/4_clouds/1.png",
+    "./assets/img/5_background/layers/4_clouds/2.png",
   ];
-
   constructor(index, xMultiplier) {
     super();
     this.loadImage(this.IMAGES[index]);
