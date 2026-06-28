@@ -14,8 +14,31 @@ function gameEnded() {
   return gameLost || gameWon;
 }
 
+const LOADING_SPINNER_IMGS = [
+  "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
+  "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
+  "./assets/img/6_salsa_bottle/salsa_bottle.png",
+];
+
+function showLoadingSpinner() {
+  const loadingSpinner = document.getElementById("loading-spinner");
+  const loadingSpinnerImg = document.getElementById("loading-spinner-img");
+  let index = Math.floor(Math.random() * LOADING_SPINNER_IMGS.length);
+
+  loadingSpinnerImg.src = LOADING_SPINNER_IMGS[index];
+  loadingSpinner.classList.remove("display-none");
+  loadingSpinner.classList.add("display-flex");
+}
+
+function hideLoadingSpinner() {
+  const loadingSpinner = document.getElementById("loading-spinner");
+  loadingSpinner.classList.remove("display-flex");
+  loadingSpinner.classList.add("display-none");
+}
+
 function init() {
   lockScreenOrientation();
+
   document.addEventListener(
     "click",
     () => {
@@ -27,7 +50,7 @@ function init() {
   );
 
   document.addEventListener("click", (e) => {
-    const button = e.target.closest(".wood-sign");
+    const button = e.target.closest(".wood-btn");
     if (button) {
       btnClickSound.currentTime = 0;
       btnClickSound.play();
@@ -41,14 +64,15 @@ function startGame() {
   gameStarted = true;
 
   clearOverlayContainer();
-
   bgMusicStart.pause();
 
   initNewWorld();
   pushAudiosIntoAudiosArr();
 }
 
-function initNewWorld() {
+async function initNewWorld() {
+  showLoadingSpinner();
+
   btnsWrapper.innerHTML = gameScreenBtnsHTML(
     getSoundIconSrc(),
     getPauseIconSrc(),
@@ -60,10 +84,38 @@ function initNewWorld() {
   allObjsWithInt = [
     world,
     world.character,
-    ...world.level.enemies,
     ...world.level.clouds,
     ...world.level.throwableObjects,
+    ...world.level.enemies,
   ];
+
+  let allDrawableObjs = [
+    world,
+    world.statusbarHealth,
+    world.statusbarBottles,
+    world.statusbarCoins,
+    world.statusbarEndboss,
+    world.character,
+    ...world.level.enemies,
+    ...world.level.clouds,
+    ...world.level.backgroundObjects,
+    ...world.level.throwableObjects,
+    ...world.level.coins,
+  ];
+
+  const loadingPromises = allDrawableObjs.map((obj) => obj.waitUntilReady());
+
+  try {
+    await Promise.all(loadingPromises);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    hideLoadingSpinner();
+    allObjsWithInt.forEach((obj) => {
+      obj.animate?.();
+      obj.run?.();
+    });
+  }
 }
 
 function togglePauseGame() {
@@ -148,8 +200,12 @@ function clearAllIntervals() {
 const bgMusicStart = new Audio(
   "./assets/audio/general/background-music-start-screen.mp3",
 );
-const btnClickSound = new Audio("./assets/audio/general/wood-button-click.mp3");
+bgMusicStart.volume = 0.2;
 bgMusicStart.loop = true;
+
+const btnClickSound = new Audio("./assets/audio/general/wood-button-click.mp3");
+btnClickSound.volume = 0.5;
+
 let allAudios = [bgMusicStart, btnClickSound];
 
 function pushAudiosIntoAudiosArr() {

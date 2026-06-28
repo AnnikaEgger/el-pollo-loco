@@ -31,6 +31,13 @@ class World {
   static winSound = new Audio("./assets/audio/general/win.mp3");
   static gameOverSound = new Audio("./assets/audio/general/game-over.mp3");
 
+  static {
+    this.bgMusic.volume = 0.15;
+    this.cluckingSound.volume = 0.2;
+    this.winSound.volume = 0.6;
+    this.gameOverSound.volume = 0.6;
+  }
+
   static AUDIOS = [
     World.bgMusic,
     World.cluckingSound,
@@ -47,7 +54,26 @@ class World {
     this.draw();
     this.setWorld(this.character);
     this.setWorld(this.endboss);
-    this.run();
+    // this.run();
+  }
+
+  waitUntilReady() {
+    const promises = [];
+
+    const staticAudios = this.constructor.AUDIOS;
+    if (Array.isArray(staticAudios)) {
+      staticAudios.forEach((audio) => {
+        promises.push(
+          new Promise((resolve) => {
+            if (audio.readyState >= 4) return resolve();
+            audio.addEventListener("canplaythrough", () => resolve(), {
+              once: true,
+            });
+            audio.addEventListener("error", () => resolve(), { once: true });
+          }),
+        );
+      });
+    }
   }
 
   setWorld(obj) {
@@ -320,7 +346,7 @@ class World {
     }
 
     obj.draw(this.ctx);
-    obj.drawOffsetFrame(this.ctx);
+    // obj.drawOffsetFrame(this.ctx);
 
     if (obj.otherDirection) {
       this.flipImageBack(obj);

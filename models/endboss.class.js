@@ -8,13 +8,25 @@ class Endboss extends MovableObject {
   animationIndex;
   damage = 15;
   bottomY;
-  energy = 1;
+  energy = 100;
 
   static hurtingSound = new Audio("./assets/audio/endboss/hurting.wav");
   static dyingSound = new Audio("./assets/audio/endboss/dying.mp3");
   static alertSound = new Audio("./assets/audio/endboss/awakening.mp3");
   static risingSound = new Audio("./assets/audio/endboss/riser.mp3");
   static bgMusic = new Audio("./assets/audio/endboss/background-music.mp3");
+
+  static {
+    this.bgMusic.volume = 0.25;
+    this.bgMusic.loop = true;
+
+    this.hurtingSound.volume = 0.25;
+    this.alertSound.volume = 0.15;
+
+    this.risingSound.volume = 0.4;
+    this.dyingSound.volume = 0.15;
+  }
+
   static AUDIOS = [
     Endboss.hurtingSound,
     Endboss.dyingSound,
@@ -73,7 +85,7 @@ class Endboss extends MovableObject {
     this.y = this.bottomY;
 
     this.applyGravity();
-    this.animate();
+    // this.animate();
   }
 
   getDimensions() {

@@ -3,6 +3,7 @@ class DrawableObject {
   y = 280;
   height = 250;
   width = 100;
+  finishedLoading = false;
 
   img;
   imageCache = {};
@@ -62,6 +63,35 @@ class DrawableObject {
       img.src = path;
       this.imageCache[path] = img;
     });
+  }
+
+  async waitUntilReady() {
+    const promises = [];
+
+    promises.push(
+      new Promise((resolve) => {
+        if (this.img.complete) return resolve();
+        this.img.onload = () => resolve();
+        this.img.onerror = () => resolve();
+      }),
+    );
+
+    const staticAudios = this.constructor.AUDIOS;
+    if (Array.isArray(staticAudios)) {
+      staticAudios.forEach((audio) => {
+        promises.push(
+          new Promise((resolve) => {
+            if (audio.readyState >= 4) return resolve();
+            audio.addEventListener("canplaythrough", () => resolve(), {
+              once: true,
+            });
+            audio.addEventListener("error", () => resolve(), { once: true });
+          }),
+        );
+      });
+    }
+
+    return Promise.all(promises);
   }
 
   getRandomIndex(array) {

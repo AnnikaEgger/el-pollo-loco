@@ -4,7 +4,7 @@ class Coin extends DrawableObject {
   index;
   maxY = (65 / 480) * canvas.height;
 
-  COINS = ["./assets/img/8_coin/coin_1.png", "../img/8_coin/coin_2.png"];
+  COINS = ["./assets/img/8_coin/coin_1.png", "./assets/img/8_coin/coin_2.png"];
 
   static collectingSound = new Audio("./assets/audio/coin/collecting.mp3");
 
@@ -12,6 +12,7 @@ class Coin extends DrawableObject {
 
   constructor() {
     super();
+    Coin.collectingSound.volume = 0.15;
     this.index = this.getRandomIndex(this.COINS);
     this.x =
       Math.random() * (canvas.width * 3 - (250 / 720) * canvas.width) +

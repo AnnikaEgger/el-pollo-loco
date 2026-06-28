@@ -36,6 +36,13 @@ class ThrowableObject extends MovableObject {
   static throwingSound = new Audio("./assets/audio/bottle/throwing.mp3");
   static collectingSound = new Audio("./assets/audio/bottle/collecting.mp3");
   static shatteringSound = new Audio("./assets/audio/bottle/shattering.mp3");
+
+  static {
+    this.throwingSound.volume = 0.25;
+    this.collectingSound.volume = 0.5;
+    this.shatteringSound.volume = 0.3;
+  }
+
   static AUDIOS = [
     ThrowableObject.throwingSound,
     ThrowableObject.collectingSound,
