@@ -19,8 +19,7 @@ class Chicken extends MovableObject {
     this.width = width;
     this.offset = offset;
     this.speed = speed;
-    this.x = (500 / 720) * canvas.width + Math.random() * (canvas.width * 3);
-    // this.animate(imgs);
+    this.x = (600 / 720) * canvas.width + Math.random() * (canvas.width * 4);
     Chicken.dyingSound.volume = 0.15;
   }
 

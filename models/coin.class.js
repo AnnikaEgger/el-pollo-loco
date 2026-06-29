@@ -26,7 +26,7 @@ class Coin extends DrawableObject {
 
   getRandomX() {
     return (
-      Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
+      Math.random() * (canvas.width * 5 - (400 / 720) * canvas.width) +
       (400 / 720) * canvas.width
     );
   }

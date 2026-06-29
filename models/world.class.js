@@ -241,36 +241,24 @@ class World {
   }
 
   checkThrowObjects() {
+    if (!this.character.canMove) return;
     if (this.keyboard.D) {
       if (this.availableBottles > 0) {
-        this.getCoordinatesAndCreateBottle();
+        this.createNewBottle();
       } else {
         Character.errorSound.play();
       }
     }
   }
 
-  getCoordinatesAndCreateBottle() {
-    let x;
-    let y;
-    if (this.character.otherDirection) {
-      x = this.character.x;
-      y = this.character.y + (100 / 480) * canvas.height;
-    } else {
-      x = this.character.x + (100 / 720) * canvas.width;
-      y = this.character.y + (100 / 480) * canvas.height;
-    }
-    this.createNewBottle(x, y);
-  }
-
-  createNewBottle(x, y) {
+  createNewBottle() {
     if (!this.allowNewBottle) return;
-    this.spawnAndThrowBottle(x, y);
+    this.spawnAndThrowBottle();
     this.reduceBottleAmmunition();
     this.startBottleCooldown();
   }
 
-  spawnAndThrowBottle(x, y) {
+  spawnAndThrowBottle() {
     let bottle = new ThrowableObject({
       state: "throw",
       character: this.character,

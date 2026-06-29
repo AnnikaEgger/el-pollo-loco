@@ -242,8 +242,7 @@ function muteGame() {
 
 function pauseAudios() {
   allAudios.forEach((audio) => {
-    audio.wasPlaying = !audio.paused;
-    if (audio.wasPlaying) audio.pause();
+    if (!audio.paused) audio.pause();
   });
 }
 

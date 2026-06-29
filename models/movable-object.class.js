@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
   isInvincible = false;
   intervalIds = [];
   isPaused = false;
+  canMove = true;
 
   setStoppableInterval(fn, time) {
     let id = setInterval(fn, time);
@@ -79,12 +80,12 @@ class MovableObject extends DrawableObject {
   }
 
   moveLeft() {
-    if (this.isPaused) return;
+    if (this.isPaused || !this.canMove) return;
     this.x -= this.speed;
   }
 
   moveRight() {
-    if (this.isPaused) return;
+    if (this.isPaused || !this.canMove) return;
     this.x += this.speed;
   }
 

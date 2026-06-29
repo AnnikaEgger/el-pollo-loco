@@ -7,7 +7,7 @@ class Character extends MovableObject {
   animationInt;
   bottomY;
   alreadyDead = false;
-  energy = 10;
+  energy = 100;
 
   static walkingSound = new Audio("./assets/audio/character/walking.wav");
   static snoringSound = new Audio("./assets/audio/character/snoring.wav");
@@ -104,7 +104,6 @@ class Character extends MovableObject {
     this.idleStartTime = null;
 
     this.applyGravity();
-    // this.animate();
   }
 
   async loadAllImages() {
@@ -163,8 +162,11 @@ class Character extends MovableObject {
 
   playAnimations() {
     if (this.isDead()) return;
-
-    // if (this.isDead()) this.handleCharacterDeath();
+    if (!this.canMove) {
+      Character.walkingSound.pause();
+      this.playAnimation(this.IMAGES_IDLE, 2);
+      return;
+    }
 
     if (this.checkIdleDuration() >= 15) {
       this.playSleepAnimationAndSound();
@@ -207,6 +209,7 @@ class Character extends MovableObject {
   }
 
   jump() {
+    if (!this.canMove) return;
     this.speedY = (30 / 480) * canvas.height;
     Character.jumpingSound.play();
   }
@@ -247,18 +250,16 @@ class Character extends MovableObject {
   }
 
   isNearEndboss() {
-    return this.x >= canvas.width * 3 + (200 / 720) * canvas.width;
+    return this.x >= canvas.width * 4 + (150 / 720) * canvas.width;
   }
 
   moveLeft() {
     super.moveLeft();
-
     this.otherDirection = true;
   }
 
   moveRight() {
     super.moveRight();
-
     this.otherDirection = false;
   }
 

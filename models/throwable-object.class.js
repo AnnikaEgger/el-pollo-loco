@@ -57,7 +57,6 @@ class ThrowableObject extends MovableObject {
   }) {
     super();
     this.state = state;
-    // this.throwableObjects = throwableObjects;
     this.index = this.getRandomIndex(this.IMAGES_ON_GROUND);
 
     if (this.state == "on ground") {
@@ -77,7 +76,7 @@ class ThrowableObject extends MovableObject {
 
   getRandomX() {
     return (
-      Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
+      Math.random() * (canvas.width * 5 - (400 / 720) * canvas.width) +
       (400 / 720) * canvas.width
     );
   }

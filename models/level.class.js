@@ -18,7 +18,7 @@ class Level {
   }
 
   getDimensions() {
-    this.levelEndX = canvas.width * 4;
+    this.levelEndX = canvas.width * 5;
   }
 
   resize() {
@@ -26,7 +26,7 @@ class Level {
   }
 
   createBottlesOnGround() {
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 20; i++) {
       let bottle = new ThrowableObject({
         throwableObjects: this.throwableObjects,
       });
@@ -35,7 +35,7 @@ class Level {
   }
 
   createCoins() {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 25; i++) {
       let coin = new Coin(this.coins);
       this.coins.push(coin);
     }

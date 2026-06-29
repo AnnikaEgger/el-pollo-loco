@@ -8,7 +8,7 @@ class Endboss extends MovableObject {
   animationIndex;
   damage = 15;
   bottomY;
-  energy = 100;
+  energy = 1;
 
   static hurtingSound = new Audio("./assets/audio/endboss/hurting.wav");
   static dyingSound = new Audio("./assets/audio/endboss/dying.mp3");
@@ -81,11 +81,10 @@ class Endboss extends MovableObject {
     this.loadAllImages();
 
     this.getDimensions();
-    this.x = canvas.width * 4;
+    this.x = canvas.width * 5 - 200;
     this.y = this.bottomY;
 
     this.applyGravity();
-    // this.animate();
   }
 
   getDimensions() {
@@ -130,38 +129,38 @@ class Endboss extends MovableObject {
   }
 
   handleEndbossDeath() {
-    this.playDeathAnimationAndSound(
-      Endboss,
-      this.IMAGES_DEAD,
-      this.movementInterval,
-      1,
-    );
-  }
-
-  playDeathAnimationAndSound(objClass, imgs, int, speed) {
+    clearInterval(this.movementInterval);
     gameWon = true;
     this.world.isPaused = true;
+    let imgs = this.IMAGES_DEAD;
     pauseAudios();
-    objClass.dyingSound.play();
+    Endboss.dyingSound.play();
 
     let deathInt = this.setStoppableInterval(() => {
       this.animationTicks++;
-      this.playAnimation(imgs, speed);
+      this.playAnimation(imgs, 1);
 
       if (this.currentImg == imgs.length - 1) {
-        this.playAnimation(imgs, speed);
+        this.removeThrownObjects();
+        this.playAnimation(imgs, 1);
 
         clearInterval(deathInt);
 
-        objClass.dyingSound.onended = () => {
+        Endboss.dyingSound.onended = () => {
           this.world.handleWin();
         };
       }
     }, 50);
   }
 
+  removeThrownObjects() {
+    this.world.level.throwableObjects =
+      this.world.level.throwableObjects.filter((obj) => obj.state !== "throw");
+  }
+
   triggerEndbossAwakening() {
     this.hadFirstContact = true;
+    this.world.character.canMove = false;
     Endboss.risingSound.play();
     this.animateAlertBlinking();
 
@@ -172,6 +171,7 @@ class Endboss extends MovableObject {
 
     Endboss.alertSound.onended = () => {
       Endboss.bgMusic.play();
+      this.world.character.canMove = true;
       this.startEndbossMovement();
     };
   }
@@ -199,7 +199,7 @@ class Endboss extends MovableObject {
     if (this.movementInterval) clearInterval(this.movementInterval);
 
     this.movementInterval = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (this.isPaused || this.isDead()) return;
       this.animationTicks++;
       this.moveEndboss();
       if (this.isHurt())

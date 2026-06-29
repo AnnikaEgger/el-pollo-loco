@@ -63,7 +63,7 @@ h1 {
 }
 
 canvas {
-  background-color: black;
+  background-color: transparent;
   display: block;
 }
 
@@ -316,11 +316,10 @@ button {
 }
 
 .wood-signs-menu--pause {
-  /* position: absolute; */
-  top: 5cqh;
+  top: 6cqh;
   display: flex;
   flex-direction: column;
-  gap: 3cqh;
+  gap: 5cqh;
 }
 
 .wood-signs-container--pause {

@@ -39,15 +39,6 @@ function homeScreenHTML() {
                 <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
               </button>
             </li>
-
-            <li>
-              <button onclick="showInfoScreen('Settings')" class="wood-btn wood-sign">
-                <p>Settings</p>
-                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-
-     
           </ul>
         </nav>
       </div>`;
@@ -91,16 +82,6 @@ function pauseMenuHTML() {
               </button>
             </li>
 
-            <li>
-              <button
-                onclick="showInfoScreen('Settings', 'pause menu')"
-                class="wood-btn wood-sign"
-              >
-                <p>Settings</p>
-                <img src="./assets/img/wood-sign.svg" alt="wooden sign" />
-              </button>
-            </li>
-         
           </ul>
         </nav>
 
@@ -176,6 +157,12 @@ function legalNoticeHTML(headline, origin) {
     <h4>Sounds</h4>
     <br />
     <ul>
+       <li>
+             <strong>all audio assets and sound effects are provided by</strong><br />
+              <a href="https://freesound.org/">freesound.org</a>
+              <a href="https://pixabay.com/de/music/">pixabay music</a>
+        </li>
+        <br/>
         <li>
             <strong>snoring</strong><br />
             snore.wav by bogenseeberg -- <a href="https://freesound.org/s/587349/" target="_blank">https://freesound.org/s/587349/</a> -- License: Attribution 3.0
@@ -200,10 +187,29 @@ function legalNoticeHTML(headline, origin) {
             <strong>sad trombone</strong><br />
             saddertrombones.mp3 by NotR -- <a href="https://freesound.org/s/172950/" target="_blank">https://freesound.org/s/172950/</a> -- License: Attribution NonCommercial 3.0
         </li>
+     
     </ul>
+     <br />
 
-    screen lock icon
-    <a href="https://www.flaticon.com/free-icons/screen-rotate" title="screen rotate icons">Screen rotate icons created by Andrean Prabowo - Flaticon</a>
+      <h4>Images</h4>
+    <br />
+    <ul> 
+        <li>
+            <strong>screen lock icon</strong><br />
+            <a target="_blank" href="https://www.flaticon.com/free-icons/screen-rotate" title="screen rotate icons">Screen rotate icons created by Andrean Prabowo - Flaticon</a>
+        </li>  <br/>
+        <li>
+          <strong>Game Assets and idea by</strong><br />
+          Developer Akademie
+        </li>  <br/>
+         <li>
+          <strong>Buttons</strong><br />
+             <a target="_blank"
+        href="https://www.magnific.com/free-vector/icons-set-game_12953057.htm#fromView=keyword&page=1&position=9&uuid=7b9e53a1-049f-43b5-9524-a7343a9e9be8&query=Game+buttons"
+        >magnific.com</a
+      >
+        </li>
+
 
 </article>`;
 }
