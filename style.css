@@ -6,16 +6,36 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url("./assets/img/desert.png");
+  background-image: url("./assets/img/5_background/layers/air.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100dvh;
+  min-height: 100dvh;
   width: 100dvw;
 
   font-weight: 300;
   color: var(--beige);
   font-family: "Zabars", serif;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.game-title {
+  margin-top: 6dvh;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+img {
+  -webkit-touch-callout: none;
+  user-select: none;
+  /* pointer-events: manipulation; */
 }
 
 button p {
@@ -58,11 +78,25 @@ button {
 
 .content-wrapper {
   width: 720px;
-  height: 480px;
+  aspect-ratio: 720 / 480;
+
   position: relative;
   display: flex;
   flex-direction: column;
   container-type: size;
+  aspect-ratio: 720 / 480;
+}
+
+.content-wrapper:not(:fullscreen):not(:-webkit-full-screen)
+  :is(
+    &,
+    .information-container,
+    canvas,
+    .overlay-img,
+    .loading-spinner,
+    .pause-menu
+  ) {
+  border-radius: 24px;
 }
 
 .content-wrapper:fullscreen {
@@ -75,27 +109,20 @@ button {
 }
 
 .content-wrapper:fullscreen canvas {
-  /* width: 100% !important;
-  height: 100% !important; */
-  /* object-fit: contain; */
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
 
 .content-wrapper:-webkit-full-screen {
-  /* width: 100vw;
-  height: 100vh; */
   background-color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.content-wrapper:-webkit-full-screen canvas {
-  /* width: 100% !important;
-  height: 100% !important; */
-  /* object-fit: contain; */
-  /* image-rendering: pixelated;
-  image-rendering: crisp-edges; */
+
+.ios-fake-fullscreen #fullscreen {
+  height: 100dvh;
+  width: 100dvw;
 }
 
 /* #endregion */
@@ -107,6 +134,7 @@ button {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 8px;
 }
 
 .wood-btn {
@@ -336,9 +364,10 @@ button {
 }
 
 .overlay-img--win {
-  width: 80%;
+  width: 70%;
   align-self: center;
   justify-self: center;
+  margin-top: 24px;
 }
 /* #endregion */
 
@@ -362,8 +391,9 @@ button {
 }
 
 .close-btn--info-container {
-  top: 16px;
-  right: 16px;
+  top: 0;
+  right: 0;
+  padding: 8px;
 }
 
 .information-container h2 {
@@ -382,11 +412,11 @@ button {
   overflow-y: auto;
   color: black;
   border-radius: 24px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .infotext-container--story,
-.information-container--instructions {
+.infotext-container--instructions {
   scrollbar-color: var(--beige) transparent;
 }
 
@@ -423,12 +453,49 @@ button {
 .infotext-container--imprint p {
   font-size: 16px;
 }
+
+.infotext-container--instructions {
+  font-family: "Spicy Rice", serif;
+  font-size: 20px;
+  color: var(--beige);
+}
+
+.game-instructions {
+  line-height: 1.6;
+}
+
+.game-instructions h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+.game-instructions h3:first-child {
+  margin-top: 0;
+}
+
+.game-instructions kbd {
+  background-color: #eee;
+  border: 1px solid #b4b4b4;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  color: #333;
+  display: inline-block;
+  font-size: 0.85em;
+  font-family: monospace;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+.game-instructions ul {
+  margin-bottom: 15px;
+}
 /* #endregion */
 
 /* #region mobile buttons */
 
 .control-panel {
   display: none;
+  padding: 8px;
 }
 
 .panel-wrapper {
@@ -440,7 +507,7 @@ button {
 
 .loading-spinner {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.95);
   top: 0;
   width: 100%;
   height: 100%;
@@ -465,18 +532,38 @@ button {
 
 /* #region responsive */
 @media only screen and (max-width: 720px) {
-  .content-wrapper {
-    width: 100%;
+  .content-wrapper,
+  canvas {
+    width: 100dvw;
+  }
+}
+
+@media screen and (max-height: 650px) {
+  .game-title {
+    display: none;
+  }
+
+  body {
+    justify-content: center;
   }
 }
 
 @media only screen and (max-height: 480px) {
-  .content-wrapper {
+  .content-wrapper,
+  canvas {
     height: 100dvh;
   }
 
+  .overlay-img--win {
+    width: 50%;
+
+    margin-top: 32px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
   .game-title {
-    display: none;
+    font-size: 48px;
   }
 }
 
@@ -495,8 +582,8 @@ button {
     align-self: center;
   }
 
-  .content-wrapper:has(.panel--game):not(:has(.pause-menu)):not(
-      :has(.information-container)
+  .content-wrapper:not(:has(.pause-menu)):not(:has(.information-container)):not(
+      :has(.home-container)
     )
     .control-panel {
     display: flex;
@@ -509,6 +596,31 @@ button {
   .outro-btns-container {
     top: 23cqh;
   }
+
+  .content-wrapper:not(:fullscreen):not(:-webkit-full-screen)
+    :is(
+      &,
+      .information-container,
+      canvas,
+      .overlay-img,
+      .loading-spinner,
+      .pause-menu
+    ) {
+    border-radius: 0;
+  }
+
+  .game-title {
+    font-size: 36px;
+    margin: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .overlay-img--win {
+    width: 50%;
+
+    margin-top: 32px;
+  }
 }
 
 .landscape-warning {
@@ -518,8 +630,8 @@ button {
   right: 0;
   bottom: 0;
   margin: auto;
-  width: min(80dvw, 300px);
-  height: min(80dvh, 200px);
+  width: min(80dvw, 400px);
+  height: min(80dvh, 300px);
 
   display: none;
   flex-direction: column;
@@ -528,7 +640,7 @@ button {
   text-align: center;
   gap: 24px;
 
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 32px;
 }
 

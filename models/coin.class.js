@@ -2,7 +2,7 @@ class Coin extends DrawableObject {
   offsetValue;
   coinValue;
   index;
-  maxY = (65 / 480) * canvas.height;
+  maxY = (20 / 480) * canvas.height;
 
   COINS = ["./assets/img/8_coin/coin_1.png", "./assets/img/8_coin/coin_2.png"];
 
@@ -10,18 +10,25 @@ class Coin extends DrawableObject {
 
   static AUDIOS = [Coin.collectingSound];
 
-  constructor() {
+  constructor(existingCoins) {
     super();
     Coin.collectingSound.volume = 0.15;
     this.index = this.getRandomIndex(this.COINS);
-    this.x =
-      Math.random() * (canvas.width * 3 - (250 / 720) * canvas.width) +
-      (250 / 720) * canvas.width;
+
+    this.setValidXPosition(existingCoins);
+
     this.y =
-      this.maxY + Math.random() * ((320 / 480) * canvas.height - this.maxY);
+      this.maxY + Math.random() * ((150 / 480) * canvas.height - this.maxY);
     this.getDimensions();
 
     this.loadImage(this.COINS[this.index]);
+  }
+
+  getRandomX() {
+    return (
+      Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
+      (400 / 720) * canvas.width
+    );
   }
 
   getDimensions() {

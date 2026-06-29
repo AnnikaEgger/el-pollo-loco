@@ -271,7 +271,10 @@ class World {
   }
 
   spawnAndThrowBottle(x, y) {
-    let bottle = new ThrowableObject("throw", this.character);
+    let bottle = new ThrowableObject({
+      state: "throw",
+      character: this.character,
+    });
     this.level.throwableObjects.push(bottle);
     bottle.throw();
   }

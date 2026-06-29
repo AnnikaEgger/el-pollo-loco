@@ -36,16 +36,27 @@ function openFullscreen(element) {
     element.requestFullscreen();
   } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullscreen();
+  } else if (element.webkitRequestFullScreen) {
+    element.webkitRequestFullScreen();
   } else if (element.msRequestFullscreen) {
     element.msRequestFullscreen();
+  } else {
+    element.classList.add("ios-fake-fullscreen");
   }
 }
 
-function closeFullscreen() {
+function closeFullscreen(element) {
+  if (element && element.classList.contains("ios-fake-fullscreen")) {
+    element.classList.remove("ios-fake-fullscreen");
+    return;
+  }
+
   if (document.exitFullscreen) {
     document.exitFullscreen();
   } else if (document.webkitExitFullscreen) {
     document.webkitExitFullscreen();
+  } else if (document.webkitExitFullScreen) {
+    document.webkitExitFullScreen();
   } else if (document.msExitFullscreen) {
     document.msExitFullscreen();
   }

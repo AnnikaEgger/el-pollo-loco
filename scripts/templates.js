@@ -117,7 +117,7 @@ function endScreenHTML() {
           id="endscreen-img"
           src=""
           alt="Outro Screen"
-          class="outro-screen overlay-img overlay-img--full"
+          class="overlay-img overlay-img--full"
         />
        
         <div class="outro-btns-container">
@@ -432,27 +432,36 @@ function instructionsHTML(headline, origin) {
 
 <article id="infotext-container" class="infotext-container infotext-container--instructions">
 
-    <div class="game-instructions">
-      <h2>How to Play</h2>
-      <p>Use the following keys to control your character:</p>
-      
-      <ul style="list-style: none; padding: 0;">
-        <li style="margin-bottom: 12px;">
-          <kbd>←</kbd> <kbd>→</kbd> : <strong>Move</strong> (Left / Right)
+<div class="game-instructions">
+    <h3>Goal</h3>
+    <p>Defeat the <strong>End Boss</strong>! Collect <strong>Tabasco bottles</strong> along your journey to prepare for the final fight.</p>
+
+    <h3>Controls</h3>
+    <ul>
+        <li><strong>Desktop:</strong>
+            <ul>
+                <li><kbd>Left</kbd> / <kbd>Right</kbd> Arrows = Move</li>
+                <li><kbd>Space</kbd> = Jump</li>
+                <li><kbd>D</kbd> = Throw Tabasco bottle</li>
+            </ul>
         </li>
-        <li style="margin-bottom: 12px;">
-          <kbd>Space</kbd> : <strong>Jump</strong>
-        </li>
-        <li style="margin-bottom: 12px;">
-          <kbd>D</kbd> : <strong>Throw Bottle</strong>
-        </li>
-      </ul>
-      
-      <p style="margin-top: 20px; font-style: italic;">
-        Good luck! Dodge the obstacles and defeat your enemies.
-      </p>
-    </div>
-    </article>
+        <li><strong>Mobile:</strong> Use the on-screen buttons.</li>
+    </ul>
+
+       <h3>Enemies & Combat</h3>
+    <ul>
+        <li><strong>Chickens:</strong> Jump on them or throw Tabasco to defeat.</li>
+        <li><strong>Invincibility:</strong> 1-second invincibility for you and the endboss after a hit.</li>
+    </ul>
+
+    <h3>Economy & Shopping</h3>
+    <p>Collect coins to buy Tabasco bottles:</p>
+    <ul>
+        <li>🪙 <strong>Small Coin:</strong> Worth 1</li>
+        <li>🪙 <strong>Large Coin:</strong> Worth 2</li>
+        <li>🌶️ <strong>Tabasco Bottle Cost:</strong> 2 Coins</li>
+    </ul>
+</div>
   `;
 }
 

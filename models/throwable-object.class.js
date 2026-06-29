@@ -9,6 +9,7 @@ class ThrowableObject extends MovableObject {
   bottomY;
   index;
   character;
+  throwableObjects;
 
   DEFAULT_IMG = "./assets/img/6_salsa_bottle/salsa_bottle.png";
 
@@ -49,15 +50,19 @@ class ThrowableObject extends MovableObject {
     ThrowableObject.shatteringSound,
   ];
 
-  constructor(state = "on ground", character) {
+  constructor({
+    state = "on ground",
+    character = null,
+    throwableObjects = [],
+  }) {
     super();
     this.state = state;
+    // this.throwableObjects = throwableObjects;
     this.index = this.getRandomIndex(this.IMAGES_ON_GROUND);
 
     if (this.state == "on ground") {
-      this.x =
-        Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
-        (400 / 720) * canvas.width;
+      this.setValidXPosition(throwableObjects);
+
       this.loadImgOnGround();
       this.otherDirection = false;
     } else {
@@ -68,6 +73,13 @@ class ThrowableObject extends MovableObject {
     }
 
     this.getDimensions();
+  }
+
+  getRandomX() {
+    return (
+      Math.random() * (canvas.width * 3 - (400 / 720) * canvas.width) +
+      (400 / 720) * canvas.width
+    );
   }
 
   getDimensions() {

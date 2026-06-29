@@ -19,6 +19,20 @@ class DrawableObject {
     }
   }
 
+  setValidXPosition(existingObjects) {
+    this.x = this.getRandomX();
+    while (existingObjects.some((obj) => this.hasSameX(obj))) {
+      this.x = this.getRandomX();
+    }
+  }
+
+  hasSameX(obj) {
+    return (
+      this.x + this.width - this.offset.right > obj.x + obj.offset.left &&
+      this.x + this.offset.left < obj.x + obj.width - obj.offset.right
+    );
+  }
+
   initAudios() {
     return this.AUDIOS;
   }
@@ -81,11 +95,33 @@ class DrawableObject {
       staticAudios.forEach((audio) => {
         promises.push(
           new Promise((resolve) => {
-            if (audio.readyState >= 4) return resolve();
-            audio.addEventListener("canplaythrough", () => resolve(), {
-              once: true,
-            });
-            audio.addEventListener("error", () => resolve(), { once: true });
+            const isMobile = /Mobi|Android|iPhone|iPad/i.test(
+              navigator.userAgent,
+            );
+
+            if (audio.readyState >= 2 || isMobile) {
+              return resolve();
+            }
+
+            const handleReady = () => {
+              cleanup();
+              resolve();
+            };
+
+            const handleError = () => {
+              cleanup();
+              resolve();
+            };
+
+            const cleanup = () => {
+              audio.removeEventListener("canplay", handleReady);
+              audio.removeEventListener("error", handleError);
+            };
+
+            audio.addEventListener("canplay", handleReady);
+            audio.addEventListener("error", handleError);
+
+            setTimeout(handleReady, 3000);
           }),
         );
       });

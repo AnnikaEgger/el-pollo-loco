@@ -7,7 +7,7 @@ class Character extends MovableObject {
   animationInt;
   bottomY;
   alreadyDead = false;
-  energy = 100;
+  energy = 10;
 
   static walkingSound = new Audio("./assets/audio/character/walking.wav");
   static snoringSound = new Audio("./assets/audio/character/snoring.wav");
@@ -131,7 +131,7 @@ class Character extends MovableObject {
       bottom: (15 / 480) * canvas.height,
     };
 
-    this.speed = (15 / 720) * canvas.width;
+    this.speed = (7.5 / 720) * canvas.width;
   }
 
   addAudioEventListeners() {

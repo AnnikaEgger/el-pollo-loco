@@ -152,10 +152,16 @@ function continueGame() {
 function showEndScreen() {
   overlayContainer.innerHTML = endScreenHTML();
   const endScreenImg = document.getElementById("endscreen-img");
-  if (gameLost)
+  if (gameLost) {
     endScreenImg.src =
       "./assets/img/9_intro_outro_screens/game_over/game over!.png";
-  else endScreenImg.src = "./assets/img/You won, you lost/You Win B.png";
+    endScreenImg.classList.remove("overlay-img--win");
+    endScreenImg.classList.add("overlay-img--full");
+  } else {
+    endScreenImg.src = "./assets/img/You won, you lost/You Win B.png";
+    endScreenImg.classList.remove("overlay-img--full");
+    endScreenImg.classList.add("overlay-img--win");
+  }
 }
 
 function endGame() {
@@ -184,8 +190,8 @@ function clearGame() {
 
 function restartGame() {
   isPaused = false;
-  continueGame();
   clearGame();
+  continueGame();
   level1 = initLevel();
   initNewWorld();
 }
