@@ -8,7 +8,7 @@ class Endboss extends MovableObject {
   animationIndex;
   damage = 15;
   bottomY;
-  energy = 1;
+  energy = 100;
 
   static hurtingSound = new Audio("./assets/audio/endboss/hurting.wav");
   static dyingSound = new Audio("./assets/audio/endboss/dying.mp3");
@@ -253,15 +253,15 @@ class Endboss extends MovableObject {
         this.x -
           (this.world.character.x +
             (this.world.character.width - this.world.character.offset.right)) <=
-          (75 / 720) * canvas.width) ||
+          (125 / 720) * canvas.width) ||
       (this.characterIsRight() &&
         this.world.character.x - (this.x + (this.width - this.offset.right)) <=
-          (75 / 720) * canvas.width)
+          (125 / 720) * canvas.width)
     );
   }
 
   attackCharacter() {
-    this.speed = (15 / 720) * canvas.width;
+    this.speed = (25 / 720) * canvas.width;
     this.playAnimation(this.IMAGES_ATTACK, 1, 100);
     this.jump();
   }

@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 let world;
 let keyboard = new Keyboard();
-let isMuted = false;
+let isMuted;
 let oldCanvasHeight;
 let oldCanvasWidth;
 isPaused = false;
@@ -9,6 +9,16 @@ let allObjsWithInt = [];
 let gameLost = false;
 let gameWon = false;
 let gameStarted = false;
+const bgMusicStart = new Audio(
+  "./assets/audio/general/background-music-start-screen.mp3",
+);
+bgMusicStart.volume = 0.2;
+bgMusicStart.loop = true;
+
+const btnClickSound = new Audio("./assets/audio/general/wood-button-click.mp3");
+btnClickSound.volume = 0.5;
+
+let allAudios = [bgMusicStart, btnClickSound];
 
 function gameEnded() {
   return gameLost || gameWon;
@@ -38,6 +48,8 @@ function hideLoadingSpinner() {
 
 function init() {
   lockScreenOrientation();
+  getMuteStatusFromLocalStorage();
+  applyMuteSetting();
 
   document.addEventListener(
     "click",
@@ -50,7 +62,7 @@ function init() {
   );
 
   document.addEventListener("click", (e) => {
-    const button = e.target.closest(".wood-btn");
+    const button = e.target.closest(".wood-btn--click");
     if (button) {
       btnClickSound.currentTime = 0;
       btnClickSound.play();
@@ -68,6 +80,7 @@ function startGame() {
 
   initNewWorld();
   pushAudiosIntoAudiosArr();
+  applyMuteSetting();
 }
 
 async function initNewWorld() {
@@ -154,11 +167,11 @@ function showEndScreen() {
   const endScreenImg = document.getElementById("endscreen-img");
   if (gameLost) {
     endScreenImg.src =
-      "./assets/img/9_intro_outro_screens/game_over/game over!.png";
+      "./assets/img/9_intro_outro_screens/game_over/game_over!.png";
     endScreenImg.classList.remove("overlay-img--win");
     endScreenImg.classList.add("overlay-img--full");
   } else {
-    endScreenImg.src = "./assets/img/You won, you lost/You Win B.png";
+    endScreenImg.src = "./assets/img/You_won,_you_lost/You_Win_B.png";
     endScreenImg.classList.remove("overlay-img--full");
     endScreenImg.classList.add("overlay-img--win");
   }
@@ -203,16 +216,6 @@ function clearAllIntervals() {
 }
 
 // #region audios
-const bgMusicStart = new Audio(
-  "./assets/audio/general/background-music-start-screen.mp3",
-);
-bgMusicStart.volume = 0.2;
-bgMusicStart.loop = true;
-
-const btnClickSound = new Audio("./assets/audio/general/wood-button-click.mp3");
-btnClickSound.volume = 0.5;
-
-let allAudios = [bgMusicStart, btnClickSound];
 
 function pushAudiosIntoAudiosArr() {
   allAudios.push(...Character.AUDIOS);
@@ -226,15 +229,20 @@ function pushAudiosIntoAudiosArr() {
 
 function toggleGameSound() {
   isMuted = !isMuted;
+  applyMuteSetting();
 
-  allAudios.forEach((audio) => {
-    audio.muted = isMuted;
-  });
-
+  setMuteStatusToLocalStorage();
   toggleSoundIcon();
 }
 
+function applyMuteSetting() {
+  allAudios.forEach((audio) => {
+    audio.muted = isMuted;
+  });
+}
+
 function muteGame() {
+  if (!isMuted) return;
   allAudios.forEach((audio) => {
     audio.muted = true;
   });
@@ -242,7 +250,8 @@ function muteGame() {
 
 function pauseAudios() {
   allAudios.forEach((audio) => {
-    if (!audio.paused) audio.pause();
+    audio.wasPlaying = !audio.paused;
+    if (audio.wasPlaying) audio.pause();
   });
 }
 
@@ -259,6 +268,19 @@ function resetAudios() {
   allAudios.forEach((audio) => {
     audio.currentTime = 0;
   });
+}
+
+function setMuteStatusToLocalStorage() {
+  localStorage.setItem("isMuted", isMuted);
+}
+
+function getMuteStatusFromLocalStorage() {
+  if (localStorage.getItem("isMuted") !== null) {
+    isMuted = JSON.parse(localStorage.getItem("isMuted"));
+  } else {
+    isMuted = false;
+    setMuteStatusToLocalStorage();
+  }
 }
 
 // #endregion

@@ -10,7 +10,7 @@ class World {
   statusbarBottles = new StatusbarBottles();
   statusbarCoins = new StatusbarCoins();
   statusbarEndboss = new StatusbarEndboss();
-  availableBottles = 10;
+  availableBottles = 0;
   availableCoins = 0;
   allowNewBottle = true;
   intervalIds = [];

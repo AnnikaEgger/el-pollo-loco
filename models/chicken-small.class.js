@@ -18,7 +18,7 @@ class ChickenSmall extends Chicken {
         top: (5 / 480) * canvas.height,
         bottom: (6 / 480) * canvas.height,
       },
-      (0.25 + Math.random() * 0.5) * (canvas.width / 720),
+      (0.5 + Math.random() * 0.5) * (canvas.width / 720),
     );
   }
 

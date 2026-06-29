@@ -27,8 +27,23 @@ function toggleFullscreen() {
   if (fullscreen) {
     openFullscreen(element);
   } else {
-    closeFullscreen();
+    closeFullscreen(element);
   }
+}
+
+function resizeCanvas() {
+  oldCanvasHeight = canvas.height;
+  oldCanvasWidth = canvas.width;
+
+  if (document.fullscreenElement) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  } else {
+    canvas.width = 720;
+    canvas.height = 480;
+  }
+
+  if (gameStarted) resizeGame();
 }
 
 function openFullscreen(element) {
@@ -66,9 +81,16 @@ function resizeCanvas() {
   oldCanvasHeight = canvas.height;
   oldCanvasWidth = canvas.width;
 
-  if (document.fullscreenElement) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  const isFullscreen = !!(
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement
+  );
+
+  if (isFullscreen) {
+    canvas.width = window.innerWidth || document.documentElement.clientWidth;
+    canvas.height = window.innerHeight || document.documentElement.clientHeight;
   } else {
     canvas.width = 720;
     canvas.height = 480;

@@ -120,9 +120,13 @@ button {
   align-items: center;
 }
 
-.ios-fake-fullscreen #fullscreen {
-  height: 100dvh;
-  width: 100dvw;
+.ios-fake-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
 }
 
 /* #endregion */
@@ -412,6 +416,7 @@ button {
   color: black;
   border-radius: 24px;
   background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
 }
 
 .infotext-container--story,
