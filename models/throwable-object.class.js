@@ -156,12 +156,12 @@ class ThrowableObject extends MovableObject {
     this.speedY = (25 / 480) * canvas.height;
     this.applyGravity();
     this.throwInt = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused) return;
       this.throwIntoRightDirection();
       this.animationTicks++;
       this.playAnimation(this.IMAGES_ROTATING, 0.5, 25);
     }, 25);
-    if (!isMuted) ThrowableObject.throwingSound.play();
+    if (!isMuted) ThrowableObject.throwingSound.play().catch(() => {});
   }
 
   throwIntoRightDirection() {
@@ -174,9 +174,9 @@ class ThrowableObject extends MovableObject {
 
   playSplashAnimation() {
     clearInterval(this.throwInt);
-    if (!isMuted) ThrowableObject.shatteringSound.play();
+    if (!isMuted) ThrowableObject.shatteringSound.play().catch(() => {});
     this.splashInt = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused) return;
       this.animationTicks++;
       let animationIsFinished = this.playAnimation(this.IMAGES_SPLASH, 1, 25);
 

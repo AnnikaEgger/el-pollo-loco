@@ -32,12 +32,12 @@ class Chicken extends MovableObject {
 
   animate() {
     this.moveLeftInt = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused || currentGameState !== "playing") return;
       this.moveLeft();
     }, 1000 / 60);
 
     this.animationInt = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused || currentGameState !== "playing") return;
       this.animationTicks++;
       this.playAnimation(this.imgs, 1, 100);
     }, 100);
@@ -47,6 +47,6 @@ class Chicken extends MovableObject {
     clearInterval(this.moveLeftInt);
     clearInterval(this.animationInt);
     this.killed = true;
-    Chicken.dyingSound.play();
+    Chicken.dyingSound.play().catch(() => {});
   }
 }

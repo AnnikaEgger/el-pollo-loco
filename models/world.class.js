@@ -14,7 +14,6 @@ class World {
   availableCoins = 0;
   allowNewBottle = true;
   intervalIds = [];
-  isPaused = false;
   gameOverImg = "./assets/img/You won, you lost/Game Over.png";
 
   STATUSBARS = [
@@ -87,7 +86,7 @@ class World {
 
   run() {
     this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused || currentGameState !== "playing") return;
       this.playBackgroundSounds();
       this.checkThrowObjects();
       this.checkCollisions();
@@ -167,13 +166,15 @@ class World {
   }
 
   handleGameOver() {
+    gameLost = true;
     endGame();
-    World.gameOverSound.play();
+    World.gameOverSound.play().catch(() => {});
   }
 
   handleWin() {
+    gameWon = true;
     endGame();
-    World.winSound.play();
+    World.winSound.play().catch(() => {});
   }
 
   handleBottleHit(bottle, enemy) {
@@ -207,7 +208,7 @@ class World {
   }
 
   collectBottle(to) {
-    ThrowableObject.collectingSound.play();
+    ThrowableObject.collectingSound.play().catch(() => {});
     if (this.availableBottles < 10) this.availableBottles++;
     this.updateBottlesStatusbar();
 
@@ -229,7 +230,7 @@ class World {
   }
 
   collectCoin(coin) {
-    Coin.collectingSound.play();
+    Coin.collectingSound.play().catch(() => {});
     this.availableCoins += coin.coinValue;
     if (this.availableCoins > 20) this.availableCoins = 20;
     this.updateCoinsStatusbar();
@@ -246,7 +247,7 @@ class World {
       if (this.availableBottles > 0) {
         this.createNewBottle();
       } else {
-        Character.errorSound.play();
+        Character.errorSound.play().catch(() => {});
       }
     }
   }
@@ -274,7 +275,7 @@ class World {
 
   startBottleCooldown() {
     this.allowNewBottle = false;
-    setTimeout(() => (this.allowNewBottle = true), 500);
+    setTimeout(() => (this.allowNewBottle = true), 750);
   }
 
   updateBottlesStatusbar() {
@@ -300,8 +301,8 @@ class World {
 
   addAllObjectsToMap() {
     this.addBackgroundObjectsToMap();
-    this.addFixedObjectsToMap();
     this.addInteractiveObjectstoMap();
+    this.addFixedObjectsToMap();
   }
 
   addFixedObjectsToMap() {

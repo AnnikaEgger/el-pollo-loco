@@ -119,7 +119,7 @@ class Endboss extends MovableObject {
 
   animate() {
     this.animationInt = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused || currentGameState == "character dying") return;
       if (this.characterEncountersEndboss()) this.triggerEndbossAwakening();
     }, 100);
   }
@@ -129,26 +129,35 @@ class Endboss extends MovableObject {
   }
 
   handleEndbossDeath() {
+    currentGameState = "endboss dying";
     clearInterval(this.movementInterval);
-    gameWon = true;
-    this.world.isPaused = true;
     let imgs = this.IMAGES_DEAD;
     pauseAudios();
-    Endboss.dyingSound.play();
+    Endboss.dyingSound.play().catch(() => {});
 
     let deathInt = this.setStoppableInterval(() => {
+      if (isPaused) return;
       this.animationTicks++;
       this.playAnimation(imgs, 1);
 
       if (this.currentImg == imgs.length - 1) {
         this.removeThrownObjects();
         this.playAnimation(imgs, 1);
-
         clearInterval(deathInt);
 
-        Endboss.dyingSound.onended = () => {
+        this.continueAfterAudio(Endboss.dyingSound, () => {
           this.world.handleWin();
-        };
+        });
+
+        // let fallbackTimeout = setTimeout(() => {
+        //   Endboss.dyingSound.onended = null;
+        //   this.world.handleWin();
+        // }, 2500);
+
+        // Endboss.dyingSound.onended = () => {
+        //   clearTimeout(fallbackTimeout);
+        //   this.world.handleWin();
+        // };
       }
     }, 50);
   }
@@ -161,25 +170,30 @@ class Endboss extends MovableObject {
   triggerEndbossAwakening() {
     this.hadFirstContact = true;
     this.world.character.canMove = false;
-    Endboss.risingSound.play();
+    Endboss.risingSound.play().catch(() => {});
     this.animateAlertBlinking();
 
-    Endboss.risingSound.onended = () => {
-      Endboss.alertSound.play();
-      this.animateScream();
-    };
+    this.continueAfterAudio(Endboss.risingSound, () =>
+      this.makeEndbossScream(),
+    );
+  }
 
-    Endboss.alertSound.onended = () => {
-      Endboss.bgMusic.play();
-      this.world.character.canMove = true;
-      this.startEndbossMovement();
-    };
+  makeEndbossScream() {
+    Endboss.alertSound.play().catch(() => {});
+    this.animateScream();
+    this.continueAfterAudio(Endboss.alertSound, () => this.startBossFight());
+  }
+
+  startBossFight() {
+    Endboss.bgMusic.play().catch(() => {});
+    this.world.character.canMove = true;
+    this.startEndbossMovement();
   }
 
   animateAlertBlinking() {
     let index = 0;
     const blinkInt = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused || currentGameState == "character dying") return;
       this.animationTicks++;
       if (index == 5) clearInterval(blinkInt);
       this.playAnimation(this.IMAGES_ALERT, 1, 200);
@@ -199,7 +213,8 @@ class Endboss extends MovableObject {
     if (this.movementInterval) clearInterval(this.movementInterval);
 
     this.movementInterval = this.setStoppableInterval(() => {
-      if (this.isPaused || this.isDead()) return;
+      if (isPaused || currentGameState == "character dying" || this.isDead())
+        return;
       this.animationTicks++;
       this.moveEndboss();
       if (this.isHurt())

@@ -7,7 +7,7 @@ class Character extends MovableObject {
   animationInt;
   bottomY;
   alreadyDead = false;
-  energy = 100;
+  energy = 1;
 
   static walkingSound = new Audio("./assets/audio/character/walking.wav");
   static snoringSound = new Audio("./assets/audio/character/snoring.wav");
@@ -148,14 +148,13 @@ class Character extends MovableObject {
 
   animate() {
     this.setStoppableInterval(() => {
+      if (isPaused) return;
       this.moveCharacter();
     }, 1000 / 60);
 
     this.animationInt = this.setStoppableInterval(() => {
-      if (this.isPaused) return;
-
+      if (isPaused) return;
       this.animationTicks++;
-
       this.playAnimations();
     }, 50);
   }
@@ -183,12 +182,12 @@ class Character extends MovableObject {
 
   playSleepAnimationAndSound() {
     this.playAnimation(this.IMAGES_SLEEPING, 2);
-    Character.snoringSound.play();
+    Character.snoringSound.play().catch(() => {});
   }
 
   playWalkingAnimationAndSound() {
     this.playAnimation(this.IMAGES_WALKING, 1);
-    Character.walkingSound.play();
+    Character.walkingSound.play().catch(() => {});
   }
 
   handleWalking() {
@@ -200,7 +199,7 @@ class Character extends MovableObject {
   }
 
   moveCharacter() {
-    if (this.isDead() || this.isPaused) return;
+    if (this.isDead()) return;
     if (this.world.keyboard.LEFT && this.x > 0) this.moveLeft();
     if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX)
       this.moveRight();
@@ -211,7 +210,7 @@ class Character extends MovableObject {
   jump() {
     if (!this.canMove) return;
     this.speedY = (30 / 480) * canvas.height;
-    Character.jumpingSound.play();
+    Character.jumpingSound.play().catch(() => {});
   }
 
   isIdle() {
@@ -273,6 +272,7 @@ class Character extends MovableObject {
 
   handleCharacterDeath() {
     this.alreadyDead = true;
+    currentGameState = "character dying";
 
     clearInterval(this.animationInt);
 
@@ -286,49 +286,26 @@ class Character extends MovableObject {
   }
 
   playDeathAnimationAndSound(objClass, imgs, int, speed) {
-    gameLost = true;
-    this.world.isPaused = true;
-
     pauseAudios();
 
-    objClass.dyingSound.play();
+    objClass.dyingSound.play().catch(() => {});
 
     let deathInt = this.setStoppableInterval(() => {
+      if (isPaused) return;
       this.animationTicks++;
 
       this.playAnimation(imgs, speed);
 
       if (this.currentImg == imgs.length - 1) {
+        console.log("inside if statement");
+
         this.playAnimation(imgs, speed);
-
-        // setTimeout(() => {
-
         clearInterval(deathInt);
 
-        // }, 100);
-
-        objClass.dyingSound.onended = () => {
-          // setTimeout(() => {
-
+        this.continueAfterAudio(objClass.dyingSound, () => {
           this.world.handleGameOver();
-
-          // }, 100);
-        };
+        });
       }
     }, 50);
   }
-
-  // playDeathAnimationAndSound(objClass, imgs, int, speed) {
-
-  //   objClass.dyingSound.play();
-
-  //   this.playAnimation(imgs, speed);
-
-  //   if (this.currentImg == imgs.length) {
-
-  //     clearInterval(this.animationInt);
-
-  //   }
-
-  // }
 }

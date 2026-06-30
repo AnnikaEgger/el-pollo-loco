@@ -9,7 +9,6 @@ class MovableObject extends DrawableObject {
   lastImages;
   isInvincible = false;
   intervalIds = [];
-  isPaused = false;
   canMove = true;
 
   setStoppableInterval(fn, time) {
@@ -30,7 +29,7 @@ class MovableObject extends DrawableObject {
 
   applyGravity() {
     this.setStoppableInterval(() => {
-      if (this.isPaused) return;
+      if (isPaused) return;
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
@@ -80,12 +79,12 @@ class MovableObject extends DrawableObject {
   }
 
   moveLeft() {
-    if (this.isPaused || !this.canMove) return;
+    if (isPaused || currentGameState !== "playing" || !this.canMove) return;
     this.x -= this.speed;
   }
 
   moveRight() {
-    if (this.isPaused || !this.canMove) return;
+    if (isPaused || currentGameState !== "playing" || !this.canMove) return;
     this.x += this.speed;
   }
 
@@ -134,7 +133,7 @@ class MovableObject extends DrawableObject {
 
   playHurtAnimationAndSound(objClass, imgs) {
     this.playAnimation(imgs, 1);
-    objClass.hurtingSound.play();
+    objClass.hurtingSound.play().catch(() => {});
   }
 
   // playDeathAnimationAndSound(objClass, imgs, int, speed) {
@@ -147,4 +146,23 @@ class MovableObject extends DrawableObject {
   //     clearInterval(deathInt);
   //   }
   // }
+
+  continueAfterAudio(audioElement, callback) {
+    console.log("function triggered");
+
+    let fired = false;
+    let maxSeconds = audioElement.duration + 1;
+
+    const triggerNextStep = () => {
+      if (!fired) {
+        fired = true;
+        audioElement.onended = null;
+        clearTimeout(timeoutId);
+        callback();
+      }
+    };
+
+    const timeoutId = setTimeout(triggerNextStep, maxSeconds * 1000);
+    audioElement.onended = triggerNextStep;
+  }
 }

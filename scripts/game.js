@@ -4,11 +4,15 @@ let keyboard = new Keyboard();
 let isMuted;
 let oldCanvasHeight;
 let oldCanvasWidth;
-isPaused = false;
+let isPaused = false;
+let currentGameState = "playing";
+// "character dying", "endboss dying"
+
 let allObjsWithInt = [];
 let gameLost = false;
 let gameWon = false;
 let gameStarted = false;
+let gameEnded = false;
 const bgMusicStart = new Audio(
   "./assets/audio/general/background-music-start-screen.mp3",
 );
@@ -20,9 +24,9 @@ btnClickSound.volume = 0.5;
 
 let allAudios = [bgMusicStart, btnClickSound];
 
-function gameEnded() {
-  return gameLost || gameWon;
-}
+// function gameEnded() {
+//   return gameLost || gameWon;
+// }
 
 const LOADING_SPINNER_IMGS = [
   "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
@@ -142,24 +146,19 @@ function togglePauseGame() {
 }
 
 function pauseGame() {
+  isPaused = true;
   openPauseMenu();
-
   pauseAudios();
-  allObjsWithInt.forEach((obj) => {
-    obj.isPaused = true;
-  });
 }
 
 function continueGame() {
+  isPaused = false;
   clearOverlayContainer();
-  if (gameEnded()) showEndScreen();
+  if (gameEnded) showEndScreen();
   const pauseBtnImg = document.getElementById("pause-btn-img");
   pauseBtnImg.src = "./assets/icons/pause-icon.png";
 
   continueAudios();
-  allObjsWithInt.forEach((obj) => {
-    obj.isPaused = false;
-  });
 }
 
 function showEndScreen() {
@@ -178,6 +177,7 @@ function showEndScreen() {
 }
 
 function endGame() {
+  gameEnded = true;
   showEndScreen();
   clearAllIntervals();
   pauseAudios();
@@ -189,6 +189,9 @@ function clearGame() {
   gameLost = false;
   gameWon = false;
   isPaused = false;
+  gameEnded = false;
+  gameStarted = false;
+  currentGameState = "playing";
 
   pauseAudios();
   resetAudios();
@@ -202,9 +205,9 @@ function clearGame() {
 }
 
 function restartGame() {
-  isPaused = false;
   clearGame();
-  continueGame();
+  clearOverlayContainer();
+
   level1 = initLevel();
   initNewWorld();
 }

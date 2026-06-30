@@ -78,8 +78,6 @@ button {
 
 .content-wrapper {
   width: 720px;
-  aspect-ratio: 720 / 480;
-
   position: relative;
   display: flex;
   flex-direction: column;
