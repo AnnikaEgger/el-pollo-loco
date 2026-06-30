@@ -175,6 +175,7 @@ class ThrowableObject extends MovableObject {
   playSplashAnimation() {
     clearInterval(this.throwInt);
     if (!isMuted) ThrowableObject.shatteringSound.play().catch(() => {});
+
     this.splashInt = this.setStoppableInterval(() => {
       if (isPaused) return;
       this.animationTicks++;

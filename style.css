@@ -570,35 +570,6 @@ button {
 }
 
 @media screen and (max-width: 768px) {
-  .wood-signs-container--pause {
-    padding-bottom: unset;
-    padding-top: 8cqh;
-  }
-
-  .content-wrapper:not(:has(.home-container)):not(:has(.information-container))
-    .panel {
-    top: 3cqh;
-    bottom: unset;
-    width: unset;
-    gap: 2.5cqw;
-    align-self: center;
-  }
-
-  .content-wrapper:not(:has(.pause-menu)):not(:has(.information-container)):not(
-      :has(.home-container)
-    )
-    .control-panel {
-    display: flex;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .outro-btns-container {
-    top: 23cqh;
-  }
-
   .content-wrapper:not(:fullscreen):not(:-webkit-full-screen)
     :is(
       &,
@@ -614,6 +585,37 @@ button {
   .game-title {
     font-size: 36px;
     margin: 16px;
+  }
+}
+
+@media (pointer: coarse) {
+  .wood-signs-container--pause {
+    padding-bottom: unset;
+    padding-top: 8cqh;
+  }
+
+  .content-wrapper:not(:has(.home-container)):not(:has(.information-container))
+    .panel {
+    top: 3cqh;
+    bottom: unset;
+    width: unset;
+    gap: 2.5cqw;
+    align-self: center;
+  }
+
+  .outro-btns-container {
+    top: 23cqh;
+  }
+
+  .content-wrapper:not(:has(.pause-menu)):not(:has(.information-container)):not(
+      :has(.home-container)
+    )
+    .control-panel {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    justify-content: space-between;
   }
 }
 

@@ -460,9 +460,11 @@ function instructionsHTML(headline, origin) {
     <h3>Economy & Shopping</h3>
     <p>Collect coins to buy Tabasco bottles:</p>
     <ul>
-        <li>🪙 <strong>Small Coin:</strong> Worth 1</li>
-        <li>🪙 <strong>Large Coin:</strong> Worth 2</li>
-        <li>🌶️ <strong>Tabasco Bottle Cost:</strong> 2 Coins</li>
+      <li>🪙 <strong>Small Coin:</strong> Worth 1</li>
+      <li>🪙 <strong>Large Coin:</strong> Worth 2</li>
+      <li>💰 <strong>Wallet Capacity:</strong> Maximum value of 25 Coins</li>
+      <li>🌶️ <strong>Tabasco Bottle Cost:</strong> 2 Coins</li>
+      <li>🎒 <strong>Bottle Capacity:</strong> Maximum 10</li>
     </ul>
 </div>
   `;

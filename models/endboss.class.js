@@ -144,20 +144,7 @@ class Endboss extends MovableObject {
         this.removeThrownObjects();
         this.playAnimation(imgs, 1);
         clearInterval(deathInt);
-
-        this.continueAfterAudio(Endboss.dyingSound, () => {
-          this.world.handleWin();
-        });
-
-        // let fallbackTimeout = setTimeout(() => {
-        //   Endboss.dyingSound.onended = null;
-        //   this.world.handleWin();
-        // }, 2500);
-
-        // Endboss.dyingSound.onended = () => {
-        //   clearTimeout(fallbackTimeout);
-        //   this.world.handleWin();
-        // };
+        Endboss.dyingSound.onended = () => this.world.handleWin();
       }
     }, 50);
   }
@@ -172,16 +159,13 @@ class Endboss extends MovableObject {
     this.world.character.canMove = false;
     Endboss.risingSound.play().catch(() => {});
     this.animateAlertBlinking();
-
-    this.continueAfterAudio(Endboss.risingSound, () =>
-      this.makeEndbossScream(),
-    );
+    Endboss.risingSound.onended = () => this.makeEndbossScream();
   }
 
   makeEndbossScream() {
     Endboss.alertSound.play().catch(() => {});
     this.animateScream();
-    this.continueAfterAudio(Endboss.alertSound, () => this.startBossFight());
+    Endboss.alertSound.onended = () => this.startBossFight();
   }
 
   startBossFight() {

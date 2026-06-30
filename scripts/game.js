@@ -77,11 +77,15 @@ function init() {
 }
 
 function startGame() {
+  bgMusicStart.pause();
+
+  if (gameStarted) {
+    restartGame();
+    return;
+  }
   gameStarted = true;
 
   clearOverlayContainer();
-  bgMusicStart.pause();
-
   initNewWorld();
   pushAudiosIntoAudiosArr();
   applyMuteSetting();
@@ -207,7 +211,6 @@ function clearGame() {
 function restartGame() {
   clearGame();
   clearOverlayContainer();
-
   level1 = initLevel();
   initNewWorld();
 }

@@ -200,6 +200,7 @@ class World {
   checkIfBottleCollected() {
     this.level.throwableObjects.forEach((to) => {
       if (this.character.isColliding(to) && to.state == "on ground") {
+        // if (this.availableCoins >= 2 && this.availableBottles < 10) {
         if (this.availableCoins >= 2) {
           this.collectBottle(to);
         }
@@ -208,8 +209,10 @@ class World {
   }
 
   collectBottle(to) {
+    ThrowableObject.collectingSound.currentTime = 0;
     ThrowableObject.collectingSound.play().catch(() => {});
-    if (this.availableBottles < 10) this.availableBottles++;
+    // if (this.availableBottles < 10)
+    this.availableBottles++;
     this.updateBottlesStatusbar();
 
     this.availableCoins -= 2;
@@ -223,6 +226,7 @@ class World {
 
   checkIfCoinCollected() {
     this.level.coins.forEach((coin) => {
+      // if (this.character.isColliding(coin) && this.availableCoins < 20) {
       if (this.character.isColliding(coin)) {
         this.collectCoin(coin);
       }
@@ -230,6 +234,7 @@ class World {
   }
 
   collectCoin(coin) {
+    Coin.collectingSound.currentTime = 0;
     Coin.collectingSound.play().catch(() => {});
     this.availableCoins += coin.coinValue;
     if (this.availableCoins > 20) this.availableCoins = 20;

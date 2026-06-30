@@ -10,7 +10,6 @@ class DrawableObject {
   currentImg = 0;
 
   static errorSound = new Audio("./assets/audio/bottle/error.mp3");
-
   static AUDIOS = [DrawableObject.errorSound];
 
   constructor() {
@@ -20,10 +19,21 @@ class DrawableObject {
   }
 
   setValidXPosition(existingObjects) {
+    let attempts = 0;
+    const maxAttempts = 100;
     this.x = this.getRandomX();
-    while (existingObjects.some((obj) => this.hasSameX(obj))) {
+
+    while (
+      this.checkCollisionWithExisting(existingObjects) &&
+      attempts < maxAttempts
+    ) {
       this.x = this.getRandomX();
+      attempts++;
     }
+  }
+
+  checkCollisionWithExisting(existingObjects) {
+    return existingObjects.some((obj) => this.hasSameX(obj));
   }
 
   hasSameX(obj) {

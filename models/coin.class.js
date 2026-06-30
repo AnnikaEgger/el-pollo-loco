@@ -12,7 +12,7 @@ class Coin extends DrawableObject {
 
   constructor(existingCoins) {
     super();
-    Coin.collectingSound.volume = 0.15;
+    Coin.collectingSound.volume = 0.25;
     this.index = this.getRandomIndex(this.COINS);
 
     this.setValidXPosition(existingCoins);

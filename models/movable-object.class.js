@@ -107,7 +107,7 @@ class MovableObject extends DrawableObject {
     this.isInvincible = true;
     setTimeout(() => {
       this.isInvincible = false;
-    }, 1000);
+    }, 500);
 
     statusbar.setPercentage(this.energy);
     this.lastHit = Date.now();
@@ -147,22 +147,22 @@ class MovableObject extends DrawableObject {
   //   }
   // }
 
-  continueAfterAudio(audioElement, callback) {
-    console.log("function triggered");
+  // continueAfterAudio(audioElement, callback) {
+  //   console.log("function triggered");
 
-    let fired = false;
-    let maxSeconds = audioElement.duration + 1;
+  //   let fired = false;
+  //   let maxSeconds = audioElement.duration + 1;
 
-    const triggerNextStep = () => {
-      if (!fired) {
-        fired = true;
-        audioElement.onended = null;
-        clearTimeout(timeoutId);
-        callback();
-      }
-    };
+  //   const triggerNextStep = () => {
+  //     if (!fired) {
+  //       fired = true;
+  //       audioElement.onended = null;
+  //       clearTimeout(timeoutId);
+  //       callback();
+  //     }
+  //   };
 
-    const timeoutId = setTimeout(triggerNextStep, maxSeconds * 1000);
-    audioElement.onended = triggerNextStep;
-  }
+  //   const timeoutId = setTimeout(triggerNextStep, maxSeconds * 1000);
+  //   audioElement.onended = triggerNextStep;
+  // }
 }

@@ -7,7 +7,7 @@ class Character extends MovableObject {
   animationInt;
   bottomY;
   alreadyDead = false;
-  energy = 1;
+  energy = 100;
 
   static walkingSound = new Audio("./assets/audio/character/walking.wav");
   static snoringSound = new Audio("./assets/audio/character/snoring.wav");
@@ -118,19 +118,20 @@ class Character extends MovableObject {
 
   getDimensions() {
     super.getDimensions();
-
     this.height = (280 / 480) * canvas.height;
     this.width = (140 / 720) * canvas.width;
     this.bottomY = (150 / 480) * canvas.height;
+    this.speed = (7.5 / 720) * canvas.width;
+    this.getCharacterOffset();
+  }
 
+  getCharacterOffset() {
     this.offset = {
       left: (35 / 720) * canvas.width,
       right: (40 / 720) * canvas.width,
       top: (120 / 480) * canvas.height,
       bottom: (15 / 480) * canvas.height,
     };
-
-    this.speed = (7.5 / 720) * canvas.width;
   }
 
   addAudioEventListeners() {
@@ -166,7 +167,10 @@ class Character extends MovableObject {
       this.playAnimation(this.IMAGES_IDLE, 2);
       return;
     }
+    this.determineActiveAnimation();
+  }
 
+  determineActiveAnimation() {
     if (this.checkIdleDuration() >= 15) {
       this.playSleepAnimationAndSound();
     } else if (this.checkIdleDuration() > 0) {
@@ -214,13 +218,12 @@ class Character extends MovableObject {
   }
 
   isIdle() {
-    let isIdle =
+    return (
       !this.isDead() &&
       !this.isHurt() &&
       !this.isAboveGround() &&
-      this.noKeyPressed();
-
-    return isIdle;
+      this.noKeyPressed()
+    );
   }
 
   checkIdleDuration() {
@@ -264,7 +267,6 @@ class Character extends MovableObject {
 
   hit(damage, statusbar) {
     super.hit(damage, statusbar);
-
     if (this.isDead() && !this.alreadyDead) {
       this.handleCharacterDeath();
     }
@@ -273,38 +275,24 @@ class Character extends MovableObject {
   handleCharacterDeath() {
     this.alreadyDead = true;
     currentGameState = "character dying";
-
     clearInterval(this.animationInt);
-
-    this.playDeathAnimationAndSound(
-      Character,
-      this.IMAGES_DEAD,
-      this.animationInt,
-
-      2,
-    );
+    this.playDeathAnimationAndSound();
   }
 
-  playDeathAnimationAndSound(objClass, imgs, int, speed) {
+  playDeathAnimationAndSound() {
     pauseAudios();
-
-    objClass.dyingSound.play().catch(() => {});
+    let imgs = this.IMAGES_DEAD;
+    Character.dyingSound.play().catch(() => {});
 
     let deathInt = this.setStoppableInterval(() => {
       if (isPaused) return;
       this.animationTicks++;
-
-      this.playAnimation(imgs, speed);
+      this.playAnimation(imgs, 2);
 
       if (this.currentImg == imgs.length - 1) {
-        console.log("inside if statement");
-
-        this.playAnimation(imgs, speed);
+        this.playAnimation(imgs, 2);
         clearInterval(deathInt);
-
-        this.continueAfterAudio(objClass.dyingSound, () => {
-          this.world.handleGameOver();
-        });
+        Character.dyingSound.onended = () => this.world.handleGameOver();
       }
     }, 50);
   }

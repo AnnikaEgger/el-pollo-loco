@@ -3,7 +3,8 @@ class BackgroundObject extends MovableObject {
   xMultiplier;
 
   constructor(imagePath, xMultiplier) {
-    super().loadImage(imagePath);
+    super();
+    this.loadImage(imagePath);
     this.xMultiplier = xMultiplier;
     this.getDimensions();
   }
