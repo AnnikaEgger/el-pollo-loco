@@ -1,3 +1,9 @@
+/**
+ * Returns the HTML content for the legal notice information screen.
+ * @param {string} headline - The headline text to display.
+ * @param {string} origin - The location from which the screen was opened.
+ * @returns {string} The legal notice HTML.
+ */
 function legalNoticeHTML(headline, origin) {
   return `<button
   onclick="closeInfoScreen('${origin}')"
@@ -89,6 +95,12 @@ function legalNoticeHTML(headline, origin) {
 </article>`;
 }
 
+/**
+ * Returns the HTML content for the privacy policy information screen.
+ * @param {string} headline - The headline text to display.
+ * @param {string} origin - The location from which the screen was opened.
+ * @returns {string} The privacy policy HTML.
+ */
 function privacyPolicyHTML(headline, origin) {
   return `   <button
   onclick="closeInfoScreen('${origin}')"

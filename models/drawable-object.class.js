@@ -1,3 +1,7 @@
+/**
+ * Base class for all visible game objects with position, size, image loading, and drawing logic.
+ * @class DrawableObject
+ */
 class DrawableObject {
   x = 120;
   y = 280;
@@ -12,12 +16,19 @@ class DrawableObject {
   static errorSound = new Audio("./assets/audio/bottle/error.mp3");
   static AUDIOS = [DrawableObject.errorSound];
 
+  /**
+   * Creates a drawable game object with default position and collision values.
+   */
   constructor() {
     if (!this.offset) {
       this.offset = { top: 0, bottom: 0, left: 0, right: 0 };
     }
   }
 
+  /**
+   * Places the object at a valid x-position that does not overlap with existing objects.
+   * @param {DrawableObject[]} existingObjects - Existing objects to check against.
+   */
   setValidXPosition(existingObjects) {
     let attempts = 0;
     const maxAttempts = 100;
@@ -32,10 +43,20 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Checks whether the object overlaps horizontally with any existing object.
+   * @param {DrawableObject[]} existingObjects - Existing objects to inspect.
+   * @returns {boolean} True if a collision is detected.
+   */
   checkCollisionWithExisting(existingObjects) {
     return existingObjects.some((obj) => this.hasSameX(obj));
   }
 
+  /**
+   * Checks whether the object overlaps horizontally with another object.
+   * @param {DrawableObject} obj - The object to compare against.
+   * @returns {boolean} True if the objects overlap along the x-axis.
+   */
   hasSameX(obj) {
     return (
       this.x + this.width - this.offset.right > obj.x + obj.offset.left &&
@@ -43,14 +64,26 @@ class DrawableObject {
     );
   }
 
+  /**
+   * Returns the audio objects associated with this drawable object.
+   * @returns {HTMLAudioElement[]} The audio elements used by the object.
+   */
   initAudios() {
     return this.AUDIOS;
   }
 
+  /**
+   * Draws the object image on the provided canvas context.
+   * @param {CanvasRenderingContext2D} ctx - The rendering context.
+   */
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+  /**
+   * Draws a debug rectangle around the object's bounding box.
+   * @param {CanvasRenderingContext2D} ctx - The rendering context.
+   */
   drawFrame(ctx) {
     if (!(this instanceof BackgroundObject) && !(this instanceof Cloud)) {
       ctx.beginPath();
@@ -61,6 +94,10 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Draws a debug rectangle around the object's collision offset box.
+   * @param {CanvasRenderingContext2D} ctx - The rendering context.
+   */
   drawOffsetFrame(ctx) {
     if (!(this instanceof BackgroundObject) && !(this instanceof Cloud)) {
       ctx.beginPath();
@@ -76,11 +113,19 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Loads a single image for the object.
+   * @param {string} path - The image path to load.
+   */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
+  /**
+   * Loads multiple images into the cache for later animation use.
+   * @param {string[]} srcsArr - The image paths to cache.
+   */
   loadImages(srcsArr) {
     srcsArr.forEach((path) => {
       let img = new Image();
@@ -89,62 +134,20 @@ class DrawableObject {
     });
   }
 
-  // async waitUntilReady() {
-  //   const promises = [];
-
-  //   promises.push(
-  //     new Promise((resolve) => {
-  //       if (this.img.complete) return resolve();
-  //       this.img.onload = () => resolve();
-  //       this.img.onerror = () => resolve();
-  //     }),
-  //   );
-
-  //   const staticAudios = this.constructor.AUDIOS;
-  //   if (Array.isArray(staticAudios)) {
-  //     staticAudios.forEach((audio) => {
-  //       promises.push(
-  //         new Promise((resolve) => {
-  //           const isMobile = /Mobi|Android|iPhone|iPad/i.test(
-  //             navigator.userAgent,
-  //           );
-
-  //           if (audio.readyState >= 2 || isMobile) {
-  //             return resolve();
-  //           }
-
-  //           const handleReady = () => {
-  //             cleanup();
-  //             resolve();
-  //           };
-
-  //           const handleError = () => {
-  //             cleanup();
-  //             resolve();
-  //           };
-
-  //           const cleanup = () => {
-  //             audio.removeEventListener("canplay", handleReady);
-  //             audio.removeEventListener("error", handleError);
-  //           };
-
-  //           audio.addEventListener("canplay", handleReady);
-  //           audio.addEventListener("error", handleError);
-
-  //           setTimeout(handleReady, 3000);
-  //         }),
-  //       );
-  //     });
-  //   }
-
-  //   return Promise.all(promises);
-  // }
+  /**
+   * Waits for the object's image and audio assets to be ready.
+   * @returns {Promise<void>} Resolves once the assets have loaded.
+   */
   async waitUntilReady() {
     const imagePromise = this.waitForImageReady();
     const audioPromises = this.waitForAllAudios();
     await Promise.all([imagePromise, ...audioPromises]);
   }
 
+  /**
+   * Waits for the main object image to finish loading.
+   * @returns {Promise<void>} Resolves when the image is loaded or fails.
+   */
   waitForImageReady() {
     return new Promise((resolve) => {
       if (this.img.complete) return resolve();
@@ -153,6 +156,10 @@ class DrawableObject {
     });
   }
 
+  /**
+   * Creates promises for all audio assets associated with this object.
+   * @returns {Promise[]} A list of audio readiness promises.
+   */
   waitForAllAudios() {
     const staticAudios = this.constructor.AUDIOS;
     if (!Array.isArray(staticAudios)) {
@@ -161,42 +168,65 @@ class DrawableObject {
     return staticAudios.map((audio) => this.waitForAudioReady(audio));
   }
 
+  /**
+   * Waits until the given audio file is ready to play.
+   * @param {HTMLAudioElement} audio - The audio element to wait for.
+   * @returns {Promise<void>} Resolves when the audio is ready or the timeout has elapsed.
+   */
   waitForAudioReady(audio) {
     return new Promise((resolve) => {
       if (audio.readyState >= 2 || this.isMobileDevice()) return resolve();
 
       const timer = setTimeout(this.handleReady, 3000);
-      this.handleReady(timer, audio);
-
-      audio.addEventListener("canplay", this.handleReady);
-      audio.addEventListener("error", this.handleReady);
+      this.handleReady(timer, audio, resolve);
+      audio.addEventListener("canplay", () =>
+        this.handleReady(timer, audio, resolve),
+      );
+      audio.addEventListener("error", () =>
+        this.handleReady(timer, audio, resolve),
+      );
     });
   }
 
-  handleReady(timer, audio) {
+  /**
+   * Cleans up the audio loading timer and resolves the loading promise.
+   * @param {number} timer - The timeout ID used for the audio readiness check.
+   * @param {HTMLAudioElement} audio - The audio element being prepared.
+   * @param {Function} resolve - The promise resolve callback.
+   */
+  handleReady(timer, audio, resolve) {
     clearTimeout(timer);
     audio.removeEventListener("canplay", this.handleReady);
     audio.removeEventListener("error", this.handleReady);
     resolve();
   }
 
+  /**
+   * Detects whether the current environment is a mobile device.
+   * @returns {boolean} True if the current user agent indicates a mobile device.
+   */
   isMobileDevice() {
     return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
   }
 
+  /**
+   * Returns a random index for an array.
+   * @param {Array} array - The array to choose from.
+   * @returns {number} A random index within the array bounds.
+   */
   getRandomIndex(array) {
     return Math.floor(Math.random() * array.length);
   }
 
+  /**
+   * Resizes the object to the current canvas dimensions while preserving its relative position.
+   */
   resize() {
     this.getDimensions();
-    if (
-      this instanceof BackgroundObject ||
-      (this instanceof ThrowableObject && this.state === "on ground") ||
-      this instanceof Statusbar
-    )
-      return;
+    if (this instanceof BackgroundObject || this instanceof Statusbar) return;
     this.x = (this.x / oldCanvasWidth) * canvas.width;
+
+    if (this instanceof ThrowableObject && this.state === "on ground") return;
     this.y = (this.y / oldCanvasHeight) * canvas.height;
   }
 }

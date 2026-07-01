@@ -29,6 +29,9 @@ const LOADING_SPINNER_IMGS = [
   "./assets/img/6_salsa_bottle/salsa_bottle.png",
 ];
 
+/**
+ * Initializes the game setup, including orientation settings, audio preferences, and the initial screen.
+ */
 function init() {
   lockScreenOrientation();
   getMuteStatusFromLocalStorage();
@@ -38,6 +41,9 @@ function init() {
   showHomeScreen();
 }
 
+/**
+ * Attempts to lock the screen orientation to portrait mode on supported devices.
+ */
 function lockScreenOrientation() {
   if (screen.orientation && screen.orientation.lock) {
     screen.orientation.lock("portrait-primary").catch(() => {});
@@ -46,6 +52,9 @@ function lockScreenOrientation() {
 
 // #region start game
 
+/**
+ * Displays the loading spinner while the game world is being prepared.
+ */
 function showLoadingSpinner() {
   const loadingSpinner = document.getElementById("loading-spinner");
   const loadingSpinnerImg = document.getElementById("loading-spinner-img");
@@ -56,12 +65,18 @@ function showLoadingSpinner() {
   loadingSpinner.classList.add("display-flex");
 }
 
+/**
+ * Hides the loading spinner after assets and game objects have finished loading.
+ */
 function hideLoadingSpinner() {
   const loadingSpinner = document.getElementById("loading-spinner");
   loadingSpinner.classList.remove("display-flex");
   loadingSpinner.classList.add("display-none");
 }
 
+/**
+ * Starts a new game or restarts the current one depending on the current game state.
+ */
 function startGame() {
   bgMusicStart.pause();
 
@@ -77,9 +92,11 @@ function startGame() {
   applyMuteSetting();
 }
 
+/**
+ * Creates the game world and prepares all objects that need to be animated and updated.
+ */
 async function initNewWorld() {
   showLoadingSpinner();
-
   btnsWrapper.innerHTML = gameScreenBtnsHTML(
     getSoundIconSrc(),
     getPauseIconSrc(),
@@ -93,6 +110,11 @@ async function initNewWorld() {
   initializeGameStart(loadingPromises, allObjsWithInt);
 }
 
+/**
+ * Waits for all assets to load and then starts the game loop for all objects that need intervals.
+ * @param {Promise[]} loadingPromises - The promises representing asset loading tasks.
+ * @param {Object[]} allObjsWithInt - The objects that require animation or run intervals.
+ */
 async function initializeGameStart(loadingPromises, allObjsWithInt) {
   try {
     await Promise.all(loadingPromises);
@@ -107,6 +129,10 @@ async function initializeGameStart(loadingPromises, allObjsWithInt) {
   }
 }
 
+/**
+ * Collects all game objects that need interval-based updates.
+ * @returns {Object[]} The list of objects with interval-driven behavior.
+ */
 function getAllObjectsWithInt() {
   return [
     world,
@@ -117,6 +143,10 @@ function getAllObjectsWithInt() {
   ];
 }
 
+/**
+ * Collects all drawable game objects that need image loading and rendering.
+ * @returns {Object[]} The list of drawable objects in the current world.
+ */
 function getAllDrawableObjects() {
   return [
     world,
@@ -137,6 +167,9 @@ function getAllDrawableObjects() {
 
 // #region Game Loop & State Control
 
+/**
+ * Toggles the pause state of the current game session.
+ */
 function togglePauseGame() {
   isPaused = !isPaused;
 
@@ -147,12 +180,18 @@ function togglePauseGame() {
   }
 }
 
+/**
+ * Pauses the game and opens the pause overlay.
+ */
 function pauseGame() {
   isPaused = true;
   openPauseMenu();
   pauseAudios();
 }
 
+/**
+ * Resumes the game and closes the pause overlay if it is active.
+ */
 function continueGame() {
   isPaused = false;
   clearOverlayContainer();
@@ -162,6 +201,9 @@ function continueGame() {
   continueAudios();
 }
 
+/**
+ * Restarts the current game round from a clean state.
+ */
 function restartGame() {
   clearGame();
   clearOverlayContainer();
@@ -173,6 +215,9 @@ function restartGame() {
 
 // #region end game
 
+/**
+ * Ends the current game session and shows the corresponding end screen.
+ */
 function endGame() {
   gameEnded = true;
   showEndScreen();
@@ -180,6 +225,9 @@ function endGame() {
   pauseAudios();
 }
 
+/**
+ * Clears all runtime state, intervals, and audio state for a fresh restart.
+ */
 function clearGame() {
   clearAllIntervals();
   resetVariables();
@@ -188,16 +236,21 @@ function clearGame() {
   resetKeyboard();
 }
 
+/**
+ * Resets the main gameplay flags and state variables.
+ */
 function resetVariables() {
   allObjsWithInt = [];
   gameLost = false;
   gameWon = false;
   isPaused = false;
   gameEnded = false;
-  gameStarted = false;
   currentGameState = "playing";
 }
 
+/**
+ * Clears all currently pressed keyboard controls.
+ */
 function resetKeyboard() {
   keyboard.LEFT = false;
   keyboard.RIGHT = false;
@@ -207,6 +260,9 @@ function resetKeyboard() {
   keyboard.D = false;
 }
 
+/**
+ * Clears all intervals stored on the active game objects.
+ */
 function clearAllIntervals() {
   allObjsWithInt.forEach((obj) => {
     obj.intervalIds.forEach(clearInterval);
@@ -215,98 +271,12 @@ function clearAllIntervals() {
 
 // #endregion
 
-// #region audios
-function addListenerForBgMusic() {
-  document.addEventListener(
-    "click",
-    () => {
-      if (!gameStarted) {
-        bgMusicStart.play();
-      }
-    },
-    { once: true },
-  );
-}
-
-function addListenerForWoodBtns() {
-  document.addEventListener("click", (e) => {
-    const button = e.target.closest(".wood-btn--click");
-    if (button) {
-      btnClickSound.currentTime = 0;
-      btnClickSound.play();
-    }
-  });
-}
-
-function pushAudiosIntoAudiosArr() {
-  allAudios.push(...Character.AUDIOS);
-  allAudios.push(...Chicken.AUDIOS);
-  allAudios.push(...Endboss.AUDIOS);
-  allAudios.push(...ThrowableObject.AUDIOS);
-  allAudios.push(...Coin.AUDIOS);
-  allAudios.push(...World.AUDIOS);
-  allAudios.push(...DrawableObject.AUDIOS);
-}
-
-function toggleGameSound() {
-  isMuted = !isMuted;
-  applyMuteSetting();
-  setMuteStatusToLocalStorage();
-  toggleSoundIcon();
-}
-
-function applyMuteSetting() {
-  allAudios.forEach((audio) => {
-    audio.muted = isMuted;
-  });
-}
-
-function muteGame() {
-  if (!isMuted) return;
-  allAudios.forEach((audio) => {
-    audio.muted = true;
-  });
-}
-
-function pauseAudios() {
-  allAudios.forEach((audio) => {
-    audio.wasPlaying = !audio.paused;
-    if (audio.wasPlaying) audio.pause();
-  });
-}
-
-function continueAudios() {
-  allAudios.forEach((audio) => {
-    if (audio.wasPlaying) {
-      audio.play();
-      audio.wasPlaying = false;
-    }
-  });
-}
-
-function resetAudios() {
-  allAudios.forEach((audio) => {
-    audio.currentTime = 0;
-  });
-}
-
-function setMuteStatusToLocalStorage() {
-  localStorage.setItem("isMuted", isMuted);
-}
-
-function getMuteStatusFromLocalStorage() {
-  if (localStorage.getItem("isMuted") !== null) {
-    isMuted = JSON.parse(localStorage.getItem("isMuted"));
-  } else {
-    isMuted = false;
-    setMuteStatusToLocalStorage();
-  }
-}
-
-// #endregion
-
 // #region game control
 
+/**
+ * Updates the keyboard state when a movement or action key is pressed.
+ * @param {KeyboardEvent} event - The keydown event containing the pressed key code.
+ */
 window.addEventListener("keydown", (event) => {
   if (event.code === "ArrowLeft") {
     keyboard.LEFT = true;
@@ -319,6 +289,10 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+/**
+ * Releases the corresponding movement or action key when the key is lifted.
+ * @param {KeyboardEvent} event - The keyup event containing the released key code.
+ */
 window.addEventListener("keyup", (event) => {
   if (event.code === "ArrowLeft") {
     keyboard.LEFT = false;
@@ -331,16 +305,28 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+/**
+ * Enables left movement when the left touch button is pressed.
+ * @param {TouchEvent} e - The touch event for the left control button.
+ */
 document.getElementById("move-left-btn").addEventListener("touchstart", (e) => {
   e.preventDefault();
   keyboard.LEFT = true;
 });
 
+/**
+ * Stops left movement when the left touch button is released.
+ * @param {TouchEvent} e - The touch event for the left control button.
+ */
 document.getElementById("move-left-btn").addEventListener("touchend", (e) => {
   e.preventDefault();
   keyboard.LEFT = false;
 });
 
+/**
+ * Enables right movement when the right touch button is pressed.
+ * @param {TouchEvent} e - The touch event for the right control button.
+ */
 document
   .getElementById("move-right-btn")
   .addEventListener("touchstart", (e) => {
@@ -348,26 +334,46 @@ document
     keyboard.RIGHT = true;
   });
 
+/**
+ * Stops right movement when the right touch button is released.
+ * @param {TouchEvent} e - The touch event for the right control button.
+ */
 document.getElementById("move-right-btn").addEventListener("touchend", (e) => {
   e.preventDefault();
   keyboard.RIGHT = false;
 });
 
+/**
+ * Enables jumping when the jump touch button is pressed.
+ * @param {TouchEvent} e - The touch event for the jump control button.
+ */
 document.getElementById("jump-btn").addEventListener("touchstart", (e) => {
   e.preventDefault();
   keyboard.SPACE = true;
 });
 
+/**
+ * Stops jumping when the jump touch button is released.
+ * @param {TouchEvent} e - The touch event for the jump control button.
+ */
 document.getElementById("jump-btn").addEventListener("touchend", (e) => {
   e.preventDefault();
   keyboard.SPACE = false;
 });
 
+/**
+ * Enables throwing when the throw touch button is pressed.
+ * @param {TouchEvent} e - The touch event for the throw control button.
+ */
 document.getElementById("throw-btn").addEventListener("touchstart", (e) => {
   e.preventDefault();
   keyboard.D = true;
 });
 
+/**
+ * Stops throwing when the throw touch button is released.
+ * @param {TouchEvent} e - The touch event for the throw control button.
+ */
 document.getElementById("throw-btn").addEventListener("touchend", (e) => {
   e.preventDefault();
   keyboard.D = false;

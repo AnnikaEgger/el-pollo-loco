@@ -1,5 +1,11 @@
+/**
+ * Stores the currently initialized first level instance.
+ */
 let level1;
 
+/**
+ * Initializes the first level with its clouds, background layers, and initial game objects.
+ */
 function initLevel() {
   level1 = new Level(
     [

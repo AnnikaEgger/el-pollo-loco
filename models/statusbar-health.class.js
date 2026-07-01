@@ -1,3 +1,7 @@
+/**
+ * Displays the player's current health value.
+ * @class StatusbarHealth
+ */
 class StatusbarHealth extends Statusbar {
   y = 0;
 
@@ -10,6 +14,9 @@ class StatusbarHealth extends Statusbar {
     "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png",
   ];
 
+  /**
+   * Creates the player's health bar using the health-specific sprite set.
+   */
   constructor() {
     let chosenImages = StatusbarHealth.IMAGES;
     super(chosenImages, "health");

@@ -1,3 +1,7 @@
+/**
+ * Displays the end boss health bar during the final encounter.
+ * @class StatusbarEndboss
+ */
 class StatusbarEndboss extends Statusbar {
   y = 0;
 
@@ -10,12 +14,18 @@ class StatusbarEndboss extends Statusbar {
     "./assets/img/7_statusbars/2_statusbar_endboss/green/green100.png",
   ];
 
+  /**
+   * Creates the boss health bar and places it near the right side of the HUD.
+   */
   constructor() {
     let chosenImages = StatusbarEndboss.IMAGES;
     super(chosenImages, "endboss");
     this.getDimensions();
   }
 
+  /**
+   * Positions the boss bar at its dedicated x-coordinate on the screen.
+   */
   getDimensions() {
     super.getDimensions();
     this.x = (490 / 720) * canvas.width;

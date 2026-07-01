@@ -1,3 +1,7 @@
+/**
+ * Returns the HTML markup for the home screen overlay.
+ * @returns {string} The rendered home screen HTML.
+ */
 function homeScreenHTML() {
   return `  <div
         id="home-screen"
@@ -42,6 +46,10 @@ function homeScreenHTML() {
       </div>`;
 }
 
+/**
+ * Returns the HTML markup for the pause menu overlay.
+ * @returns {string} The rendered pause menu HTML.
+ */
 function pauseMenuHTML() {
   return `<div id="pause-overlay" class="pause-menu">
         <nav class="wood-signs-container wood-signs-container--pause">
@@ -85,6 +93,10 @@ function pauseMenuHTML() {
       </div>`;
 }
 
+/**
+ * Returns the HTML markup for the end screen overlay.
+ * @returns {string} The rendered end screen HTML.
+ */
 function endScreenHTML() {
   return `     <div
         id="outro-screen"
@@ -109,10 +121,21 @@ function endScreenHTML() {
       </div>`;
 }
 
+/**
+ * Wraps arbitrary info-screen content in the shared info container layout.
+ * @param {string} innerContent - The HTML content to display inside the container.
+ * @returns {string} The complete info screen HTML.
+ */
 function InfoScreenHTML(innerContent) {
   return `<div id="info-container" class="information-container">${innerContent}</div>`;
 }
 
+/**
+ * Returns the HTML content for the story information screen.
+ * @param {string} headline - The headline text to display.
+ * @param {string} origin - The location from which the screen was opened.
+ * @returns {string} The story screen HTML.
+ */
 function storyHTML(headline, origin) {
   return ` <button
  onclick="closeInfoScreen('${origin}')"
@@ -149,6 +172,12 @@ function storyHTML(headline, origin) {
           </article>`;
 }
 
+/**
+ * Returns the HTML content for the instructions information screen.
+ * @param {string} headline - The headline text to display.
+ * @param {string} origin - The location from which the screen was opened.
+ * @returns {string} The instructions screen HTML.
+ */
 function instructionsHTML(headline, origin) {
   return `<button
  onclick="closeInfoScreen('${origin}')"
@@ -199,6 +228,11 @@ function instructionsHTML(headline, origin) {
   `;
 }
 
+/**
+ * Returns the button bar markup for the home screen.
+ * @param {string} muteIconSrc - The image path for the mute button icon.
+ * @returns {string} The home screen button HTML.
+ */
 function homeScreenBtnsHTML(muteIconSrc) {
   return ` <button class="wood-btn wood-btn--click mute-btn" onclick="toggleGameSound()">
           <img id="mute-btn-img" src=${muteIconSrc} />
@@ -217,6 +251,11 @@ function homeScreenBtnsHTML(muteIconSrc) {
         </button>`;
 }
 
+/**
+ * Returns the button bar markup for the information screens.
+ * @param {string} muteIconSrc - The image path for the mute button icon.
+ * @returns {string} The info screen button HTML.
+ */
 function infoScreenBtnsHTML(muteIconSrc) {
   return ` <button class="wood-btn wood-btn--click mute-btn" onclick="toggleGameSound()">
           <img id="mute-btn-img" src=${muteIconSrc} />
@@ -227,6 +266,12 @@ function infoScreenBtnsHTML(muteIconSrc) {
         </button>`;
 }
 
+/**
+ * Returns the button bar markup for the active gameplay screen.
+ * @param {string} muteIconSrc - The image path for the mute button icon.
+ * @param {string} pauseIconSrc - The image path for the pause/play button icon.
+ * @returns {string} The gameplay button HTML.
+ */
 function gameScreenBtnsHTML(muteIconSrc, pauseIconSrc) {
   return ` <button class="wood-btn wood-btn--click mute-btn" onclick="toggleGameSound()">
           <img id="mute-btn-img" src=${muteIconSrc} />

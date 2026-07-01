@@ -1,4 +1,8 @@
-class Endboss extends MovableObject {
+/**
+ * Represents the final boss enemy with attack phases, animations, and audio cues.
+ * @class Endboss
+ */
+class Endboss extends EndbossMovement {
   speedY;
   hadFirstContact = false;
   world;
@@ -74,22 +78,31 @@ class Endboss extends MovableObject {
     "./assets/img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+  /**
+   * Creates the end boss at the far right of the level and prepares its animations.
+   */
   constructor() {
     super();
     this.clearAudioListeners();
     this.loadAllImages();
     this.getDimensions();
-    this.x = canvas.width * 5 - 200;
+    this.x = canvas.width * 5 - (200 / 720) * canvas.width;
     this.y = this.bottomY;
     this.applyGravity();
   }
 
+  /**
+   * Clears any previous end boss audio callback handlers.
+   */
   clearAudioListeners() {
     Endboss.dyingSound.onended = null;
     Endboss.risingSound.onended = null;
     Endboss.alertSound.onended = null;
   }
 
+  /**
+   * Calculates the boss dimensions, movement speed, and collision offsets for the current canvas size.
+   */
   getDimensions() {
     super.getDimensions();
     this.height = (400 / 480) * canvas.height;
@@ -99,6 +112,9 @@ class Endboss extends MovableObject {
     this.getOffset();
   }
 
+  /**
+   * Defines the boss collision offset based on the current size.
+   */
   getOffset() {
     this.offset = {
       left: (30 / 720) * canvas.width,
@@ -108,6 +124,9 @@ class Endboss extends MovableObject {
     };
   }
 
+  /**
+   * Loads all sprite sets used by the end boss.
+   */
   loadAllImages() {
     this.loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
@@ -117,6 +136,9 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
   }
 
+  /**
+   * Starts the boss encounter logic as soon as the character reaches the boss area.
+   */
   animate() {
     this.animationInt = this.setStoppableInterval(() => {
       if (isPaused || currentGameState == "character dying") return;
@@ -124,20 +146,31 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
+  /**
+   * Checks whether the character has reached the end boss trigger zone for the first time.
+   * @returns {boolean} True when the first encounter condition is met.
+   */
   characterEncountersEndboss() {
     return this.world.character.isNearEndboss() && !this.hadFirstContact;
   }
 
+  /**
+   * Handles the boss defeat sequence and transitions to the win state.
+   */
   handleEndbossDeath() {
     currentGameState = "endboss dying";
     clearInterval(this.movementInterval);
     let imgs = this.IMAGES_DEAD;
     pauseAudios();
     Endboss.dyingSound.play().catch(() => {});
-    this.playEndbossDeathAnimation();
+    this.playEndbossDeathAnimation(imgs);
   }
 
-  playEndbossDeathAnimation() {
+  /**
+   * Plays the death animation and triggers the win screen after the sequence ends.
+   * @param {string[]} imgs - The dead-state image sequence.
+   */
+  playEndbossDeathAnimation(imgs) {
     let deathInt = this.setStoppableInterval(() => {
       if (isPaused) return;
       this.animationTicks++;
@@ -152,11 +185,17 @@ class Endboss extends MovableObject {
     }, 50);
   }
 
+  /**
+   * Removes any throwable objects still marked as airborne after the boss dies.
+   */
   removeThrownObjects() {
     this.world.level.throwableObjects =
       this.world.level.throwableObjects.filter((obj) => obj.state !== "throw");
   }
 
+  /**
+   * Starts the boss awakening sequence when the player first triggers the encounter.
+   */
   triggerEndbossAwakening() {
     this.hadFirstContact = true;
     this.world.character.canMove = false;
@@ -165,28 +204,34 @@ class Endboss extends MovableObject {
     else this.awakeningWithSound();
   }
 
+  /**
+   * Starts the alert sequence without playing sound.
+   */
   awakeningForMute() {
     this.animateFullAlert();
   }
 
+  /**
+   * Starts the alert sequence with audio cues.
+   */
   awakeningWithSound() {
     Endboss.risingSound.play().catch(() => {});
     this.animateAlertBlinking();
     Endboss.risingSound.onended = () => this.makeEndbossScream();
   }
 
+  /**
+   * Plays the boss scream and transitions to the actual fight.
+   */
   makeEndbossScream() {
     Endboss.alertSound.play().catch(() => {});
     this.animateScream();
     Endboss.alertSound.onended = () => this.startBossFight();
   }
 
-  startBossFight() {
-    Endboss.bgMusic.play().catch(() => {});
-    this.world.character.canMove = true;
-    this.startEndbossMovement();
-  }
-
+  /**
+   * Plays the alert animation sequence until the boss fight starts.
+   */
   animateFullAlert() {
     let index = 0;
     const blinkInt = this.setStoppableInterval(() => {
@@ -199,13 +244,20 @@ class Endboss extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Begins the boss fight after the alert animation finishes.
+   * @param {number} [blinkInt] - The interval ID for the alert blinking timer.
+   */
   startBossFight(blinkInt) {
-    clearInterval(blinkInt);
+    if (blinkInt) clearInterval(blinkInt);
     Endboss.bgMusic.play().catch(() => {});
     this.world.character.canMove = true;
     this.startEndbossMovement();
   }
 
+  /**
+   * Plays the blinking alert animation while the boss is preparing to attack.
+   */
   animateAlertBlinking() {
     let index = 0;
     const blinkInt = this.setStoppableInterval(() => {
@@ -217,70 +269,55 @@ class Endboss extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Displays the final alert sprite before the boss starts attacking.
+   */
   animateScream() {
     this.img = this.imageCache[this.IMAGES_ALERT[this.IMAGES_ALERT.length - 2]];
   }
 
+  /**
+   * Displays the last alert sprite in the sequence.
+   */
   animateLastAlertImg() {
     this.img = this.imageCache[this.IMAGES_ALERT[this.IMAGES_ALERT.length - 1]];
   }
 
-  startEndbossMovement() {
-    if (this.movementInterval) clearInterval(this.movementInterval);
-
-    this.movementInterval = this.setStoppableInterval(() => {
-      if (this.endbossUnmovable()) return;
-      this.animationTicks++;
-      this.moveEndboss();
-      if (this.isHurt())
-        this.playHurtAnimationAndSound(Endboss, this.IMAGES_HURT, 100);
-      if (this.isDead()) this.handleEndbossDeath();
-    }, 100);
-  }
-
-  endbossUnmovable() {
-    return isPaused || currentGameState == "character dying" || this.isDead();
-  }
-
+  /**
+   * Plays the alert animation while the boss is preparing its attack.
+   */
   playAlertAnimationAndSound() {
     this.playAnimation(this.IMAGES_ALERT, 1.5, 100);
   }
 
+  /**
+   * Stops the background music when the boss is defeated.
+   */
   killChicken() {
     super.killChicken();
     Endboss.bgMusic.pause();
   }
 
-  moveEndboss() {
-    if (this.isDead()) return;
-    if (this.characterIsNear()) this.attackCharacter();
-    else {
-      this.playAnimation(this.IMAGES_WALKING, 1, 100);
-      this.speed = (10 / 720) * canvas.width;
-    }
-
-    if (this.characterIsLeft()) this.moveLeft();
-    else if (this.characterIsRight()) this.moveRight();
-  }
-
-  moveLeft() {
-    super.moveLeft();
-    this.otherDirection = false;
-  }
-
-  moveRight() {
-    super.moveRight();
-    this.otherDirection = true;
-  }
-
+  /**
+   * Checks whether the character is positioned to the left of the boss.
+   * @returns {boolean} True when the character is left of the boss.
+   */
   characterIsLeft() {
     return this.world.character.x < this.x;
   }
 
+  /**
+   * Checks whether the character is positioned to the right of the boss.
+   * @returns {boolean} True when the character is right of the boss.
+   */
   characterIsRight() {
     return this.world.character.x > this.x;
   }
 
+  /**
+   * Checks whether the character is close enough to the boss to trigger an attack.
+   * @returns {boolean} True when the character is near enough.
+   */
   characterIsNear() {
     return (
       (this.characterIsLeft() &&
@@ -294,17 +331,20 @@ class Endboss extends MovableObject {
     );
   }
 
+  /**
+   * Initiates an attack against the player and triggers a jump.
+   */
   attackCharacter() {
     this.speed = (25 / 720) * canvas.width;
     this.playAnimation(this.IMAGES_ATTACK, 1, 100);
     this.jump();
   }
 
-  jump() {
-    if (this.isAboveGround()) return;
-    this.speedY = (30 / 480) * canvas.height;
-  }
-
+  /**
+   * Applies damage to the boss and triggers defeat behavior when its energy is depleted.
+   * @param {number} damage - The amount of damage to apply.
+   * @param {Statusbar} statusbar - The status bar showing the boss health.
+   */
   hit(damage, statusbar) {
     super.hit(damage, statusbar);
 

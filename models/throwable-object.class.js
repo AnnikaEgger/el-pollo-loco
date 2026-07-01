@@ -1,3 +1,7 @@
+/**
+ * Represents a throwable salsa bottle that can be thrown, collide, or shatter.
+ * @class ThrowableObject
+ */
 class ThrowableObject extends MovableObject {
   speedX;
   state;
@@ -50,6 +54,10 @@ class ThrowableObject extends MovableObject {
     ThrowableObject.shatteringSound,
   ];
 
+  /**
+   * Creates a bottle in either ground or thrown state depending on the provided setup.
+   * @param {{state?: string, character?: Character|null, throwableObjects?: ThrowableObject[]}} options - Configuration for the bottle instance.
+   */
   constructor({
     state = "on ground",
     character = null,
@@ -61,16 +69,23 @@ class ThrowableObject extends MovableObject {
 
     if (this.state == "on ground") this.createBottleOnGround(throwableObjects);
     else this.createBottleForThrow(character);
-
     this.getDimensions();
   }
 
+  /**
+   * Places a bottle on the ground at a valid position and loads its idle sprite.
+   * @param {ThrowableObject[]} throwableObjects - Existing throwable objects used to avoid overlap.
+   */
   createBottleOnGround(throwableObjects) {
     this.setValidXPosition(throwableObjects);
     this.loadImgOnGround();
     this.otherDirection = false;
   }
 
+  /**
+   * Prepares a bottle for being thrown by the character.
+   * @param {Character} character - The character that throws the bottle.
+   */
   createBottleForThrow(character) {
     this.character = character;
     this.otherDirection = character.otherDirection;
@@ -78,6 +93,10 @@ class ThrowableObject extends MovableObject {
     this.getDimensionsForThrow();
   }
 
+  /**
+   * Returns a random horizontal position for a bottle placed on the ground.
+   * @returns {number} A random x-position within the level range.
+   */
   getRandomX() {
     return (
       Math.random() * (canvas.width * 5 - (250 / 720) * canvas.width) +
@@ -85,6 +104,9 @@ class ThrowableObject extends MovableObject {
     );
   }
 
+  /**
+   * Sets the bottle size, movement speed, and initial collision values based on its state.
+   */
   getDimensions() {
     super.getDimensions();
 
@@ -100,6 +122,9 @@ class ThrowableObject extends MovableObject {
     }
   }
 
+  /**
+   * Positions the bottle on the ground and applies the matching visual tilt offset.
+   */
   getDimensionsOnGround() {
     this.y = this.bottomY;
     if (this.index == 0) {
@@ -109,6 +134,9 @@ class ThrowableObject extends MovableObject {
     }
   }
 
+  /**
+   * Places the bottle at the character's hand position before it is thrown.
+   */
   getDimensionsForThrow() {
     if (this.character.otherDirection) {
       this.x = this.character.x;
@@ -119,16 +147,25 @@ class ThrowableObject extends MovableObject {
     }
   }
 
+  /**
+   * Loads the bottle sprite shown when it is lying on the ground.
+   */
   loadImgOnGround() {
     this.loadImage(this.IMAGES_ON_GROUND[this.index]);
   }
 
+  /**
+   * Loads the sprites used for both the thrown flight animation and the splash effect.
+   */
   loadImgsForThrow() {
     this.loadImage(this.DEFAULT_IMG);
     this.loadImages(this.IMAGES_ROTATING);
     this.loadImages(this.IMAGES_SPLASH);
   }
 
+  /**
+   * Defines the collision offset for the bottle when it is tilted left.
+   */
   getOffsetForLeftTilt() {
     this.offset = {
       left: (25 / 720) * canvas.width,
@@ -138,6 +175,9 @@ class ThrowableObject extends MovableObject {
     };
   }
 
+  /**
+   * Defines the collision offset for the bottle when it is tilted right.
+   */
   getOffsetForRightTilt() {
     this.offset = {
       left: (20 / 720) * canvas.width,
@@ -147,6 +187,9 @@ class ThrowableObject extends MovableObject {
     };
   }
 
+  /**
+   * Defines the collision offset for the bottle while it is airborne.
+   */
   getOffsetForThrow() {
     this.offset = {
       left: (18 / 720) * canvas.width,
@@ -156,6 +199,9 @@ class ThrowableObject extends MovableObject {
     };
   }
 
+  /**
+   * Starts the bottle's flight behavior and animation loop.
+   */
   throw() {
     this.speedY = (25 / 480) * canvas.height;
     this.applyGravity();
@@ -168,6 +214,9 @@ class ThrowableObject extends MovableObject {
     if (!isMuted) ThrowableObject.throwingSound.play().catch(() => {});
   }
 
+  /**
+   * Moves the bottle horizontally in the direction the character is facing.
+   */
   throwIntoRightDirection() {
     if (this.otherDirection) {
       this.x -= this.speedX;
@@ -176,12 +225,18 @@ class ThrowableObject extends MovableObject {
     }
   }
 
+  /**
+   * Stops the flight loop and starts the bottle's impact animation.
+   */
   playSplashAnimation() {
     clearInterval(this.throwInt);
     if (!isMuted) ThrowableObject.shatteringSound.play().catch(() => {});
     this.runSplashAnimation();
   }
 
+  /**
+   * Plays the bottle splash animation until the effect is complete.
+   */
   runSplashAnimation() {
     this.splashInt = this.setStoppableInterval(() => {
       if (isPaused) return;
