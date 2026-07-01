@@ -135,6 +135,18 @@ class DrawableObject {
   }
 
   /**
+   * Detects whether the current environment is a mobile device.
+   * @returns {boolean} True if the current user agent indicates a mobile device.
+   */
+  isMobileDevice() {
+    const userAgentCheck = /Mobi|Android|iPhone|iPad/i.test(
+      navigator.userAgent,
+    );
+    const touchCheck = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    return userAgentCheck || touchCheck;
+  }
+
+  /**
    * Waits for the object's image and audio assets to be ready.
    * @returns {Promise<void>} Resolves once the assets have loaded.
    */
@@ -150,7 +162,7 @@ class DrawableObject {
    */
   waitForImageReady() {
     return new Promise((resolve) => {
-      if (this.img.complete) return resolve();
+      if (!this.img || this.img.complete) return resolve();
       this.img.onload = () => resolve();
       this.img.onerror = () => resolve();
     });
@@ -162,51 +174,33 @@ class DrawableObject {
    */
   waitForAllAudios() {
     const staticAudios = this.constructor.AUDIOS;
-    if (!Array.isArray(staticAudios)) {
-      return [];
-    }
+    if (!Array.isArray(staticAudios)) return [];
     return staticAudios.map((audio) => this.waitForAudioReady(audio));
   }
 
   /**
-   * Waits until the given audio file is ready to play.
-   * @param {HTMLAudioElement} audio - The audio element to wait for.
-   * @returns {Promise<void>} Resolves when the audio is ready or the timeout has elapsed.
+   * Returns a promise that resolves when the audio element is ready to play.
+   * Automatically falls back after a 3-second safety timeout to prevent endless loading.
+   * Instantly resolves if the audio is already loaded or if the user is on a mobile device.
+   *
+   * @param {HTMLAudioElement} audio - The HTML5 audio element to check.
+   * @returns {Promise<void>} A promise that resolves when the audio is ready or the timeout is reached.
    */
   waitForAudioReady(audio) {
     return new Promise((resolve) => {
-      if (audio.readyState >= 2 || this.isMobileDevice()) return resolve();
+      if (!audio || audio.readyState >= 4 || this.isMobileDevice())
+        return resolve();
 
-      const timer = setTimeout(this.handleReady, 3000);
-      this.handleReady(timer, audio, resolve);
-      audio.addEventListener("canplay", () =>
-        this.handleReady(timer, audio, resolve),
-      );
-      audio.addEventListener("error", () =>
-        this.handleReady(timer, audio, resolve),
-      );
+      const cleanUpAndResolve = () => {
+        clearTimeout(timer);
+        audio.removeEventListener("canplay", cleanUpAndResolve);
+        audio.removeEventListener("error", cleanUpAndResolve);
+        resolve();
+      };
+      const timer = setTimeout(cleanUpAndResolve, 2000);
+      audio.addEventListener("canplay", cleanUpAndResolve);
+      audio.addEventListener("error", cleanUpAndResolve);
     });
-  }
-
-  /**
-   * Cleans up the audio loading timer and resolves the loading promise.
-   * @param {number} timer - The timeout ID used for the audio readiness check.
-   * @param {HTMLAudioElement} audio - The audio element being prepared.
-   * @param {Function} resolve - The promise resolve callback.
-   */
-  handleReady(timer, audio, resolve) {
-    clearTimeout(timer);
-    audio.removeEventListener("canplay", this.handleReady);
-    audio.removeEventListener("error", this.handleReady);
-    resolve();
-  }
-
-  /**
-   * Detects whether the current environment is a mobile device.
-   * @returns {boolean} True if the current user agent indicates a mobile device.
-   */
-  isMobileDevice() {
-    return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
   }
 
   /**

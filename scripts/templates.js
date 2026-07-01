@@ -212,6 +212,8 @@ function instructionsHTML(headline, origin) {
         <ul>
             <li>🐣 <strong>Small Chicken:</strong> Deals 5 damage</li>
             <li>🐔 <strong>Normal Chicken:</strong> Deals 10 damage</li>
+            <li>🐔 <strong>Boss Chicken:</strong> Deals 15 damage</li>
+
         </ul>
     </li>
     <li><strong>Invincibility:</strong> 0.5-seconds invincibility for you and the endboss after a hit.</li>

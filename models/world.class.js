@@ -66,6 +66,18 @@ class World extends WorldDraw {
   }
 
   /**
+   * Detects whether the current environment is a mobile device.
+   * @returns {boolean} True if the current user agent indicates a mobile device.
+   */
+  isMobileDevice() {
+    const userAgentCheck = /Mobi|Android|iPhone|iPad/i.test(
+      navigator.userAgent,
+    );
+    const touchCheck = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    return userAgentCheck || touchCheck;
+  }
+
+  /**
    * Waits for the game's audio assets to become ready before playback begins.
    * @returns {Promise<void>} Resolves once the required audio files are ready.
    */
@@ -86,7 +98,8 @@ class World extends WorldDraw {
    */
   getAudioPromise(audio) {
     return new Promise((resolve) => {
-      if (audio.readyState >= 4) return resolve();
+      if (!audio || audio.readyState >= 4 || this.isMobileDevice())
+        return resolve();
       audio.addEventListener("canplaythrough", () => resolve(), { once: true });
       audio.addEventListener("error", () => resolve(), { once: true });
     });

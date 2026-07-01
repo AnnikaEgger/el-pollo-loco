@@ -62,6 +62,7 @@ class Chicken extends MovableObject {
     clearInterval(this.moveLeftInt);
     clearInterval(this.animationInt);
     this.killed = true;
+    Chicken.dyingSound.currentTime = 0;
     Chicken.dyingSound.play().catch(() => {});
   }
 }

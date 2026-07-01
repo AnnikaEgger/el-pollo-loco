@@ -107,7 +107,7 @@ async function initNewWorld() {
   allObjsWithInt = getAllObjectsWithInt();
   let allDrawableObjs = getAllDrawableObjects();
   const loadingPromises = allDrawableObjs.map((obj) => obj.waitUntilReady());
-  initializeGameStart(loadingPromises, allObjsWithInt);
+  await initializeGameStart(loadingPromises, allObjsWithInt);
 }
 
 /**
