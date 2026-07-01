@@ -452,10 +452,16 @@ function instructionsHTML(headline, origin) {
     </ul>
 
        <h3>Enemies & Combat</h3>
-    <ul>
-        <li><strong>Chickens:</strong> Jump on them or throw Tabasco to defeat.</li>
-        <li><strong>Invincibility:</strong> 1-second invincibility for you and the endboss after a hit.</li>
-    </ul>
+ <ul>
+    <li>
+        <strong>Chickens:</strong> Jump on them or throw Tabasco to defeat.
+        <ul>
+            <li>🐣 <strong>Small Chicken:</strong> Deals 5 damage</li>
+            <li>🐔 <strong>Normal Chicken:</strong> Deals 10 damage</li>
+        </ul>
+    </li>
+    <li><strong>Invincibility:</strong> 0.5-seconds invincibility for you and the endboss after a hit.</li>
+</ul>
 
     <h3>Economy & Shopping</h3>
     <p>Collect coins to buy Tabasco bottles:</p>

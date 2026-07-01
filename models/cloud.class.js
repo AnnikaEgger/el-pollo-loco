@@ -11,7 +11,6 @@ class Cloud extends MovableObject {
     this.getDimensions();
     this.x =
       xMultiplier * canvas.width + Math.random() * ((500 / 720) * canvas.width);
-    // this.animate();
   }
 
   getDimensions() {

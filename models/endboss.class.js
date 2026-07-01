@@ -78,6 +78,10 @@ class Endboss extends MovableObject {
 
   constructor() {
     super();
+    Endboss.dyingSound.onended = null;
+    Endboss.risingSound.onended = null;
+    Endboss.alertSound.onended = null;
+
     this.loadAllImages();
 
     this.getDimensions();
@@ -95,7 +99,7 @@ class Endboss extends MovableObject {
 
     this.getOffset();
 
-    this.speed = (5 / 720) * canvas.width;
+    this.speed = (20 / 720) * canvas.width;
     this.bottomY = (50 / 480) * canvas.height;
   }
 
@@ -157,6 +161,16 @@ class Endboss extends MovableObject {
   triggerEndbossAwakening() {
     this.hadFirstContact = true;
     this.world.character.canMove = false;
+
+    if (isMuted) this.awakeningForMute();
+    else this.awakeningWithSound();
+  }
+
+  awakeningForMute() {
+    this.animateFullAlert();
+  }
+
+  awakeningWithSound() {
     Endboss.risingSound.play().catch(() => {});
     this.animateAlertBlinking();
     Endboss.risingSound.onended = () => this.makeEndbossScream();
@@ -172,6 +186,22 @@ class Endboss extends MovableObject {
     Endboss.bgMusic.play().catch(() => {});
     this.world.character.canMove = true;
     this.startEndbossMovement();
+  }
+
+  animateFullAlert() {
+    let index = 0;
+    const blinkInt = this.setStoppableInterval(() => {
+      if (isPaused || currentGameState == "character dying") return;
+      this.animationTicks++;
+      if (index == this.IMAGES_ALERT.length - 1) {
+        clearInterval(blinkInt);
+        Endboss.bgMusic.play().catch(() => {});
+        this.world.character.canMove = true;
+        this.startEndbossMovement();
+      }
+      this.playAnimation(this.IMAGES_ALERT, 1, 200);
+      index++;
+    }, 200);
   }
 
   animateAlertBlinking() {
@@ -221,7 +251,7 @@ class Endboss extends MovableObject {
     if (this.characterIsNear()) this.attackCharacter();
     else {
       this.playAnimation(this.IMAGES_WALKING, 1, 100);
-      this.speed = (5 / 720) * canvas.width;
+      this.speed = (10 / 720) * canvas.width;
     }
 
     if (this.characterIsLeft()) this.moveLeft();
@@ -252,10 +282,10 @@ class Endboss extends MovableObject {
         this.x -
           (this.world.character.x +
             (this.world.character.width - this.world.character.offset.right)) <=
-          (125 / 720) * canvas.width) ||
+          (150 / 720) * canvas.width) ||
       (this.characterIsRight() &&
         this.world.character.x - (this.x + (this.width - this.offset.right)) <=
-          (125 / 720) * canvas.width)
+          (150 / 720) * canvas.width)
     );
   }
 
@@ -267,7 +297,7 @@ class Endboss extends MovableObject {
 
   jump() {
     if (this.isAboveGround()) return;
-    this.speedY = (25 / 480) * canvas.height;
+    this.speedY = (30 / 480) * canvas.height;
   }
 
   hit(damage, statusbar) {

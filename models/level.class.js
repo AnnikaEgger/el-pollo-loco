@@ -28,7 +28,7 @@ class Level {
   }
 
   createBottlesOnGround() {
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 20; i++) {
       let bottle = new ThrowableObject({
         throwableObjects: this.throwableObjects,
       });
@@ -37,7 +37,7 @@ class Level {
   }
 
   createCoins() {
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < 20; i++) {
       let coin = new Coin(this.coins);
       this.coins.push(coin);
     }

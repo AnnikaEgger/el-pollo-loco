@@ -14,6 +14,7 @@ class Coin extends DrawableObject {
     super();
     Coin.collectingSound.volume = 0.25;
     this.index = this.getRandomIndex(this.COINS);
+    this.coinValue = 2;
 
     this.setValidXPosition(existingCoins);
 
@@ -26,8 +27,8 @@ class Coin extends DrawableObject {
 
   getRandomX() {
     return (
-      Math.random() * (canvas.width * 4.5 - (400 / 720) * canvas.width) +
-      (400 / 720) * canvas.width
+      Math.random() * (canvas.width * 4.5 - (250 / 720) * canvas.width) +
+      (250 / 720) * canvas.width
     );
   }
 
@@ -44,14 +45,14 @@ class Coin extends DrawableObject {
     this.offsetValue = (45 / 720) * canvas.width;
     this.width = (120 / 720) * canvas.width;
     this.height = this.width;
-    this.coinValue = 1;
+    // this.coinValue = 1;
   }
 
   getBigCoin() {
     this.offsetValue = (52 / 720) * canvas.width;
     this.width = (150 / 720) * canvas.width;
     this.height = this.width;
-    this.coinValue = 2;
+    // this.coinValue = 2;
   }
 
   getOffset() {

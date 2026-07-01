@@ -15,14 +15,6 @@ class Character extends MovableObject {
   static dyingSound = new Audio("./assets/audio/character/dying.mp3");
   static jumpingSound = new Audio("./assets/audio/character/jumping.wav");
 
-  static {
-    this.walkingSound.volume = 0.15;
-    this.snoringSound.volume = 0.5;
-    this.hurtingSound.volume = 0.5;
-    this.dyingSound.volume = 0.1;
-    this.jumpingSound.volume = 0.6;
-  }
-
   static AUDIOS = [
     Character.walkingSound,
     Character.snoringSound,
@@ -30,6 +22,25 @@ class Character extends MovableObject {
     Character.dyingSound,
     Character.jumpingSound,
   ];
+
+  static {
+    this.walkingSound.volume = 0.15;
+    this.snoringSound.volume = 0.5;
+    this.hurtingSound.volume = 0.5;
+    this.dyingSound.volume = 0.1;
+    this.jumpingSound.volume = 0.6;
+
+    Character.AUDIOS.forEach((audio) => {
+      audio.addEventListener("play", () => {
+        Character.AUDIOS.forEach((otherAudio) => {
+          if (otherAudio !== audio) {
+            otherAudio.pause();
+            otherAudio.currentTime = 0;
+          }
+        });
+      });
+    });
+  }
 
   IMAGES_IDLE = [
     "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
@@ -96,13 +107,11 @@ class Character extends MovableObject {
 
   constructor() {
     super();
+    Character.dyingSound.onended = null;
     this.loadAllImages();
     this.getDimensions();
     this.y = this.bottomY;
-
-    this.addAudioEventListeners();
     this.idleStartTime = null;
-
     this.applyGravity();
   }
 
@@ -132,19 +141,6 @@ class Character extends MovableObject {
       top: (120 / 480) * canvas.height,
       bottom: (15 / 480) * canvas.height,
     };
-  }
-
-  addAudioEventListeners() {
-    Character.AUDIOS.forEach((audio) => {
-      audio.addEventListener("play", () => {
-        Character.AUDIOS.forEach((otherAudio) => {
-          if (otherAudio !== audio) {
-            otherAudio.pause();
-            otherAudio.currentTime = 0;
-          }
-        });
-      });
-    });
   }
 
   animate() {

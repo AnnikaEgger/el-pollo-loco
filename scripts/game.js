@@ -24,10 +24,6 @@ btnClickSound.volume = 0.5;
 
 let allAudios = [bgMusicStart, btnClickSound];
 
-// function gameEnded() {
-//   return gameLost || gameWon;
-// }
-
 const LOADING_SPINNER_IMGS = [
   "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
   "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",

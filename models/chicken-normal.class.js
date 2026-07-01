@@ -1,23 +1,6 @@
 class ChickenNormal extends Chicken {
   damage = 10;
   IMAGE_DEAD = "./assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png";
-  IMAGES_WALKING = [
-    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
-    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
-    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
-  ];
-
-  // constructor(otherChickens) {
-  //   super(
-  //     otherChickens,
-  //     this.IMAGES_WALKING,
-  //     (360 / 480) * canvas.height,
-  //     (60 / 480) * canvas.height,
-  //     (80 / 720) * canvas.width,
-  //     getNormalChickenOffset(),
-  //     (0.25 + Math.random() * 0.5) * (canvas.width / 720),
-  //   );
-  // }
 
   constructor(otherChickens) {
     super(otherChickens, [
