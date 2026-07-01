@@ -1,0 +1,99 @@
+button {
+  appearance: none;
+  border: unset;
+  cursor: pointer;
+  background-color: unset;
+}
+
+button p {
+  font-family: "Zabars", serif;
+}
+
+/* #region wood signs and btns */
+
+.wood-btn {
+  padding: 0;
+}
+
+.wood-btn img {
+  width: 6cqw;
+  height: auto;
+}
+
+.wood-signs-container--home {
+  position: absolute;
+  top: 6cqh;
+  width: 100%;
+}
+
+.wood-signs-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wood-signs-menu--home {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.wood-signs-menu--home p {
+  font-size: 3cqw;
+}
+
+.wood-signs-menu p {
+  color: var(--beige);
+  letter-spacing: 2px;
+}
+
+.wood-sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wood-sign p {
+  filter: drop-shadow(3px 4px 2px rgba(0, 0, 0, 0.8));
+}
+
+.wood-sign:hover p {
+  text-decoration: underline;
+}
+
+.wood-sign p {
+  position: absolute;
+}
+
+.wood-sign,
+.wood-btn {
+  transition:
+    transform 0.1s ease,
+    color 0.1s ease;
+}
+
+.wood-sign:hover,
+.wood-btn:hover {
+  transform: translateY(-0.5cqh);
+}
+
+.wood-sign:active,
+.wood-btn:active {
+  transform: translateY(-0.5cqh);
+}
+
+/* #endregion */
+
+/* #region mobile buttons */
+
+.control-panel {
+  display: none;
+  padding: 8px;
+}
+
+.panel-wrapper {
+  display: flex;
+  gap: 2cqw;
+}
+
+/* #endregion */

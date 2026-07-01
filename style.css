@@ -26,40 +26,17 @@ body {
   touch-action: none;
 }
 
-.game-title {
-  margin-top: 6dvh;
-  margin-bottom: 24px;
-  text-transform: uppercase;
+.display-none {
+  display: none;
+}
+
+.display-flex {
+  display: flex;
 }
 
 img {
   -webkit-touch-callout: none;
   user-select: none;
-  /* pointer-events: manipulation; */
-}
-
-button p {
-  font-family: "Zabars", serif;
-}
-
-h1 {
-  font-size: 64px;
-  letter-spacing: 3px;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-@font-face {
-  font-family: "Zabars";
-  src: url(./assets/fonts/zabars.ttf) format("truetype");
-}
-
-/* spicy-rice-regular - latin */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Spicy Rice";
-  font-style: normal;
-  font-weight: 400;
-  src: url("./assets/fonts/spicy-rice-v28-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 canvas {
@@ -67,12 +44,40 @@ canvas {
   display: block;
 }
 
-button {
-  appearance: none;
-  border: unset;
-  cursor: pointer;
-  background-color: unset;
+.panel {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
 }
+
+/* #region fonts */
+@font-face {
+  font-family: "Zabars";
+  src: url(./assets/fonts/zabars.ttf) format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Spicy Rice";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/fonts/spicy-rice-v28-latin-regular.woff2") format("woff2");
+}
+
+.game-title {
+  margin-top: 6dvh;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  font-size: 64px;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* #endregion */
 
 /* #region content wrapper */
 
@@ -129,383 +134,7 @@ button {
 
 /* #endregion */
 
-.panel {
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 8px;
-}
-
-.wood-btn {
-  padding: 0;
-}
-
-.wood-btn img {
-  width: 6cqw;
-  height: auto;
-}
-
-.overlay-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.overlay-img--full {
-  width: 100%;
-  height: 100%;
-}
-
-.display-none {
-  display: none;
-}
-
-.display-flex {
-  display: flex;
-}
-
-/* #region wood signs and btns */
-
-.wood-signs-container--home {
-  position: absolute;
-  top: 6cqh;
-  width: 100%;
-}
-
-.wood-signs-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.wood-signs-menu--home {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
-}
-
-.wood-signs-menu--home p {
-  font-size: 3cqw;
-}
-
-.wood-signs-menu p {
-  color: var(--beige);
-  letter-spacing: 2px;
-}
-
-.wood-sign {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.wood-sign p {
-  filter: drop-shadow(3px 4px 2px rgba(0, 0, 0, 0.8));
-}
-
-.wood-sign:hover p {
-  text-decoration: underline;
-}
-
-.wood-sign p {
-  position: absolute;
-}
-
-.wood-sign,
-.wood-btn {
-  transition:
-    transform 0.1s ease,
-    color 0.1s ease;
-}
-
-.wood-sign:hover,
-.wood-btn:hover {
-  transform: translateY(-0.5cqh);
-}
-
-.wood-sign:active,
-.wood-btn:active {
-  transform: translateY(-0.5cqh);
-}
-
-/* #endregion */
-
-/* #region home screen */
-.home-container {
-  display: flex;
-}
-
-.wood-signs-menu--home img {
-  width: 18cqw;
-  height: 10cqh;
-}
-
-.wood-sign:hover p,
-.wood-btn:hover p {
-  background: linear-gradient(to bottom, #fff37a 0%, #ffae00 60%, #d88000 100%);
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  display: inline-block;
-}
-
-.start-btn p {
-  font-weight: 600;
-  text-transform: uppercase;
-
-  color: #ffd23f;
-
-  font-size: 4cqw;
-  letter-spacing: 0.5cqw;
-
-  background: linear-gradient(to bottom, #fff37a 0%, #ffae00 60%, #d88000 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow: none;
-  filter: drop-shadow(-1px -1px 0px #421d05) drop-shadow(1px -1px 0px #421d05)
-    drop-shadow(-1px 1px 0px #421d05) drop-shadow(1px 1px 0px #421d05)
-    drop-shadow(0px 2px 0px #301402) drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.5));
-}
-
-.imprint-container {
-  gap: 2cqw;
-}
-
-.imprint-container p {
-  color: var(--beige);
-  font-size: 2.5cqw;
-  text-decoration: underline;
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
-  display: inline-block;
-}
-
-.imprint-container button:hover p {
-  color: #ffd23f;
-  transform: translateY(-0.25cqh);
-}
-/* #endregion */
-
-/* #region pause menu */
-.pause-menu {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-self: center;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  border: none;
-}
-
-.pause-menu .wood-sign {
-  display: flex;
-  align-items: center;
-}
-
-.pause-menu .wood-sign img {
-  width: 35cqw;
-  height: 12cqh;
-}
-
-.wood-signs-menu--pause {
-  top: 6cqh;
-  display: flex;
-  flex-direction: column;
-  gap: 5cqh;
-}
-
-.wood-signs-container--pause {
-  padding-bottom: 8cqh;
-}
-
-.wood-signs-menu--pause p {
-  font-size: 4cqw;
-}
-
-/* #endregion */
-
-/* #region end screen */
-.outro-container {
-  display: flex;
-  justify-content: center;
-}
-
-.outro-container button {
-  border-radius: 50%;
-  font-size: 5cqw;
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  gap: 2cqh;
-}
-
-.outro-container button p {
-  color: var(--beige);
-}
-
-.outro-container .wood-btn img {
-  width: 7cqw;
-}
-
-.outro-btns-container {
-  position: absolute;
-  top: 20cqh;
-  display: flex;
-  gap: 6cqw;
-}
-
-.overlay-img--win {
-  width: 70%;
-  align-self: center;
-  justify-self: center;
-  margin-top: 24px;
-}
-/* #endregion */
-
-/* #region information container */
-
-.information-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background-image: url(./assets/img/5_background/first_half_background.png);
-  background-position: center;
-}
-
-.close-btn {
-  position: absolute;
-  padding: 0;
-}
-
-.close-btn--info-container {
-  top: 0;
-  right: 0;
-  padding: 8px;
-}
-
-.information-container h2 {
-  font-family: "Spicy Rice", serif;
-
-  font-size: 5cqw;
-  margin-bottom: 3cqh;
-  color: var(--beige);
-}
-
-.infotext-container {
-  padding: 16px;
-  width: 80%;
-  max-width: 750px;
-  max-height: 75%;
-  overflow-y: auto;
-  color: black;
-  border-radius: 24px;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 2;
-}
-
-.infotext-container--story,
-.infotext-container--instructions {
-  scrollbar-color: var(--beige) transparent;
-}
-
-.infotext-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.infotext-container--story p {
-  font-family: "Spicy Rice", serif;
-  font-size: 24px;
-  text-align: center;
-  color: var(--beige);
-}
-
-.infotext-container--imprint {
-  background-color: white;
-  font-family: Arial, sans-serif;
-  scrollbar-color: grey transparent;
-  text-align: justify;
-}
-
-.infotext-container--imprint h3 {
-  font-size: 24px;
-}
-
-.infotext-container--imprint h4 {
-  font-size: 20px;
-}
-
-.infotext-container--imprint h5 {
-  font-size: 16px;
-}
-
-.infotext-container--imprint p {
-  font-size: 16px;
-}
-
-.infotext-container--instructions {
-  font-family: "Spicy Rice", serif;
-  font-size: 20px;
-  color: var(--beige);
-}
-
-.game-instructions {
-  line-height: 1.6;
-}
-
-.game-instructions h3 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 30px;
-}
-
-.game-instructions h3:first-child {
-  margin-top: 0;
-}
-
-.game-instructions kbd {
-  background-color: #eee;
-  border: 1px solid #b4b4b4;
-  border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  color: #333;
-  display: inline-block;
-  font-size: 0.85em;
-  font-family: monospace;
-  padding: 2px 4px;
-  white-space: nowrap;
-}
-.game-instructions ul {
-  margin-bottom: 15px;
-}
-/* #endregion */
-
-/* #region mobile buttons */
-
-.control-panel {
-  display: none;
-  padding: 8px;
-}
-
-.panel-wrapper {
-  display: flex;
-  gap: 2cqw;
-}
-
-/* #endregion */
+/* #region loading spinner */
 
 .loading-spinner {
   position: absolute;
@@ -532,14 +161,9 @@ button {
   }
 }
 
-/* #region responsive */
-@media only screen and (max-width: 720px) {
-  .content-wrapper,
-  canvas {
-    width: 100dvw;
-  }
-}
+/* #endregion */
 
+/* #region responsive */
 @media screen and (max-height: 650px) {
   .game-title {
     display: none;
@@ -588,6 +212,13 @@ button {
   }
 }
 
+@media only screen and (max-width: 720px) {
+  .content-wrapper,
+  canvas {
+    width: 100dvw;
+  }
+}
+
 @media (pointer: coarse) {
   .wood-signs-container--pause {
     padding-bottom: unset;
@@ -622,7 +253,6 @@ button {
 @media screen and (max-width: 480px) {
   .overlay-img--win {
     width: 50%;
-
     margin-top: 32px;
   }
 }

@@ -100,17 +100,19 @@ class MovableObject extends DrawableObject {
   hit(damage, statusbar) {
     if (this.isInvincible) return;
     this.energy -= damage;
-    if (this.energy < 0) {
-      this.energy = 0;
-    }
+    if (this.energy < 0) this.energy = 0;
 
+    this.setInvincibility();
+
+    statusbar.setPercentage(this.energy);
+    this.lastHit = Date.now();
+  }
+
+  setInvincibility() {
     this.isInvincible = true;
     setTimeout(() => {
       this.isInvincible = false;
     }, 500);
-
-    statusbar.setPercentage(this.energy);
-    this.lastHit = Date.now();
   }
 
   isWalking() {
@@ -135,34 +137,4 @@ class MovableObject extends DrawableObject {
     this.playAnimation(imgs, 1);
     objClass.hurtingSound.play().catch(() => {});
   }
-
-  // playDeathAnimationAndSound(objClass, imgs, int, speed) {
-  //   let deathInt = this.setStoppableInterval(() => {
-  //     this.playAnimation(imgs, speed);
-  //   }, 100);
-  //   objClass.dyingSound.play();
-  //   if (this.currentImg == imgs.length - 1) {
-  //     // this.playAnimation(imgs, speed);
-  //     clearInterval(deathInt);
-  //   }
-  // }
-
-  // continueAfterAudio(audioElement, callback) {
-  //   console.log("function triggered");
-
-  //   let fired = false;
-  //   let maxSeconds = audioElement.duration + 1;
-
-  //   const triggerNextStep = () => {
-  //     if (!fired) {
-  //       fired = true;
-  //       audioElement.onended = null;
-  //       clearTimeout(timeoutId);
-  //       callback();
-  //     }
-  //   };
-
-  //   const timeoutId = setTimeout(triggerNextStep, maxSeconds * 1000);
-  //   audioElement.onended = triggerNextStep;
-  // }
 }

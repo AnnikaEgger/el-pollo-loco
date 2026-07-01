@@ -3,16 +3,19 @@ class ChickenSmall extends Chicken {
   IMAGE_DEAD = "./assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png";
 
   constructor(otherChickens) {
-    super(otherChickens, [
-      "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
-      "./assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
-      "./assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
-    ]);
+    super(
+      otherChickens,
+      [
+        "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
+        "./assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
+        "./assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
+      ],
+      (1.25 + Math.random() * 0.5) * (canvas.width / 720),
+    );
   }
 
   getDimensions() {
     super.getDimensions();
-    this.speed = (1.25 + Math.random() * 0.5) * (canvas.width / 720);
     this.y = (370 / 480) * canvas.height;
     this.height = (50 / 480) * canvas.height;
     this.width = (70 / 720) * canvas.width;

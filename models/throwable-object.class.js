@@ -59,19 +59,23 @@ class ThrowableObject extends MovableObject {
     this.state = state;
     this.index = this.getRandomIndex(this.IMAGES_ON_GROUND);
 
-    if (this.state == "on ground") {
-      this.setValidXPosition(throwableObjects);
-
-      this.loadImgOnGround();
-      this.otherDirection = false;
-    } else {
-      this.character = character;
-      this.otherDirection = character.otherDirection;
-      this.loadImgsForThrow();
-      this.getDimensionsForThrow();
-    }
+    if (this.state == "on ground") this.createBottleOnGround(throwableObjects);
+    else this.createBottleForThrow(character);
 
     this.getDimensions();
+  }
+
+  createBottleOnGround(throwableObjects) {
+    this.setValidXPosition(throwableObjects);
+    this.loadImgOnGround();
+    this.otherDirection = false;
+  }
+
+  createBottleForThrow(character) {
+    this.character = character;
+    this.otherDirection = character.otherDirection;
+    this.loadImgsForThrow();
+    this.getDimensionsForThrow();
   }
 
   getRandomX() {
@@ -175,7 +179,10 @@ class ThrowableObject extends MovableObject {
   playSplashAnimation() {
     clearInterval(this.throwInt);
     if (!isMuted) ThrowableObject.shatteringSound.play().catch(() => {});
+    this.runSplashAnimation();
+  }
 
+  runSplashAnimation() {
     this.splashInt = this.setStoppableInterval(() => {
       if (isPaused) return;
       this.animationTicks++;

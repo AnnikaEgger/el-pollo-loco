@@ -55,23 +55,22 @@ class World {
     this.setWorld(this.endboss);
   }
 
-  waitUntilReady() {
-    const promises = [];
-
+  async waitUntilReady() {
     const staticAudios = this.constructor.AUDIOS;
-    if (Array.isArray(staticAudios)) {
-      staticAudios.forEach((audio) => {
-        promises.push(
-          new Promise((resolve) => {
-            if (audio.readyState >= 4) return resolve();
-            audio.addEventListener("canplaythrough", () => resolve(), {
-              once: true,
-            });
-            audio.addEventListener("error", () => resolve(), { once: true });
-          }),
-        );
-      });
-    }
+    if (!Array.isArray(staticAudios)) return;
+
+    const audioPromises = staticAudios.map((audio) =>
+      this.getAudioPromise(audio),
+    );
+    await Promise.all(audioPromises);
+  }
+
+  getAudioPromise(audio) {
+    return new Promise((resolve) => {
+      if (audio.readyState >= 4) return resolve();
+      audio.addEventListener("canplaythrough", () => resolve(), { once: true });
+      audio.addEventListener("error", () => resolve(), { once: true });
+    });
   }
 
   setWorld(obj) {
@@ -151,11 +150,8 @@ class World {
         (enemy) => bottle.isColliding(enemy) && !enemy.killed,
       );
 
-      if (hitEnemy) {
-        this.handleBottleHit(bottle, hitEnemy);
-      } else if (!bottle.isAboveGround()) {
-        this.letBottleSplash(bottle);
-      }
+      if (hitEnemy) this.handleBottleHit(bottle, hitEnemy);
+      else if (!bottle.isAboveGround()) this.letBottleSplash(bottle);
     });
   }
 
@@ -216,9 +212,7 @@ class World {
     this.updateCoinsStatusbar();
 
     const index = this.level.throwableObjects.indexOf(to);
-    if (index !== -1) {
-      this.level.throwableObjects.splice(index, 1);
-    }
+    if (index !== -1) this.level.throwableObjects.splice(index, 1);
   }
 
   checkIfCoinCollected() {
@@ -334,16 +328,9 @@ class World {
   }
 
   addToMap(obj) {
-    if (obj.otherDirection) {
-      this.flipImage(obj);
-    }
-
+    if (obj.otherDirection) this.flipImage(obj);
     obj.draw(this.ctx);
-    // obj.drawOffsetFrame(this.ctx);
-
-    if (obj.otherDirection) {
-      this.flipImageBack(obj);
-    }
+    if (obj.otherDirection) this.flipImageBack(obj);
   }
 
   flipImage(movableObj) {

@@ -1,22 +1,22 @@
 class Level {
-  enemies;
+  enemies = [];
   clouds;
   backgroundObjects;
-  throwableObjects;
-  coins;
+  throwableObjects = [];
+  coins = [];
   levelEndX;
 
   constructor(clouds, backgroundObjects) {
-    this.enemies = [];
     this.clouds = clouds;
     this.backgroundObjects = backgroundObjects;
-    this.throwableObjects = [];
-    this.coins = [];
+    this.createObjects();
+    this.getDimensions();
+  }
 
+  createObjects() {
     this.createBottlesOnGround();
     this.createCoins();
     this.createChickens();
-    this.getDimensions();
   }
 
   getDimensions() {

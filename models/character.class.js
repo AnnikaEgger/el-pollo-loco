@@ -29,7 +29,9 @@ class Character extends MovableObject {
     this.hurtingSound.volume = 0.5;
     this.dyingSound.volume = 0.1;
     this.jumpingSound.volume = 0.6;
+  }
 
+  static {
     Character.AUDIOS.forEach((audio) => {
       audio.addEventListener("play", () => {
         Character.AUDIOS.forEach((otherAudio) => {
@@ -277,9 +279,12 @@ class Character extends MovableObject {
 
   playDeathAnimationAndSound() {
     pauseAudios();
-    let imgs = this.IMAGES_DEAD;
     Character.dyingSound.play().catch(() => {});
+    this.runDeathAnimationLoop();
+  }
 
+  runDeathAnimationLoop() {
+    let imgs = this.IMAGES_DEAD;
     let deathInt = this.setStoppableInterval(() => {
       if (isPaused) return;
       this.animationTicks++;

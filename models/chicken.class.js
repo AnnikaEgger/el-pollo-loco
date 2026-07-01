@@ -8,21 +8,15 @@ class Chicken extends MovableObject {
   static dyingSound = new Audio("./assets/audio/chicken/dying.mp3");
   static AUDIOS = [Chicken.dyingSound];
 
-  constructor(otherChickens, imgs) {
+  constructor(otherChickens, imgs, speed) {
     super();
     this.loadImage(imgs[0]);
     this.loadImages(imgs);
     this.imgs = imgs;
     this.getDimensions();
     this.setValidXPosition(otherChickens);
+    this.speed = speed;
     Chicken.dyingSound.volume = 0.15;
-  }
-
-  getRandomX() {
-    return (
-      (600 / 720) * canvas.width +
-      Math.random() * (canvas.width * 4 - (600 / 720) * canvas.width)
-    );
   }
 
   resize() {

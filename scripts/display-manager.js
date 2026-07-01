@@ -6,7 +6,12 @@ document.addEventListener("webkitfullscreenchange", resizeCanvas);
 document.addEventListener("msfullscreenchange", resizeCanvas);
 
 function resizeGame() {
-  const allObjects = [
+  const allObjects = getAllObjects();
+  allObjects.forEach((obj) => obj.resize());
+}
+
+function getAllObjects() {
+  return [
     world.level,
     world.character,
     ...world.STATUSBARS,
@@ -16,8 +21,6 @@ function resizeGame() {
     ...world.level.coins,
     ...world.level.throwableObjects,
   ];
-
-  allObjects.forEach((obj) => obj.resize());
 }
 
 function toggleFullscreen() {
@@ -29,21 +32,6 @@ function toggleFullscreen() {
   } else {
     closeFullscreen(element);
   }
-}
-
-function resizeCanvas() {
-  oldCanvasHeight = canvas.height;
-  oldCanvasWidth = canvas.width;
-
-  if (document.fullscreenElement) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  } else {
-    canvas.width = 720;
-    canvas.height = 480;
-  }
-
-  if (gameStarted) resizeGame();
 }
 
 function openFullscreen(element) {
@@ -65,7 +53,10 @@ function closeFullscreen(element) {
     element.classList.remove("ios-fake-fullscreen");
     return;
   }
+  exitNativeFullscreen();
+}
 
+function exitNativeFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
   } else if (document.webkitExitFullscreen) {
@@ -80,13 +71,7 @@ function closeFullscreen(element) {
 function resizeCanvas() {
   oldCanvasHeight = canvas.height;
   oldCanvasWidth = canvas.width;
-
-  const isFullscreen = !!(
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement
-  );
+  const isFullscreen = checkIfFullscreenElement();
 
   if (isFullscreen) {
     canvas.width = window.innerWidth || document.documentElement.clientWidth;
@@ -95,8 +80,16 @@ function resizeCanvas() {
     canvas.width = 720;
     canvas.height = 480;
   }
-
   if (gameStarted) resizeGame();
+}
+
+function checkIfFullscreenElement() {
+  return !!(
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement
+  );
 }
 
 // #endregion
@@ -116,15 +109,9 @@ function closeInfoScreen(origin) {
 }
 
 function showInfoScreen(content, origin = "home screen") {
-  const htmlTemplates = {
-    "story": storyHTML,
-    "legal notice": legalNoticeHTML,
-    "privacy policy": privacyPolicyHTML,
-    "instructions": instructionsHTML,
-  };
-
+  const htmlTemplates = getHTMLTemplates();
   let contentText = content.toLowerCase();
-  let innerContent;
+  let innerContent = "";
 
   if (htmlTemplates[contentText]) {
     innerContent = htmlTemplates[contentText](content, origin);
@@ -134,12 +121,20 @@ function showInfoScreen(content, origin = "home screen") {
   btnsWrapper.innerHTML = infoScreenBtnsHTML(getSoundIconSrc());
 }
 
+function getHTMLTemplates() {
+  return {
+    "story": storyHTML,
+    "legal notice": legalNoticeHTML,
+    "privacy policy": privacyPolicyHTML,
+    "instructions": instructionsHTML,
+  };
+}
+
 function backToHomeScreen(origin) {
   if (origin == "game") {
     clearGame();
     if (!isMuted) bgMusicStart.play();
   }
-
   showHomeScreen();
 }
 
@@ -155,7 +150,29 @@ function openPauseMenu() {
   );
 }
 
+function showEndScreen() {
+  overlayContainer.innerHTML = endScreenHTML();
+  const endScreenImg = document.getElementById("endscreen-img");
+  if (gameLost) showGameOverImg(endScreenImg);
+  else showWinImg(endScreenImg);
+}
+
+function showWinImg(endScreenImg) {
+  endScreenImg.src = "./assets/img/You_won,_you_lost/You_Win_B.png";
+  endScreenImg.classList.remove("overlay-img--full");
+  endScreenImg.classList.add("overlay-img--win");
+}
+
+function showGameOverImg(endScreenImg) {
+  endScreenImg.src =
+    "./assets/img/9_intro_outro_screens/game_over/game_over!.png";
+  endScreenImg.classList.remove("overlay-img--win");
+  endScreenImg.classList.add("overlay-img--full");
+}
+
 // #endregion
+
+// #region icons
 
 function toggleSoundIcon() {
   const muteBtnImg = document.getElementById("mute-btn-img");
@@ -172,3 +189,5 @@ function getPauseIconSrc() {
   if (isPaused) return "./assets/icons/play-icon.png";
   else return "./assets/icons/pause-icon.png";
 }
+
+// #endregion

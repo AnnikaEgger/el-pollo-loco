@@ -2,28 +2,6 @@ let level1;
 
 function initLevel() {
   level1 = new Level(
-    // [
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenNormal(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    //   new ChickenSmall(),
-    // ],
     [
       new Cloud(0, 0),
       new Cloud(1, 1),

@@ -1,0 +1,269 @@
+.overlay-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay-img--full {
+  width: 100%;
+  height: 100%;
+}
+
+/* #region home screen */
+.home-container {
+  display: flex;
+}
+
+.wood-signs-menu--home img {
+  width: 18cqw;
+  height: 10cqh;
+}
+
+.wood-sign:hover p,
+.wood-btn:hover p {
+  background: linear-gradient(to bottom, #fff37a 0%, #ffae00 60%, #d88000 100%);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  display: inline-block;
+}
+
+.start-btn p {
+  font-weight: 600;
+  text-transform: uppercase;
+
+  color: #ffd23f;
+
+  font-size: 4cqw;
+  letter-spacing: 0.5cqw;
+
+  background: linear-gradient(to bottom, #fff37a 0%, #ffae00 60%, #d88000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: none;
+  filter: drop-shadow(-1px -1px 0px #421d05) drop-shadow(1px -1px 0px #421d05)
+    drop-shadow(-1px 1px 0px #421d05) drop-shadow(1px 1px 0px #421d05)
+    drop-shadow(0px 2px 0px #301402) drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.5));
+}
+
+.imprint-container {
+  gap: 2cqw;
+}
+
+.imprint-container p {
+  color: var(--beige);
+  font-size: 2.5cqw;
+  text-decoration: underline;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+  display: inline-block;
+}
+
+.imprint-container button:hover p {
+  color: #ffd23f;
+  transform: translateY(-0.25cqh);
+}
+/* #endregion */
+
+/* #region pause menu */
+.pause-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+}
+
+.pause-menu .wood-sign {
+  display: flex;
+  align-items: center;
+}
+
+.pause-menu .wood-sign img {
+  width: 35cqw;
+  height: 12cqh;
+}
+
+.wood-signs-menu--pause {
+  top: 6cqh;
+  display: flex;
+  flex-direction: column;
+  gap: 5cqh;
+}
+
+.wood-signs-container--pause {
+  padding-bottom: 8cqh;
+}
+
+.wood-signs-menu--pause p {
+  font-size: 4cqw;
+}
+
+/* #endregion */
+
+/* #region end screen */
+.outro-container {
+  display: flex;
+  justify-content: center;
+}
+
+.outro-container button {
+  border-radius: 50%;
+  font-size: 5cqw;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 2cqh;
+}
+
+.outro-container button p {
+  color: var(--beige);
+}
+
+.outro-container .wood-btn img {
+  width: 7cqw;
+}
+
+.outro-btns-container {
+  position: absolute;
+  top: 20cqh;
+  display: flex;
+  gap: 6cqw;
+}
+
+.overlay-img--win {
+  width: 70%;
+  align-self: center;
+  justify-self: center;
+  margin-top: 24px;
+}
+/* #endregion */
+
+/* #region information container */
+
+.information-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../assets/img/5_background/first_half_background.png);
+  background-position: center;
+}
+
+.close-btn {
+  position: absolute;
+  padding: 0;
+}
+
+.close-btn--info-container {
+  top: 0;
+  right: 0;
+  padding: 8px;
+}
+
+.information-container h2 {
+  font-family: "Spicy Rice", serif;
+
+  font-size: 5cqw;
+  margin-bottom: 3cqh;
+  color: var(--beige);
+}
+
+.infotext-container {
+  padding: 16px;
+  width: 80%;
+  max-width: 750px;
+  max-height: 75%;
+  overflow-y: auto;
+  color: black;
+  border-radius: 24px;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+}
+
+.infotext-container--story,
+.infotext-container--instructions {
+  scrollbar-color: var(--beige) transparent;
+}
+
+.infotext-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.infotext-container--story p {
+  font-family: "Spicy Rice", serif;
+  font-size: 24px;
+  text-align: center;
+  color: var(--beige);
+}
+
+.infotext-container--imprint {
+  background-color: white;
+  font-family: Arial, sans-serif;
+  scrollbar-color: grey transparent;
+  text-align: justify;
+}
+
+.infotext-container--imprint h3 {
+  font-size: 24px;
+}
+
+.infotext-container--imprint h4 {
+  font-size: 20px;
+}
+
+.infotext-container--imprint h5 {
+  font-size: 16px;
+}
+
+.infotext-container--imprint p {
+  font-size: 16px;
+}
+
+.infotext-container--instructions {
+  font-family: "Spicy Rice", serif;
+  font-size: 20px;
+  color: var(--beige);
+}
+
+.game-instructions {
+  line-height: 1.6;
+}
+
+.game-instructions h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+.game-instructions h3:first-child {
+  margin-top: 0;
+}
+
+.game-instructions kbd {
+  background-color: #eee;
+  border: 1px solid #b4b4b4;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  color: #333;
+  display: inline-block;
+  font-size: 0.85em;
+  font-family: monospace;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+.game-instructions ul {
+  margin-bottom: 15px;
+}
+/* #endregion */

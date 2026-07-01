@@ -89,55 +89,99 @@ class DrawableObject {
     });
   }
 
+  // async waitUntilReady() {
+  //   const promises = [];
+
+  //   promises.push(
+  //     new Promise((resolve) => {
+  //       if (this.img.complete) return resolve();
+  //       this.img.onload = () => resolve();
+  //       this.img.onerror = () => resolve();
+  //     }),
+  //   );
+
+  //   const staticAudios = this.constructor.AUDIOS;
+  //   if (Array.isArray(staticAudios)) {
+  //     staticAudios.forEach((audio) => {
+  //       promises.push(
+  //         new Promise((resolve) => {
+  //           const isMobile = /Mobi|Android|iPhone|iPad/i.test(
+  //             navigator.userAgent,
+  //           );
+
+  //           if (audio.readyState >= 2 || isMobile) {
+  //             return resolve();
+  //           }
+
+  //           const handleReady = () => {
+  //             cleanup();
+  //             resolve();
+  //           };
+
+  //           const handleError = () => {
+  //             cleanup();
+  //             resolve();
+  //           };
+
+  //           const cleanup = () => {
+  //             audio.removeEventListener("canplay", handleReady);
+  //             audio.removeEventListener("error", handleError);
+  //           };
+
+  //           audio.addEventListener("canplay", handleReady);
+  //           audio.addEventListener("error", handleError);
+
+  //           setTimeout(handleReady, 3000);
+  //         }),
+  //       );
+  //     });
+  //   }
+
+  //   return Promise.all(promises);
+  // }
   async waitUntilReady() {
-    const promises = [];
+    const imagePromise = this.waitForImageReady();
+    const audioPromises = this.waitForAllAudios();
+    await Promise.all([imagePromise, ...audioPromises]);
+  }
 
-    promises.push(
-      new Promise((resolve) => {
-        if (this.img.complete) return resolve();
-        this.img.onload = () => resolve();
-        this.img.onerror = () => resolve();
-      }),
-    );
+  waitForImageReady() {
+    return new Promise((resolve) => {
+      if (this.img.complete) return resolve();
+      this.img.onload = () => resolve();
+      this.img.onerror = () => resolve();
+    });
+  }
 
+  waitForAllAudios() {
     const staticAudios = this.constructor.AUDIOS;
-    if (Array.isArray(staticAudios)) {
-      staticAudios.forEach((audio) => {
-        promises.push(
-          new Promise((resolve) => {
-            const isMobile = /Mobi|Android|iPhone|iPad/i.test(
-              navigator.userAgent,
-            );
-
-            if (audio.readyState >= 2 || isMobile) {
-              return resolve();
-            }
-
-            const handleReady = () => {
-              cleanup();
-              resolve();
-            };
-
-            const handleError = () => {
-              cleanup();
-              resolve();
-            };
-
-            const cleanup = () => {
-              audio.removeEventListener("canplay", handleReady);
-              audio.removeEventListener("error", handleError);
-            };
-
-            audio.addEventListener("canplay", handleReady);
-            audio.addEventListener("error", handleError);
-
-            setTimeout(handleReady, 3000);
-          }),
-        );
-      });
+    if (!Array.isArray(staticAudios)) {
+      return [];
     }
+    return staticAudios.map((audio) => this.waitForAudioReady(audio));
+  }
 
-    return Promise.all(promises);
+  waitForAudioReady(audio) {
+    return new Promise((resolve) => {
+      if (audio.readyState >= 2 || this.isMobileDevice()) return resolve();
+
+      const timer = setTimeout(this.handleReady, 3000);
+      this.handleReady(timer, audio);
+
+      audio.addEventListener("canplay", this.handleReady);
+      audio.addEventListener("error", this.handleReady);
+    });
+  }
+
+  handleReady(timer, audio) {
+    clearTimeout(timer);
+    audio.removeEventListener("canplay", this.handleReady);
+    audio.removeEventListener("error", this.handleReady);
+    resolve();
+  }
+
+  isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
   }
 
   getRandomIndex(array) {
@@ -146,7 +190,6 @@ class DrawableObject {
 
   resize() {
     this.getDimensions();
-
     if (
       this instanceof BackgroundObject ||
       (this instanceof ThrowableObject && this.state === "on ground") ||

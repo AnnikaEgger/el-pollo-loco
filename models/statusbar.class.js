@@ -1,10 +1,8 @@
 class Statusbar extends DrawableObject {
   x;
   y = 0;
-
   offset = { top: 0, bottom: 0, left: 0, right: 0 };
   IMAGES;
-
   percentage = 100;
 
   constructor(images, type) {
@@ -13,7 +11,10 @@ class Statusbar extends DrawableObject {
     this.loadImages(this.IMAGES);
 
     this.getDimensions();
+    this.setStatusbarPercentage(type);
+  }
 
+  setStatusbarPercentage(type) {
     if (type == "health" || type == "endboss") {
       this.setPercentage(100);
     } else {
@@ -34,18 +35,7 @@ class Statusbar extends DrawableObject {
   }
 
   resolveImageIndex() {
-    if (this.percentage > 80) {
-      return 5;
-    } else if (this.percentage > 60) {
-      return 4;
-    } else if (this.percentage > 40) {
-      return 3;
-    } else if (this.percentage > 20) {
-      return 2;
-    } else if (this.percentage > 0) {
-      return 1;
-    } else if (this.percentage === 0) {
-      return 0;
-    }
+    if (this.percentage === 0) return 0;
+    return Math.min(Math.ceil(this.percentage / 20), 5);
   }
 }
