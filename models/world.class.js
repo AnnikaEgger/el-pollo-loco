@@ -10,6 +10,7 @@ class World extends WorldDraw {
   ctx;
   keyboard;
   cameraX = 0;
+  roundedCameraX;
   statusbarHealth = new StatusbarHealth();
   statusbarBottles = new StatusbarBottles();
   statusbarCoins = new StatusbarCoins();

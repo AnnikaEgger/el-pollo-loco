@@ -68,6 +68,14 @@ canvas {
   src: url("./assets/fonts/spicy-rice-v28-latin-regular.woff2") format("woff2");
 }
 
+@font-face {
+  font-display: swap;
+  font-family: "Sniglet";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/fonts/sniglet-v18-latin-regular.woff2") format("woff2");
+}
+
 .game-title {
   margin-top: 6dvh;
   margin-bottom: 24px;
@@ -85,6 +93,28 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.fullscreen-wrapper:fullscreen::backdrop {
+  background-image: url("./assets/img/5_background/layers/air.png");
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.fullscreen-wrapper:-webkit-full-screen::backdrop {
+  background-image: url("./assets/img/5_background/layers/air.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.fullscreen-wrapper.ios-fake-fullscreen {
+  background-image: url("./assets/img/5_background/layers/air.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .overlay-wrapper {
@@ -120,7 +150,6 @@ canvas {
 }
 
 .fullscreen-wrapper:fullscreen {
-  background-color: #000;
   display: inline-block;
   flex-shrink: 0;
   justify-content: center;
@@ -128,13 +157,14 @@ canvas {
   margin: auto;
 }
 
-.fullscreen-wrapper:fullscreen canvas {
+canvas {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
 }
 
 .fullscreen-wrapper:-webkit-full-screen {
-  background-color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -226,13 +256,6 @@ canvas {
   .game-title {
     font-size: 36px;
     margin: 16px;
-  }
-}
-
-@media only screen and (max-width: 720px) {
-  .fullscreen-wrapper,
-  canvas {
-    width: 100dvw;
   }
 }
 
@@ -349,7 +372,7 @@ canvas {
   width: 64px;
 }
 
-@media screen and (max-width: 768px) and (orientation: portrait) {
+@media screen and (max-width: 1024px) and (orientation: portrait) {
   .landscape-warning {
     display: flex;
   }

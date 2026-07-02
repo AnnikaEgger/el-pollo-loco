@@ -10,9 +10,10 @@ class WorldDraw {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.translate(this.cameraX, 0);
+    this.roundedCameraX = Math.round(this.cameraX);
+    this.ctx.translate(this.roundedCameraX, 0);
     this.addAllObjectsToMap();
-    this.ctx.translate(-this.cameraX, 0);
+    this.ctx.translate(-this.roundedCameraX, 0);
 
     let self = this;
     requestAnimationFrame(function () {
@@ -34,14 +35,14 @@ class WorldDraw {
    * Draws the HUD elements that stay fixed relative to the camera.
    */
   addFixedObjectsToMap() {
-    this.ctx.translate(-this.cameraX, 0);
+    this.ctx.translate(-this.roundedCameraX, 0);
 
     this.addToMap(this.statusbarHealth);
     this.addToMap(this.statusbarBottles);
     this.addToMap(this.statusbarCoins);
     if (this.endboss.hadFirstContact) this.addToMap(this.statusbarEndboss);
 
-    this.ctx.translate(this.cameraX, 0);
+    this.ctx.translate(this.roundedCameraX, 0);
   }
 
   /**

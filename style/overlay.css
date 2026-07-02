@@ -17,7 +17,7 @@
 }
 
 .wood-signs-menu--home img {
-  width: 18cqw;
+  width: 23.5cqw;
   height: 10cqh;
 }
 
@@ -32,9 +32,8 @@
   display: inline-block;
 }
 
-.start-btn p {
+.wood-signs-menu--home .wood-btn p {
   font-weight: 600;
-  text-transform: uppercase;
 
   color: #ffd23f;
 
@@ -51,19 +50,24 @@
     drop-shadow(0px 2px 0px #301402) drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.5));
 }
 
+.start-btn p {
+  text-transform: uppercase;
+}
+
 .imprint-container {
   gap: 2cqw;
 }
 
 .imprint-container p {
   color: var(--beige);
-  font-family: "Spicy Rice", serif;
   font-size: 2.75cqw;
+  font-family: "Spicy Rice", sans-serif;
   text-decoration: underline;
   transition:
     color 0.2s ease,
     transform 0.2s ease;
   display: inline-block;
+  letter-spacing: 1px;
 }
 
 .imprint-container button:hover p {
@@ -176,9 +180,10 @@
 }
 
 .information-container h2 {
-  font-family: "Spicy Rice", serif;
-
   font-size: 5cqw;
+  font-family: "Spicy Rice", sans-serif;
+  font-weight: 200;
+  text-transform: uppercase;
   margin-bottom: 3cqh;
   color: var(--beige);
 }
@@ -193,6 +198,7 @@
   border-radius: 24px;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 2;
+  font-family: "Sniglet", sans-serif;
 }
 
 .infotext-container--story,
@@ -205,7 +211,6 @@
 }
 
 .infotext-container--story p {
-  font-family: "Spicy Rice", serif;
   font-size: 24px;
   text-align: center;
   color: var(--beige);
@@ -214,9 +219,12 @@
 .infotext-container--imprint {
   background-color: rgba(0, 0, 0, 0.8);
   color: var(--beige);
-  font-family: Arial, sans-serif;
   scrollbar-color: grey transparent;
-  text-align: justify;
+}
+
+.infotext-container--imprint p,
+.infotext-container--imprint li {
+  font-size: 20px;
 }
 
 .infotext-container--imprint a {
@@ -235,13 +243,8 @@
   font-size: 16px;
 }
 
-.infotext-container--imprint p {
-  font-size: 16px;
-}
-
 .infotext-container--instructions {
-  font-family: "Spicy Rice", serif;
-  font-size: 20px;
+  font-size: 24px;
   color: var(--beige);
 }
 
