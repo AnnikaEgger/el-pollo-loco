@@ -13,11 +13,11 @@ class Character extends MovableObject {
   alreadyDead = false;
   energy = 100;
 
-  static walkingSound = new Audio("./assets/audio/character/walking.wav");
-  static snoringSound = new Audio("./assets/audio/character/snoring.wav");
+  static walkingSound = new Audio("./assets/audio/character/walking.mp3");
+  static snoringSound = new Audio("./assets/audio/character/snoring.mp3");
   static hurtingSound = new Audio("./assets/audio/character/hurting.mp3");
   static dyingSound = new Audio("./assets/audio/character/dying.mp3");
-  static jumpingSound = new Audio("./assets/audio/character/jumping.wav");
+  static jumpingSound = new Audio("./assets/audio/character/jumping.mp3");
 
   static AUDIOS = [
     Character.walkingSound,
@@ -143,7 +143,7 @@ class Character extends MovableObject {
    */
   getDimensions() {
     this.height = (280 / 480) * canvas.height;
-    this.width = (140 / 720) * canvas.width;
+    this.width = (130 / 720) * canvas.width;
     this.bottomY = (150 / 480) * canvas.height;
     this.speed = (7.5 / 720) * canvas.width;
     super.getDimensions();

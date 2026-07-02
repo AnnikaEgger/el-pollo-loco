@@ -381,26 +381,4 @@ class World extends WorldDraw {
     this.availableBottles--;
     this.updateBottlesStatusbar();
   }
-
-  /**
-   * Prevents the player from throwing bottles too frequently by applying a short cooldown.
-   */
-  startBottleCooldown() {
-    this.allowNewBottle = false;
-    setTimeout(() => (this.allowNewBottle = true), 750);
-  }
-
-  /**
-   * Updates the bottle status bar to reflect the current inventory count.
-   */
-  updateBottlesStatusbar() {
-    this.statusbarBottles.setPercentage(this.availableBottles * (100 / 10));
-  }
-
-  /**
-   * Updates the coin status bar to reflect the current inventory count.
-   */
-  updateCoinsStatusbar() {
-    this.statusbarCoins.setPercentage(this.availableCoins * (100 / 20));
-  }
 }

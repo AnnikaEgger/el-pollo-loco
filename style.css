@@ -81,16 +81,33 @@ canvas {
 
 /* #region content wrapper */
 
-.content-wrapper {
-  width: 720px;
-  position: relative;
+.fullscreen-wrapper {
   display: flex;
-  flex-direction: column;
-  container-type: size;
-  aspect-ratio: 720 / 480;
+  align-items: center;
+  justify-content: center;
 }
 
-.content-wrapper:not(:fullscreen):not(:-webkit-full-screen)
+.overlay-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-wrapper {
+  position: relative;
+  display: inline-block;
+  flex-direction: column;
+  flex-shrink: 0;
+  vertical-align: top;
+  width: fit-content;
+}
+
+.fullscreen-wrapper:not(:fullscreen):not(:-webkit-full-screen)
   :is(
     &,
     .information-container,
@@ -102,21 +119,21 @@ canvas {
   border-radius: 24px;
 }
 
-.content-wrapper:fullscreen {
-  width: 100dvw;
-  height: 100dvh;
+.fullscreen-wrapper:fullscreen {
   background-color: #000;
-  display: flex;
+  display: inline-block;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
+  margin: auto;
 }
 
-.content-wrapper:fullscreen canvas {
+.fullscreen-wrapper:fullscreen canvas {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
 
-.content-wrapper:-webkit-full-screen {
+.fullscreen-wrapper:-webkit-full-screen {
   background-color: #000;
   display: flex;
   justify-content: center;
@@ -175,7 +192,7 @@ canvas {
 }
 
 @media only screen and (max-height: 480px) {
-  .content-wrapper,
+  .fullscreen-wrapper,
   canvas {
     height: 100dvh;
   }
@@ -194,7 +211,7 @@ canvas {
 }
 
 @media screen and (max-width: 768px) {
-  .content-wrapper:not(:fullscreen):not(:-webkit-full-screen)
+  .fullscreen-wrapper:not(:fullscreen):not(:-webkit-full-screen)
     :is(
       &,
       .information-container,
@@ -213,7 +230,7 @@ canvas {
 }
 
 @media only screen and (max-width: 720px) {
-  .content-wrapper,
+  .fullscreen-wrapper,
   canvas {
     width: 100dvw;
   }
@@ -225,7 +242,9 @@ canvas {
     padding-top: 8cqh;
   }
 
-  .content-wrapper:not(:has(.home-container)):not(:has(.information-container))
+  .fullscreen-wrapper:not(:has(.home-container)):not(
+      :has(.information-container)
+    )
     .panel {
     top: 3cqh;
     bottom: unset;
@@ -238,15 +257,58 @@ canvas {
     top: 23cqh;
   }
 
-  .content-wrapper:not(:has(.pause-menu)):not(:has(.information-container)):not(
-      :has(.home-container)
-    )
+  .fullscreen-wrapper:not(:has(.pause-menu)):not(
+      :has(.information-container)
+    ):not(:has(.home-container))
     .control-panel {
     display: flex;
+    justify-content: space-between;
+    bottom: 0;
+  }
+}
+
+@media (pointer: coarse) and (min-height: 700px) {
+  .fullscreen-wrapper:not(:fullscreen):not(:-webkit-full-screen):not(
+      .ios-fake-fullscreen
+    )
+    .control-panel {
+    position: fixed;
+    left: 0;
+    width: 100dvw;
+    padding: 16px;
+  }
+
+  .fullscreen-wrapper:not(:fullscreen):not(:-webkit-full-screen):not(
+      .ios-fake-fullscreen
+    )
+    .control-panel
+    .panel-wrapper {
+    gap: 4cqw;
+  }
+
+  .fullscreen-wrapper:not(:fullscreen):not(:-webkit-full-screen):not(
+      .ios-fake-fullscreen
+    )
+    .control-panel
+    .wood-btn
+    img {
+    width: 10cqw;
+  }
+
+  .fullscreen-wrapper:fullscreen .control-panel,
+  .fullscreen-wrapper:-webkit-full-screen .control-panel,
+  .fullscreen-wrapper.ios-fake-fullscreen .control-panel {
     position: absolute;
     bottom: 0;
     width: 100%;
-    justify-content: space-between;
+  }
+}
+
+@media (pointer: coarse) and (max-height: 700px) {
+  .control-panel {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }
 
@@ -292,7 +354,7 @@ canvas {
     display: flex;
   }
 
-  .content-wrapper,
+  .fullscreen-wrapper,
   .game-title {
     display: none;
   }

@@ -26,6 +26,6 @@ class BackgroundObject extends MovableObject {
     super.getDimensions();
     this.height = canvas.height;
     this.width = canvas.width;
-    this.x = this.xMultiplier * canvas.width;
+    this.x = this.xMultiplier * (canvas.width - 1);
   }
 }

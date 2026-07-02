@@ -27,6 +27,7 @@ class WorldDraw {
     this.addBackgroundObjectsToMap();
     this.addInteractiveObjectstoMap();
     this.addFixedObjectsToMap();
+    this.addToMap(this.character);
   }
 
   /**
@@ -55,7 +56,6 @@ class WorldDraw {
    * Adds the character, enemies, bottles, and coins to the map.
    */
   addInteractiveObjectstoMap() {
-    this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.throwableObjects);
     this.addObjectsToMap(this.level.coins);
@@ -97,5 +97,27 @@ class WorldDraw {
   flipImageBack(movableObj) {
     movableObj.x = movableObj.x * -1;
     this.ctx.restore();
+  }
+
+  /**
+   * Prevents the player from throwing bottles too frequently by applying a short cooldown.
+   */
+  startBottleCooldown() {
+    this.allowNewBottle = false;
+    setTimeout(() => (this.allowNewBottle = true), 750);
+  }
+
+  /**
+   * Updates the bottle status bar to reflect the current inventory count.
+   */
+  updateBottlesStatusbar() {
+    this.statusbarBottles.setPercentage(this.availableBottles * (100 / 10));
+  }
+
+  /**
+   * Updates the coin status bar to reflect the current inventory count.
+   */
+  updateCoinsStatusbar() {
+    this.statusbarCoins.setPercentage(this.availableCoins * (100 / 20));
   }
 }

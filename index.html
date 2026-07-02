@@ -53,38 +53,42 @@
   <body onload="init()">
     <h1 class="game-title">El Pollo Loco</h1>
 
-    <div id="fullscreen" class="content-wrapper">
-      <canvas id="canvas" width="720" height="480"></canvas>
+    <div id="fullscreen" class="fullscreen-wrapper">
+      <div class="content-wrapper">
+        <canvas id="canvas" width="720" height="480"></canvas>
 
-      <div id="overlay-container" class="overlay-container"></div>
+        <div class="overlay-wrapper">
+          <div id="overlay-container" class="overlay-container"></div>
 
-      <div id="panel" class="panel"></div>
+          <div id="panel" class="panel"></div>
 
-      <div class="control-panel">
-        <div class="panel-wrapper">
-          <button id="move-left-btn" class="wood-btn">
-            <img src="./assets/icons/arrow-left.png" alt="arrow left" />
-          </button>
-          <button id="move-right-btn" class="wood-btn">
-            <img src="./assets/icons/arrow-right.png" alt="arrow right" />
-          </button>
+          <div class="control-panel">
+            <div class="panel-wrapper">
+              <button id="move-left-btn" class="wood-btn">
+                <img src="./assets/icons/arrow-left.png" alt="arrow left" />
+              </button>
+              <button id="move-right-btn" class="wood-btn">
+                <img src="./assets/icons/arrow-right.png" alt="arrow right" />
+              </button>
+            </div>
+            <div class="panel-wrapper">
+              <button id="jump-btn" class="wood-btn">
+                <img src="./assets/icons/arrow-up.png" alt="arrow up" />
+              </button>
+              <button id="throw-btn" class="wood-btn">
+                <img src="./assets/icons/bottle.png" alt="bottle" />
+              </button>
+            </div>
+          </div>
+
+          <div id="loading-spinner" class="loading-spinner display-none">
+            <img
+              id="loading-spinner-img"
+              src="./assets/img/6_salsa_bottle/salsa_bottle.png"
+              alt=""
+            />
+          </div>
         </div>
-        <div class="panel-wrapper">
-          <button id="jump-btn" class="wood-btn">
-            <img src="./assets/icons/arrow-up.png" alt="arrow up" />
-          </button>
-          <button id="throw-btn" class="wood-btn">
-            <img src="./assets/icons/bottle.png" alt="bottle" />
-          </button>
-        </div>
-      </div>
-
-      <div id="loading-spinner" class="loading-spinner display-none">
-        <img
-          id="loading-spinner-img"
-          src="./assets/img/6_salsa_bottle/salsa_bottle.png"
-          alt=""
-        />
       </div>
     </div>
 

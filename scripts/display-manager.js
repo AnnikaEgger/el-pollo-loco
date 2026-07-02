@@ -101,21 +101,50 @@ function exitNativeFullscreen() {
 }
 
 /**
- * Adjusts the canvas size to either fullscreen dimensions or the default game size.
+ * Resizes the canvas based on the fullscreen state and updates the game layout.
+ * @returns {void}
  */
 function resizeCanvas() {
   oldCanvasHeight = canvas.height;
   oldCanvasWidth = canvas.width;
   const isFullscreen = checkIfFullscreenElement();
 
-  if (isFullscreen) {
-    canvas.width = window.innerWidth || document.documentElement.clientWidth;
-    canvas.height = window.innerHeight || document.documentElement.clientHeight;
-  } else {
+  if (isFullscreen) getCanvasFullscreenDimensions();
+  else {
     canvas.width = 720;
     canvas.height = 480;
   }
   if (gameStarted) resizeGame();
+}
+
+/**
+ * Gets the current viewport dimensions for fullscreen calculations.
+ * @returns {void}
+ */
+function getCanvasFullscreenDimensions() {
+  const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight;
+  getCorrectRatio(windowWidth, windowHeight);
+}
+
+/**
+ * Adjusts the canvas dimensions to maintain a fixed 720x480 aspect ratio.
+ * @param {number} windowWidth - The current width of the window.
+ * @param {number} windowHeight - The current height of the window.
+ * @returns {void}
+ */
+function getCorrectRatio(windowWidth, windowHeight) {
+  const targetRatio = 720 / 480;
+  const currentRatio = windowWidth / windowHeight;
+
+  if (currentRatio > targetRatio) {
+    canvas.height = windowHeight;
+    canvas.width = windowHeight * targetRatio;
+  } else {
+    canvas.width = windowWidth;
+    canvas.height = windowWidth / targetRatio;
+  }
 }
 
 /**
@@ -260,8 +289,8 @@ function showGameOverImg(endScreenImg) {
  */
 function toggleSoundIcon() {
   const muteBtnImg = document.getElementById("mute-btn-img");
-  if (isMuted) muteBtnImg.src = "./assets/icons/sound-icon.png";
-  else muteBtnImg.src = "./assets/icons/mute-icon.png";
+  if (isMuted) muteBtnImg.src = "./assets/icons/mute-icon.png";
+  else muteBtnImg.src = "./assets/icons/sound-icon.png";
 }
 
 /**
@@ -269,8 +298,8 @@ function toggleSoundIcon() {
  * @returns {string} The image path for the current mute state.
  */
 function getSoundIconSrc() {
-  if (isMuted) return "./assets/icons/sound-icon.png";
-  else return "./assets/icons/mute-icon.png";
+  if (isMuted) return "./assets/icons/mute-icon.png";
+  else return "./assets/icons/sound-icon.png";
 }
 
 /**

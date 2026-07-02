@@ -14,7 +14,7 @@ class Endboss extends EndbossMovement {
   bottomY;
   energy = 100;
 
-  static hurtingSound = new Audio("./assets/audio/endboss/hurting.wav");
+  static hurtingSound = new Audio("./assets/audio/endboss/hurting.mp3");
   static dyingSound = new Audio("./assets/audio/endboss/dying.mp3");
   static alertSound = new Audio("./assets/audio/endboss/awakening.mp3");
   static risingSound = new Audio("./assets/audio/endboss/riser.mp3");
