@@ -19,7 +19,7 @@ A browser-based 2D jump & run game built with object-oriented JavaScript. Contro
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/el-pollo-loco.git
+   git clone https://github.com/AnnikaEgger/el-pollo-loco.git
    cd el-pollo-loco
    ```
 2. Open the project folder and start a simple local server, for example with Live Server in VS Code.
